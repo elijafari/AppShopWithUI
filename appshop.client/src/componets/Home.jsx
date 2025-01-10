@@ -31,7 +31,6 @@ export class Home extends Component {
     this.loadDate(this.state.currentPage);
   }
   loadDate(pageNumber) {
-    debugger
     this.setState({
       loading: false,
     });

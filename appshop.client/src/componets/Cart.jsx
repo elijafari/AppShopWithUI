@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import { Component } from "react";
 import { TextBox } from "./TextBox";
 import "../../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import "../App.css";

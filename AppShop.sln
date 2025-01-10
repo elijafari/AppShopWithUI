@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppShop.Server", "AppShop.S
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "appshop.client", "appshop.client\appshop.client.esproj", "{B11F45F4-A223-4289-8987-916367E90414}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppShop.Business", "..\react\ReactApp1\AppShop.Business\AppShop.Business.csproj", "{7D32FE78-69A5-4448-9F86-8B64D50D6775}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,6 +25,10 @@ Global
 		{B11F45F4-A223-4289-8987-916367E90414}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B11F45F4-A223-4289-8987-916367E90414}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B11F45F4-A223-4289-8987-916367E90414}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{7D32FE78-69A5-4448-9F86-8B64D50D6775}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D32FE78-69A5-4448-9F86-8B64D50D6775}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D32FE78-69A5-4448-9F86-8B64D50D6775}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D32FE78-69A5-4448-9F86-8B64D50D6775}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

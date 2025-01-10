@@ -5,6 +5,7 @@ import {NotificationContainer, NotificationManager} from 'react-notifications';
 import "react-notifications/lib/notifications.css";
 import "../App.css";
 import { TextBox } from "./TextBox";
+import {GetLocalhostServer } from "./ChangeRoute";
 export class User extends React.Component {
   constructor(props) {
     super(props);
@@ -12,7 +13,7 @@ export class User extends React.Component {
   }
 
   AddData() {
-    const someUrl = "https://localhost:7023/api/user/add";
+    const someUrl = GetLocalhostServer("api/user/add");
     axios
       .post(someUrl, this.state)
       .then((response) => {
