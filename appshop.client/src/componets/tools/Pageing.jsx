@@ -1,6 +1,6 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.rtl.min.css";
-import "../App.css";
+import "../../App.css";
 
 export class Pageing extends React.Component {
   constructor(props) {

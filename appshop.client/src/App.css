@@ -84,3 +84,14 @@
   position: absolute;
   left: 10px ;
 }
+.colorMenu
+{
+    background-color:lightgrey;
+}
+.nav-link {
+    color: black !important;
+}
+.leftBtn {
+    left: 22px;
+    position: absolute;
+}

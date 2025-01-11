@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.rtl.min.css';
-import { Menu } from './componets/Menu';
-import { Home } from './componets/Home';
-import {Product } from './componets/Product';
-import { Login } from './componets/login';
-import { User } from './componets/User';
-import { Cart } from './componets/Cart';
-import { ProductList } from './componets/ProductList';
-import { ProductView } from './componets/ProductView';
+import { Menu } from './componets/tools/Menu';
+import { Home } from './componets/page/Home';
+import {Product } from './componets/page/Product';
+import { Login } from './componets/page/login';
+import { User } from './componets/page/User';
+import { Cart } from './componets/page/Cart';
+import { ProductList } from './componets/page/ProductList';
+import { ProductView } from './componets/page/ProductView';
 
 export default class App extends Component {
   constructor(props) {
@@ -21,9 +21,7 @@ export default class App extends Component {
  render() {
     return (
       <>
-        <h2>لوازم الکتریکی احسان</h2>     
-
-        <BrowserRouter>
+         <BrowserRouter>
       <Routes>
         <Route element={<Menu />}>
           <Route path="/" element={<Home />} />
@@ -33,7 +31,7 @@ export default class App extends Component {
           <Route path="/user" element={<User />} />
 
           <Route path="/product" element={<Product />} />
-          <Route path="/product/:id"  element={<Product />}/>
+          <Route path="/product/:id"  element={<Product  isEdit={true}/>}/>
           <Route path="/productView/:id"  element={<ProductView />}/>
 
           <Route path="/productList" element={<ProductList />} />

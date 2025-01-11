@@ -55,8 +55,8 @@ namespace AppShop.Server.Controllers
 
         private InProduct ConvertToDto()
         {
-
             InProduct input = new InProduct();
+            try { 
 
             var form = Request.Form;
             input.Id = int.Parse(form[nameof(input.Id).ToCamelCose()]);
@@ -78,6 +78,12 @@ namespace AppShop.Server.Controllers
                     input.image = memoryStream.ToArray();
                 }
 
+            }
+        }
+            catch(Exception ex)
+            {
+                if(ex.Message== "The input string 'undefined' was not in a correct format.")
+                    throw new Exception("اطلاعات وارد شده معتبر نیست");
             }
             return input;
         }
@@ -114,7 +120,7 @@ namespace AppShop.Server.Controllers
             }
         }
         [HttpPost]
-        public ActionResult GetAllAdmin(InputRequest inputRequest)
+        public ActionResult GetAllAdmin(InputRequestProduct inputRequest)
         {
             //push 25 aban 1403
 

@@ -1,14 +1,9 @@
 import React, { Component } from "react";
 import axios from "axios";
-import "../../node_modules/bootstrap/dist/css/bootstrap.min.css";
-import {
-  NotificationContainer,
-  NotificationManager,
-} from "react-notifications";
+import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import "react-notifications/lib/notifications.css";
-import "../App.css";
-import { TextBox } from "./TextBox";
-import { ChangeRoute, GetLocalhostServer } from "./ChangeRoute";
+import "../../App.css";
+import { ChangeRoute, GetLocalhostServer } from "../tools/ChangeRoute";
 
 export class ProductView extends Component {
   constructor(props) {

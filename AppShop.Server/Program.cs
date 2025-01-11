@@ -78,7 +78,7 @@ app.UseStaticFiles();
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapIdentityApi<User>();
-app.MapFallbackToFile("/index.html");
+//app.MapFallbackToFile("/index.html");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

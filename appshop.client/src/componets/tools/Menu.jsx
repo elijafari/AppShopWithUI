@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 import "bootstrap/dist/css/bootstrap.rtl.min.css";
-import "../App.css";
+import "../../../node_modules/bootstrap/dist/js/bootstrap.min.js";
+import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
+import "../../App.css";
 import { Outlet } from "react-router-dom";
 import { FaShoppingCart } from "react-icons/fa";
-import { ModalApp } from "./ModalApp";
-import { ButtonRoute } from "./ButtonRoute";
+import { ModalApp } from "../tools/ModalApp.jsx";
+import { ButtonRoute } from "../tools/ButtonRoute";
 import axios from "axios";
-import "../../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import {
   NotificationContainer,
   NotificationManager,
@@ -73,28 +74,27 @@ export class Menu extends Component {
             </p>
           )}
         </div>
-        <nav className="navbar navbar-expand-lg bg-success navbar-dark">
-          <button
-            className="navbar-toggler"
-            type="button"
-            data-toggle="collapse"
-            data-target="#navbarTogglerDemo02"
-            aria-controls="navbarTogglerDemo02"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
+            <nav className="navbar navbar-expand-lg bg-success navbar-dark">
+                <button className="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#menuItems"
+                    aria-controls="menuItems"
+                    aria-expanded="false"
+                    aria-label="Toggle Navigation">
+
             <span className="navbar-toggler-icon"></span>
           </button>
 
-          <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
+                <div className="collapse navbar-collapse colorMenu" id="menuItems">
             <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
               <li className="nav-item active">
-                <a className="nav-link" href="\home">
+                  <a className="nav-link" href="\home">
                   جسنجوی کالا <span className="sr-only"></span>
                 </a>
               </li>
               <li className="nav-item active">
-                <a className="nav-link" href="\product">
+                 <a className="nav-link" href="\product">
                   تعریف کالا<span className="sr-only"></span>
                 </a>
               </li>

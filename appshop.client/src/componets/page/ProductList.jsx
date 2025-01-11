@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { Pageing } from "./Pageing";
-import { ButtonRoute } from "./ButtonRoute";
-import {ChangeRoute,GetLocalhostServer} from "./ChangeRoute";
-import { Loading } from "./Loading";
+import { Pageing } from "../tools/Pageing";
+import { ButtonRoute } from "../tools/ButtonRoute";
+import {ChangeRoute,GetLocalhostServer} from "../tools/ChangeRoute";
+import { Loading } from "../tools/Loading";
 import { FiRefreshCcw } from "react-icons/fi";
-import "../../node_modules/bootstrap/dist/css/bootstrap.min.css";
-import "../App.css";
+import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
+import "../../App.css";
 export class ProductList extends Component {
   constructor(props) {
     super(props);

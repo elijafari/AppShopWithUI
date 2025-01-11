@@ -28,7 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\react\ReactApp1\AppShop.Business\AppShop.Business.csproj" />
+    <ProjectReference Include="..\AppShop.Business\AppShop.Business.csproj" />
     <ProjectReference Include="..\appshop.client\appshop.client.esproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>

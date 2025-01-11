@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import "../../node_modules/bootstrap/dist/css/bootstrap.css";
-import "../App.css";
-import { ChangeRoute } from "./ChangeRoute";
+import "../../../node_modules/bootstrap/dist/css/bootstrap.css";
+import "../../App.css";
+import { ChangeRoute } from "../tools/ChangeRoute";
 
 export class ProductItem extends Component {
   constructor(props) {
@@ -42,10 +42,13 @@ export class ProductItem extends Component {
             onClick={() => this.onView(this.props.data)}
             className="img-fluid img-thumbnail"
             alt={this.props.data.name}
-            style={{cursor:"pointer"}}
+            style={{cursor:"pointer", height: "350px",width:"350"}}
           />
-          <h4>{this.props.data.name}</h4>
-          <h5>{this.props.data.price.toLocaleString()} تومان</h5>
+          <br/>
+          <span>{this.props.data.name}</span>
+          <br/>
+          <span>{this.props.data.price.toLocaleString()} تومان</span>
+          <br/>
           <button
             type="button"
             className="btn btn-success"
