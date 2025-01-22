@@ -25,7 +25,7 @@ namespace AppShop.Server.Controllers
             userManager = um;
         }
 
-        [HttpPost("register")]
+        [HttpPost]
         public async Task<ActionResult> RegisterUser(Login user)
         {
 
@@ -33,31 +33,62 @@ namespace AppShop.Server.Controllers
 
             try
             {
-                User user_ = new User()
+                User entity = new User()
                 {
                     Name = user.Name,
                     Email = user.Email,
                     UserName = user.UserName,
-                     Address = user.Address,
-                      City = user.City,
-                };
+                    Address = user.Address,
+                    City = user.City,
+                    PostalCode = user.PostalCode,
+                    PhoneNumber = user.PhoneNumber,
+                    Phone = user.Phone,
+                    Region = user.Region,
+                    Family = user.Family,
 
-                result = await userManager.CreateAsync(user_, user.Password);
+                };
+                ValidtionData(entity);
+                result = await userManager.CreateAsync(entity, user.Password);
 
                 if (!result.Succeeded)
                 {
-                    return BadRequest(result);
+                    //  return BadRequest(result);
+                    return StatusCode((int)HttpStatusCode.InternalServerError, result.Errors.ToList()[0].Description);
                 }
             }
             catch (Exception ex)
             {
-                return BadRequest("Something went wrong, please try again. " + ex.Message);
+                // return BadRequest("Something went wrong, please try again. " + ex.Message);
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
 
             return Ok(new { message = "Registered Successfully.", result = result });
         }
 
-        [HttpPost("registerUserAdmin")]
+        private void ValidtionData(User entity)
+        {
+            if (string.IsNullOrEmpty(entity.Name))
+                throw new Exception(Utility.GetMsgRequired("نام"));
+            if (string.IsNullOrEmpty(entity.Family))
+                throw new Exception(Utility.GetMsgRequired("نام خانوادگی"));
+            if (string.IsNullOrEmpty(entity.UserName))
+                throw new Exception(Utility.GetMsgRequired("نام کاربری"));
+            if (string.IsNullOrEmpty(entity.PasswordHash))
+                throw new Exception(Utility.GetMsgRequired("رمز عبور"));
+            if (string.IsNullOrEmpty(entity.City))
+                throw new Exception(Utility.GetMsgRequired("شهر"));
+            if (string.IsNullOrEmpty(entity.Region))
+                throw new Exception(Utility.GetMsgRequired("منطقه"));
+            if (string.IsNullOrEmpty(entity.Address))
+                throw new Exception(Utility.GetMsgRequired("آدرس"));
+            if (string.IsNullOrEmpty(entity.Phone))
+                throw new Exception(Utility.GetMsgRequired("تلفن"));
+            if (string.IsNullOrEmpty(entity.PhoneNumber))
+                throw new Exception(Utility.GetMsgRequired("شماره همراه"));
+            if (string.IsNullOrEmpty(entity.PostalCode))
+                throw new Exception(Utility.GetMsgRequired("کد پستی"));
+        }
+        [HttpPost]
         public async Task<ActionResult> RegisterUserAdmin()
         {
 
@@ -68,14 +99,14 @@ namespace AppShop.Server.Controllers
                 User user_ = new User()
                 {
                     Name = "Admin1",
-                    Email ="e.jafari64@gmail.com",
+                    Email = "e.jafari64@gmail.com",
                     UserName = "Admin",
                     Address = "افسریه",
                     City = "تهران",
-                    NormalizedEmail="",
+                    NormalizedEmail = "",
                 };
 
-                result = await userManager.CreateAsync(user_,"Admin_1231");
+                result = await userManager.CreateAsync(user_, "Admin_1231");
 
                 if (!result.Succeeded)
                 {
@@ -128,7 +159,8 @@ namespace AppShop.Server.Controllers
             return Ok(new { message = "Login Successful." });
         }
 
-        [HttpGet("logout"), Authorize]
+  //      [HttpGet, Authorize]
+        [HttpGet]
         public async Task<ActionResult> LogoutUser()
         {
 
@@ -144,7 +176,7 @@ namespace AppShop.Server.Controllers
             return Ok(new { message = "You are free to go!" });
         }
 
-        [HttpGet("xhtlekd")]
+        [HttpGet]
         public async Task<ActionResult> CheckUser()
         {
             User currentuser = new();

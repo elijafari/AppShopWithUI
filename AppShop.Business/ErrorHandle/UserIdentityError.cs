@@ -62,5 +62,15 @@ namespace AppShop.Business.ErrorHandle
                 Description = string.Format("پست الکترونیکی وارد شده معتیر نیست")
             };
         }
+        public override IdentityError PasswordRequiresLower()
+        {
+            return new IdentityError
+            {
+                Code = nameof(PasswordRequiresLower),
+                Description = string.Format("رمز عبور باید شامل حروف a-z باشد")
+            };
+        }
+
+        
     }
 }

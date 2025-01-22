@@ -47,7 +47,7 @@ export class Menu extends Component {
     }, 1000);
   }
   logout() {
-    const someUrl = GetLocalhostServer("api/user/signOut");
+    const someUrl = GetLocalhostServer("api/user/LogoutUser");
     axios
       .post(someUrl, this.state)
       .then((response) => {
