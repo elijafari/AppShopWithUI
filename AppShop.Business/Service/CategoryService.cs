@@ -15,10 +15,30 @@ namespace AppShop.Business.Service
         public CategoryService(AppShopDBContext _db) {
         db= _db;
         }
-        public void Add(Category entity)
+        public bool Add(Category entity)
         {
             db.Categories.Add(entity);
             db.SaveChanges();
+            return true;
+        }
+        public bool AddRange()
+        {
+            var list= new List<Category>
+            {
+                new Category()
+                {
+                    Code = 1,
+                    Name = "خانگی",
+                },
+                new Category()
+                {
+                    Code = 2,
+                    Name = "صنعتی",
+                }
+            };
+            db.Categories.AddRange(list);
+            db.SaveChanges();
+            return true;
         }
         public List<Category> GetAll(bool tagAll)
         {

@@ -16,20 +16,34 @@ namespace AppShop.Business.Service
         public UserService(AppShopDBContext _db) {
         db= _db;
         }
-        public void Add(User entity)
+        public bool Add(User entity)
         {
             if(db.Users.Where(x=>x.UserName==entity.UserName).Any()) {
              throw new Exception("نام کاربری تکراری است");
             }
             db.Users.Add(entity);
             db.SaveChanges();
+            return true;
         }
-        public User Get(string userName, string passWord)
+        public User Login(User entity)
         {
-            var result = db.Users.Where(x => x.UserName == userName && x.PasswordHash == passWord).FirstOrDefault();
+            var result = db.Users.Where(x => x.UserName == entity. UserName && x.Password == entity.Password).FirstOrDefault();
             if (result == null)
                 throw new Exception("نام کاربری یا رمز عبور یافت نشد");
             return result;
+        }
+        public bool AddAdmin()
+        {
+            User entity = new User()
+            {
+                UserName = "admin",
+                Name = "آدمین",
+                Password = "admin",
+                IsAdmin = true
+            };
+            db.Users.Add(entity);
+            db.SaveChanges();
+            return true;
         }
     }
 }

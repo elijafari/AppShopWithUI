@@ -40,7 +40,7 @@ namespace AppShop.Server.Controllers
          [HttpPost]
         public IActionResult GetAll(InputRequest inputRequest)=>Response(() =>service.GetAll(inputRequest));
         [HttpPost]
-        public IActionResult GetAllUser(InputRequest inputRequest) => Response(() => service.GetAllUser(inputRequest));
+        public IActionResult GetAllUser(InputRequest inputRequest) => Response(() => service.GetAllUser(inputRequest,new Guid()));
         [HttpPost]
         public IActionResult GetById(int id)=>Response(()=>service.GetById(id));
         [HttpPost]

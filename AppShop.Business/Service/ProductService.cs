@@ -22,14 +22,15 @@ namespace AppShop.Business.Service
             mapper = _mapper;
 
         }
-        public void Add(InProduct input)
+        public bool Add(InProduct input)
         {
             var entity = mapper.Map<Product>(input);
             ValidtionData(entity);
             db.Products.Add(entity);
             db.SaveChanges();
+            return true;
         }
-        public void Update(InProduct input)
+        public bool Update(InProduct input)
         { 
             var image=db.Products.AsNoTracking().FirstOrDefault(x=>x.Id==input.Id)?.image;
             var entity = mapper.Map<Product>(input);
@@ -38,6 +39,7 @@ namespace AppShop.Business.Service
             ValidtionData(entity);
             db.Products.Update(entity);
             db.SaveChanges();
+            return true;
         }
 
         private void ValidtionData(Product entity)

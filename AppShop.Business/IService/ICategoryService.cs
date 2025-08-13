@@ -9,7 +9,8 @@ namespace AppShop.Business.IService
 {
     public interface ICategoryService
     {
-        void Add(Category entity);
+        bool Add(Category entity); 
+        bool AddRange(); 
         List<Category> GetAll(bool tagAll);
     }
 }

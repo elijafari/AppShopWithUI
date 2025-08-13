@@ -41,11 +41,10 @@ namespace AppShop.Business.Service
 
             return entity.TrackingCode;
         }
-        public void ChangeShopStatues(int id, ShopStatues shopStatues)
+        public bool ChangeShopStatues(int id, ShopStatues shopStatues)
         {
             var entity = db.OrderBuys.AsNoTracking().FirstOrDefault(x => x.Id == id);
-            if (entity != null)
-            {
+
                 var statues = new OrderBuyStatues();
                 statues.Statues = shopStatues;
                 statues.DateStatues = DateTime.Now;
@@ -54,21 +53,20 @@ namespace AppShop.Business.Service
                 entity.Statues = shopStatues;
                 db.OrderBuys.Update(entity);
                 db.SaveChanges();
-            }
-            else
-                throw new Exception(Utility.NotFoundProduct);
+            return true;
         }
-        public DataView GetAll(DataRequest param)
+        public DataView GetAll(InputRequest inputRequest)
         {
-            var result = new DataView(param.Take, param.PageNumber);
-            result.Data = db.OrderBuys.OrderByDescending(x => x.DateOrder).Skip(result.StartRow).Take(param.Take).Cast<object>().ToList();
+        
+            var result = new DataView(20,inputRequest.PageNumber);
+            result.Data = db.OrderBuys.OrderByDescending(x => x.DateOrder).Skip(result.StartRow).Take(20).Cast<object>().ToList();
             result.TotalCount = db.Products.Count();
             return result;
         }
-        public DataView GetAllUser(DataRequest param, Guid userId)
+        public DataView GetAllUser(InputRequest inputRequest, Guid userId)
         {
-            var result = new DataView(param.Take, param.PageNumber);
-            result.Data = db.OrderBuys.Where(x => x.UserId == userId).Skip(result.StartRow).Take(param.Take).Cast<object>().ToList();
+            var result = new DataView(20, inputRequest.PageNumber);
+            result.Data = db.OrderBuys.Where(x => x.UserId == userId).Skip(result.StartRow).Take(20).Cast<object>().ToList();
             result.TotalCount = db.Products.Count();
             return result;
         }
