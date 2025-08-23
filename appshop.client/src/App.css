@@ -152,3 +152,7 @@
   font-size: 1rem;
   cursor: pointer;
 }
+.card-header{
+  background-color: #c8e9c8 !important;
+  margin-top: 1px !important;
+}

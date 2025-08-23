@@ -8,9 +8,11 @@ import {
 import "react-notifications/lib/notifications.css";
 import "../../App.css";
 import { TextBox } from "../tools/TextBox";
-import DropdownApp from "../tools/DropdownApp";
+import { DropdownApp } from "../tools/DropdownApp";
 import { Checkbox } from "../tools/CheckBox";
 import { ErrorHanding } from "../Utility";
+import { ButtonWaith } from "../tools/ButtonWaith";
+import { ButtonReturn} from "../tools/ButtonReturn";
 
 export class Product extends Component {
     constructor(props) {
@@ -20,7 +22,7 @@ export class Product extends Component {
                 id: props.isEdit ? window.location.href.split("/")[4] : 0,
                 cat: [],
                 file: null,
-                isActive:true,
+                isActive: true,
                 updateKeyImage: 1,
                 updateKey: 1,
             };
@@ -69,8 +71,10 @@ export class Product extends Component {
         formData.append("categoryId", this.state.categoryId);
         formData.append("isActive", this.state.isActive);
 
+        this.setState({ loading: true });
         api.post(this.isEdit ? "/product/update" : "/product/add", formData, { isMultipart: true })
             .then((res) => {
+                this.setState({ loading: false });
                 if (res.status === 200) {
                     NotificationManager.success(res.data.message, "پیام");
                     if (this.isEdit)
@@ -80,7 +84,10 @@ export class Product extends Component {
                 } else
                     ErrorHanding(NotificationManager, res.data.message);
             })
-            .catch((error) => ErrorHanding(NotificationManager, error));
+            .catch((error) => {
+                ErrorHanding(NotificationManager, error);
+                this.setState({ loading: false });
+            });
     }
     clearInput() {
         this.setState({
@@ -163,14 +170,12 @@ export class Product extends Component {
                                 </div>
                             </div>
                         </div>
-                        <button onClick={() => this.AddData()} className="btn btn-primary">
-                            ثبت
-                        </button>
-                        <button onClick={() => this.AddData()} className="btn btn-light leftBtn">
-                            بازگشت
-                        </button>
+                        <ButtonWaith onClick={() => this.AddData()}
+                            loading={this.state.loading}
+                            title="ثبت" />
+                        <ButtonReturn/>
                     </div>
-                </div>
+                </div >
 
                 <NotificationContainer />
             </>

@@ -2,8 +2,9 @@ import React, { Component } from "react";
 import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import "react-notifications/lib/notifications.css";
 import "../../App.css";
-import  api  from "../tools/axiosConfig";
-
+import api from "../tools/axiosConfig";
+import { ButtonReturn } from "../tools/ButtonReturn";
+import { ErrorHanding } from "../Utility";
 export class ProductView extends Component {
   constructor(props) {
     super(props);
@@ -15,14 +16,11 @@ export class ProductView extends Component {
     };
   }
   componentDidMount() {
-    api.get("api/product/GetById?id=" + this.state.id).then((response) => {
+    api.post("/product/GetById", { id: this.state.id }).then((response) => {
+      var result = response.data.data;
       this.setState({
-        data:response.data.data,
-        code: response.data.data.code,
-        name: response.data.data.name,
-        price: response.data.data.price,
-        description: response.data.data.description,
-        file: "data:image/png;base64," + response.data.data.image,
+        ...result,
+        file: "data:image/png;base64," + result.image,
         updateKey: this.state.updateKey + 1,
       });
     });
@@ -34,7 +32,7 @@ export class ProductView extends Component {
     if (index > -1) {
       array[index].count += 1;
     } else {
-      array.push({ id:  this.state.id, count:1, data: this.state.data });
+      array.push({ id: this.state.id, count: 1, data: this.state });
     }
     this.setState({
       selectedData: array,
@@ -51,8 +49,9 @@ export class ProductView extends Component {
               <div className="col-md-9">
                 <b>قیمت : </b>
                 <span>{this.state.price}</span>
+                <b>ریال</b>
                 <br />
-              <b>توضیحات کالا : </b>
+                <b>توضیحات کالا : </b>
                 <span>{this.state.description}</span>
               </div>
               <div className="col-md-3">
@@ -64,11 +63,12 @@ export class ProductView extends Component {
                 />
               </div>
             </div>
+            <button onClick={() => this.shopItem()} className="btn btn-success">
+              افزودن به سبد خرید
+            </button>
+            <ButtonReturn />
           </div>
         </div>
-          <button onClick={() => this.shopItem()} className="btn btn-success">
-          افزودن به سبد خرید
-            </button>
       </>
     );
   }

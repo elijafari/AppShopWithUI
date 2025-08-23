@@ -53,7 +53,10 @@ namespace AppShop.Business.Service
                 UserName = "admin",
                 FullName = "آدمین",
                 Password = "admin",
-                IsAdmin = true
+                IsAdmin = true,
+                Phone = "1",
+                Question = 1,
+                Answer = "1"
             };
             db.Users.Add(entity);
             db.SaveChanges();

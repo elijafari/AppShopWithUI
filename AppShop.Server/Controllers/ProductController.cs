@@ -92,8 +92,8 @@ namespace AppShop.Server.Controllers
                 return service.GetAll(param);
             });
         }
-        [HttpGet]
-        public IActionResult GetById(int id) => Response(() => service.GetById(id));
+        [HttpPost]
+        public IActionResult GetById(InRecord input) => Response(() => service.GetById(int.Parse(input.Id)));
         [HttpGet]
         [Authorize(Roles = "Admin")]
 

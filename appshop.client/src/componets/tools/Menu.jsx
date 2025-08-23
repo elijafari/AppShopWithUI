@@ -45,7 +45,7 @@ export class Menu extends Component {
   }
   logout() {
     localStorage.clear();
-    window.location.href="/";
+    window.location.href = "/";
   }
 
   render() {
@@ -93,11 +93,12 @@ export class Menu extends Component {
                   لیست سفارشات<span className="sr-only"></span>
                 </a>
               </li>
-              <li className="nav-item active">
-                <a className="nav-link" href="\user">
-                  ویرایش پروفایل کاربری<span className="sr-only"></span>
-                </a>
-              </li>
+              {this.state.user && (
+                <li className="nav-item active">
+                  <a className="nav-link" href="\user">
+                    ویرایش پروفایل کاربری<span className="sr-only"></span>
+                  </a>
+                </li>)}
             </ul>
           </div>
           {this.state.isLoging == false ? (

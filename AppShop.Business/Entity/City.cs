@@ -12,5 +12,6 @@ namespace AppShop.Business.Entity
         public int? ParentId { get; set; }
         public City Parent { get; set; }
         public virtual ICollection<City>   Cities { get; set; }
+        public virtual ICollection<Address> Addresses { get; set; }
     }
 }

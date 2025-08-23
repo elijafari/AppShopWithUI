@@ -1,7 +1,6 @@
 import React from "react";
 import api from "../tools/axiosConfig";
-import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
-import DropdownApp from "../tools/DropdownApp";
+import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css"
 import {
   NotificationContainer,
   NotificationManager,
@@ -90,6 +89,7 @@ export class User extends React.Component {
                 name="userName"
                 className="col-md-4 col-sm-12"
               />
+            {this.state.isEdit?"":
               <TextBox
                 context={this}
                 title="کلمه عبور"
@@ -97,6 +97,7 @@ export class User extends React.Component {
                 type="password"
                 className="col-md-4 col-sm-12"
               />
+            }
               <TextBox
                 context={this}
                 title="شماره همراه"
@@ -114,7 +115,7 @@ export class User extends React.Component {
               <TextBox
                 context={this}
                 title="پاسخ"
-                name="Answer"
+                name="answer"
                 className="col-md-4 col-sm-12"
               />
             </div>

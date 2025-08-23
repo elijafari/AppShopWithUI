@@ -16,7 +16,12 @@ namespace AppShop.Business.Mapping
             builder.Property(p => p.DateDelivery).IsRequired();
             builder.Property(p => p.Statues).IsRequired();
             builder.Property(p => p.DateOrder).IsRequired();
-            builder.Property(p => p.TrackingCode).ValueGeneratedOnAdd().HasDefaultValue(1000);
+            builder.Property(p => p.AddressId).IsRequired();
+            builder.Property(p => p.PayType).IsRequired();
+            builder.Property(p => p.TrackingCode).HasDefaultValueSql("NEXT VALUE FOR shared.TrackingCodeSeq");
+
+            builder.HasMany(p => p.ItemBuys).WithOne(p => p.OrderBuyEntity);
+            builder.HasMany(p => p.OrderBuyStatues).WithOne(p => p.OrderBuyEntity);
 
         }
     }

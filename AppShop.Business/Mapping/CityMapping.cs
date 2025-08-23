@@ -17,6 +17,8 @@ namespace AppShop.Business.Mapping
 
 
             builder.HasOne(c => c.Parent).WithMany(c => c.Cities).HasForeignKey(c => c.ParentId);
+
+            builder.HasMany(p => p.Addresses).WithOne(p => p.CitiEntity);
         }
     }
 }

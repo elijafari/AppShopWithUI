@@ -5,7 +5,7 @@ namespace AppShop.Business.IService
 {
     public interface IOrderBuyService
     {
-        decimal Add(InOrderBuy input);
+        decimal Add(InOrderBuy input,Guid userid);
         bool ChangeShopStatues(int id, ShopStatues shopStatues);
         DataView GetAll(InputRequest inputRequest);
         DataView GetAllUser(InputRequest inputRequest, Guid userId);

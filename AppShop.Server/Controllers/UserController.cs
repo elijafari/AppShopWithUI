@@ -28,6 +28,7 @@ namespace AppShop.Server.Controllers
         [HttpPost]
         public IActionResult AddAdmin() => Response(() => service.AddAdmin());
         [HttpPost]
+        [Authorize]
         public IActionResult GetById(InRecord input) => Response(() => service.GetById(new Guid(input.Id)));
         [HttpPost]
         public IActionResult GetForForget(InUserForget input) => Response(() => service.GetForForget(input));

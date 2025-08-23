@@ -1,27 +1,35 @@
+import api from "../tools/axiosConfig";
 import { Component } from "react";
 import { TextBox } from "../tools/TextBox";
+import { DropdownApp } from "../tools/DropdownApp";
+import { ButtonReturn } from "../tools/ButtonReturn";
+import { ButtonWaith } from "../tools/ButtonWaith";
+import {
+    NotificationContainer,
+    NotificationManager,
+} from "react-notifications";
+import "react-notifications/lib/notifications.css";
 import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import "../../App.css";
-import DropdownApp from "../tools/DropdownApp";
+import { ErrorHanding } from "../Utility";
 export class Cart extends Component {
   constructor(props) {
     super(props);
     this.state = {
       data: [],
-      sumPrice: 0,
       updateKey: 1,
-      user: {},
-      address: {},
-      days: [
-        { title: "شنبه 1403/08/01" },
-        { title: "شنبه 1403/08/02" },
-        { title: "شنبه 1403/08/03" },
-        { title: "شنبه 1403/08/04" },
-        { title: "شنبه 1403/08/05" },
-        { title: "شنبه 1403/08/06" },
-        { title: "شنبه 1403/08/07" },
-      ],
+      updateKeyCity:1,
+      days: [],
+      cityAll: [],
+      province: [],
+      city: [],
+      payTypies: [{
+        title: "پرداخت در محل", value: 1,
+        // title:"آنلاین",value:2
+      }],
+      loading: false
     };
+
     this.header = [
       "ردیف",
       "نام محصول",
@@ -34,13 +42,46 @@ export class Cart extends Component {
   }
   componentDidMount() {
     let data = JSON.parse(localStorage.getItem("selectedItem"));
-    let user = JSON.parse(localStorage.getItem("user"));
-    debugger;
-    this.setState({
-      user: user,
-      address: user.address,
-    });
+    this.getCity();
+    this.getDay();
     this.refreshTable(data);
+  }
+  onChangeProvice(e) {
+    var city = this.state.cityAll.filter(x => x.parentId == e.value);
+    var array = [];
+    city.forEach((element) => {
+      array.push({ title: element.name, value: element.id });
+    });
+    this.setState(
+      {
+        city: array,
+        updateKeyCity: this.state.updateKeyCity + 1,
+      }
+    )
+  }
+  getCity() {
+    api.get("/City/GetAll").then((response) => {
+      var cityAll = response.data.data;
+      var array = [];
+      cityAll.filter(x => x.parentId == null).forEach((element) => {
+        array.push({ title: element.name, value: element.id });
+      });
+      this.setState({
+        cityAll
+        , province: array,
+      });
+    });
+  }
+  getDay() {
+    api.get("/OrderBuy/GetDays/").then((response) => {
+      var array = [];
+      response.data.data.forEach((element) => {
+        array.push({ title: element.title, value: element.key });
+      });
+      this.setState({
+        days: array
+      });
+    });
   }
   add(i) {
     let data = this.state.data;
@@ -54,107 +95,222 @@ export class Cart extends Component {
     this.refreshTable(data);
   }
   refreshTable(data) {
-    let sumPrice = 0;
-    data.forEach((element) => {
-      sumPrice += element.data.price;
-    });
-
     this.setState({
-      sumPrice,
       data: data,
       updateKey: this.state.updateKey + 1,
     });
     localStorage.setItem("selectedItem", JSON.stringify(data));
   }
   onView(e) {
-       window.location.href ="/productView/" + e.id;
+    window.location.href = "/productView/" + e.id;
+  }
+  AddData() {
+debugger
+    if (this.state.data == null) {
+      NotificationManager.error("ایتمی برای ثبت سفارش وجود ندارد", "خطا");
+      return;
+    }
+
+    if (this.state.data.length == 0) {
+      NotificationManager.error("ایتمی برای ثبت سفارش وجود ندارد", "خطا");
+      return;
+    }
+    if (this.state.provinceId == null) {
+      NotificationManager.error("استان انتخاب نشده است", "خطا");
+      return;
+    }
+    if (this.state.cityId == null) {
+      NotificationManager.error("شهر انتخاب نشده است", "خطا");
+      return;
+    }
+
+    if (this.state.postalCode == null) {
+      NotificationManager.error("کدپستی وارد نشده است", "خطا");
+      return;
+    }
+
+    if (this.state.addressStr == null) {
+      NotificationManager.error("آدرس وارد نشده است", "خطا");
+      return;
+    }
+
+    if (this.state.dateDelivery == null) {
+      NotificationManager.error("تاریخ تحویل سفارش انتخاب نشده است", "خطا");
+      return;
+    }
+
+    if (this.state.payType == null) {
+      NotificationManager.error("نوع پرداخت انتخاب نشده است", "خطا");
+      return;
+    }
+
+
+    var data = {
+      items: [],
+      address: {
+        addressStr: this.state.addressStr,
+        postalCode: this.state.postalCode,
+        cityId: this.state.cityId
+      },
+      dateDelivery: this.state.dateDelivery,
+      payType: this.state.payType,
+    };
+
+    this.state.data.map((x, i) =>
+      data.items.push({
+        productId: x.data.productId,
+        price: x.data.price,
+        count: x.count
+      }))
+
+
+
+    this.setState({ loading: true });
+    api.post("/orderBuy/add", data)
+      .then((res) => {
+        this.setState({ loading: false });
+        if (res.status === 200) {
+          NotificationManager.success(res.data.message, "پیام");
+
+        } else
+          ErrorHanding(NotificationManager, res.data.message);
+      })
+      .catch((error) => {
+        ErrorHanding(NotificationManager, error);
+        this.setState({ loading: false });
+      });
   }
   render() {
     return (
       <>
-       <div className="card">
-          <h5 className="card-header">سبد خرید          </h5>
-        <table className="table table-striped">
-          <thead>
-            <tr>
-              {this.header.map((x) => (
-                <th scope="col">{x}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody key={this.state.updateKey}>
-            {this.state.data.map((x, i) => (
-              <>
+        <div className="card mb-1">
+          <h5 className="card-header">سبد خرید</h5>
+          <div className="table-responsive">
+            <table className="table table-striped">
+              <thead>
                 <tr>
-                  <th scope="row">{i + 1}</th>
-                  <td>{x.data.name}</td>
-                  <td>{x.data.price.toLocaleString()}</td>
-                  <td>{x.count}</td>
-                  <td>{(x.count * x.data.price).toLocaleString()}</td>
-                  <td>
-                    <button
-                      type="button"
-                      className="btn btn-success marginApp"
-                      onClick={() => this.add(i)}
-                    >
-                      +
-                    </button>
-                    {}
-                    {x.count > 0 && (
+                  {this.header.map((x,i) => (
+                    <th scope="col" key={i}>{x}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody key={this.state.updateKey}>
+                {this.state.data.map((x, i) => (
+                  <tr key={i}>
+                    <th scope="row">{i + 1}</th>
+                    <td>{x.data.name}</td>
+                    <td>{x.data.price.toLocaleString()}</td>
+                    <td>{x.count}</td>
+                    <td>{(x.count * x.data.price).toLocaleString()}</td>
+                    <td>
                       <button
                         type="button"
-                        className="btn btn-success"
-                        onClick={() => this.remove(i)}
+                        className="btn btn-success btn-sm marginApp"
+                        onClick={() => this.add(i)}
                       >
-                        -
+                        +
                       </button>
-                    )}
-                  </td>
-                  <td>
-                    {" "}
-                    <button type="button" className="btn btn-info"    onClick={() => this.onView(x)}>
-                      اطلاعات بیشتر
-                    </button>
-                  </td>
+                      {x.count > 0 && (
+                        <button
+                          type="button"
+                          className="btn btn-danger btn-sm"
+                          onClick={() => this.remove(i)}
+                        >
+                          -
+                        </button>
+                      )}
+                    </td>
+                    <td>
+                      <button
+                        type="button"
+                        className="btn btn-info btn-sm"
+                        onClick={() => this.onView(x)}
+                      >
+                        اطلاعات بیشتر
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+
+                <tr>
+                  <td colSpan={3}>جمع</td>
+                  <td className="fw-bold text-success">{this.state.data.reduce((acc, x) => acc + x.count, 0)}</td>
+                  <td className="fw-bold text-success">{this.state.data.reduce((acc, x) => acc + (x.count * x.data.price), 0).toLocaleString()}</td>
+                  <td colSpan={2}></td>
                 </tr>
-              </>
-            ))}
-
-            <tr>
-              <td colSpan={4}>جمع</td>
-              <td className="rowSum">{this.state.sumPrice.toLocaleString()}</td>
-              <td colSpan={2}></td>
-            </tr>
-          </tbody>
-        </table>
-        <TextBox
-          context={this}
-          title="آدرس"
-          name="address"
-          colMd="col-md-12"
-          readOnly={true}
-        />
-        <br />
-        <div className="col-md-2">
-          <button type="button" className="btn btn-info">
-            تغییر آدرس
-          </button>
+              </tbody>
+            </table>
+          </div>
         </div>
-        <br />
-        <DropdownApp title="انتخاب روز دریافت سفارش"
+
+        <div className="card mb-1">
+          <h5 className="card-header">ثبت آدرس</h5>
+          <div className="row g-3 p-3">
+            <DropdownApp
+              context={this}
+              name="provinceId"
+              title="استان"
+              className="col-md-4 col-sm-12"
+              data={this.state.province}
+              onChange={(e) => this.onChangeProvice(e)}
+            />
+            <DropdownApp
+              context={this}
+              name="cityId"
+              title="شهر"
+              className="col-md-4 col-sm-12"
+              data={this.state.city}
+              updateKey={this.state.updateKeyCity}
+            />
+            <TextBox
+              context={this}
+              title="کد پستی"
+              name="postalCode"
+              type="number"
+              className="col-md-4 col-sm-12"
+            />
+            <TextBox
+              context={this}
+              title="آدرس"
+              name="addressStr"
+              colMd="col-md-12"
+              readOnly={true}
+            />
+          </div>
+        </div>
+
+        <div className="card mb-1">
+          <h5 className="card-header">انتخاب تاریخ تحویل سفارش</h5>
+          <div className="row g-3 p-3">
+            <DropdownApp
+              title="تاریخ دریافت سفارش"
+              className="col-md-4 col-sm-12"
+              context={this}
+              name="dateDelivery"
+              data={this.state.days}
+            />
+            <DropdownApp
+              title="نوع پرداخت"
+              className="col-md-4 col-sm-12"
+              context={this}
+              name="payType"
+              data={this.state.payTypies}
+            />
+          </div>
+          <div className="d-flex justify-content-start p-3">
+            <ButtonWaith onClick={() => this.AddData()}
+              className="btn btn-success"
+              loading={this.state.loading}
+              title="ثبت سفارش" />
+            <ButtonReturn />
+          </div>
+        </div>
+
         
-        context={this}
-        name="categoryId"
-        data={this.state.days} />
-
-        <br />
-        <div className="col-md-2">
-          <button type="button" className="btn btn-success">
-      ثبت سفارش
-          </button>
-        </div>
-        </div>
+                        <NotificationContainer />
       </>
+
+
     );
   }
 }

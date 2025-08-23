@@ -24,7 +24,14 @@ namespace AppShop.Server.Controllers
             service = _service;
         }
         [HttpPost]
-        public IActionResult Add(InOrderBuy input)=>Response(()=>service.Add(input));
+        public IActionResult Add(InOrderBuy input)
+        {
+            return Response(()=>
+            {
+                var id = User.FindFirstValue("id");
+               return service.Add(input, new Guid(id));
+            });
+        }
         [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult ConfirmOrder(InId input) => Response(() => service.ChangeShopStatues(input.Id, ShopStatues.Confirm));
@@ -43,7 +50,7 @@ namespace AppShop.Server.Controllers
         public IActionResult GetAllUser(InputRequest inputRequest) => Response(() => service.GetAllUser(inputRequest,new Guid()));
         [HttpPost]
         public IActionResult GetById(int id)=>Response(()=>service.GetById(id));
-        [HttpPost]
+        [HttpGet]        
         public IActionResult GetDays() => Response(() => service.GetDays());
     }
 }

@@ -17,5 +17,7 @@ namespace AppShop.Business.Entity
         public string Password { get;  set; }
         public int Question { get;  set; }
         public string Answer { get;  set; }
+
+        public virtual ICollection<Address> Addresses { get; set; }
     }
 }

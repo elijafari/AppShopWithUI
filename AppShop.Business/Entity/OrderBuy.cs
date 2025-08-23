@@ -20,9 +20,16 @@ namespace AppShop.Business.Entity
         public DateTime DateDelivery { get; set; }
         public ShopStatues Statues { get; set; }
         public decimal TrackingCode { get; set; }
-        public virtual User UserEntity { get; set; }
+        public int PayType { get; set; }
+        public int AddressId { get; set; }
+
+
+
+
+
         public virtual List<ItemBuy> ItemBuys { get; set; }
-        public virtual List<OrderBuyStatues> OrderBuyStatues { get; set; }
+        public virtual ICollection<OrderBuyStatues> OrderBuyStatues { get; set; }
+        public virtual Address AddressEntity { get; set; }
         [NotMapped]
         public string StrStatues { get { return Statues.GetEnumDescription(); } }
 

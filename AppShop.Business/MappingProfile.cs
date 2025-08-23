@@ -10,7 +10,8 @@ namespace AppShop.Business
         {
             // Add as many of these lines as you need to map your objects
             CreateMap<InProduct, Product>();
-            CreateMap<InOrderBuy, OrderBuy>();
+            CreateMap<InAddress, Address>();
+            CreateMap<InItemBuy, ItemBuy>();
         }
     }
 }

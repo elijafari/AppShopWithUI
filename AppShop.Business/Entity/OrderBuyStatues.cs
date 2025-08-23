@@ -13,7 +13,7 @@ namespace AppShop.Business.Entity
         public int IdOrder { get; set; }
         public DateTime DateStatues { get; set; }
         public ShopStatues Statues { get; set; }
-        public virtual OrderBuy  OrderBuy {get; set; }
+        public virtual OrderBuy  OrderBuyEntity {get; set; }
         [NotMapped]
         public string StrStatues { get { return Statues.GetEnumDescription(); } }
         [NotMapped]

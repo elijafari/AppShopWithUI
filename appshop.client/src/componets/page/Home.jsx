@@ -5,7 +5,7 @@ import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import "../../App.css";
 import { Loading } from "../tools/Loading";
 import { TextBox } from "../tools/TextBox";
-import DropdownApp from "../tools/DropdownApp";
+import { DropdownApp } from "../tools/DropdownApp";
 import api from "../tools/axiosConfig";
 
 export class Home extends Component {
@@ -19,9 +19,9 @@ export class Home extends Component {
       pageCount: 0,
       currentPage: 1,
       fromPrice: "",
-      toPrice:"",
-      productName:"",
-      categoryId:0
+      toPrice: "",
+      productName: "",
+      categoryId: 0
     };
   }
 
@@ -34,9 +34,9 @@ export class Home extends Component {
       loading: false,
     });
     var filter = {
-      fromPrice:this.getNumber(this.state.fromPrice),
-      toPrice:this.getNumber(this.state.toPrice),
-      productName: this.state.productName==undefined ?"":this.state.productName,
+      fromPrice: this.getNumber(this.state.fromPrice),
+      toPrice: this.getNumber(this.state.toPrice),
+      productName: this.state.productName == undefined ? "" : this.state.productName,
       categoryId: this.state.categoryId,
     };
     api
@@ -73,30 +73,29 @@ export class Home extends Component {
     this.setState({
       selectedData: array,
     });
-   localStorage.setItem("selectedItem", JSON.stringify(array));
-   }
-  getNumber(text)
-  {
-    if(text==undefined)
+    localStorage.setItem("selectedItem", JSON.stringify(array));
+  }
+  getNumber(text) {
+    if (text == undefined)
       return 0;
-    if(text==null)
+    if (text == null)
       return 0;
-    if(text=="")
+    if (text == "")
       return 0;
-    
+
     return parseInt(text.replaceAll(",", ""));
   }
   render() {
     return (
       <>
-   
-        
-                <div className="card">
+
+
+        <div className="card">
           <h5 className="card-header">
-           فیلتر ها
+            فیلتر ها
           </h5>
           <div className="card-body">
-    
+
             <div className="row">
               <TextBox
                 context={this}
@@ -124,37 +123,37 @@ export class Home extends Component {
                 title="تا قیمت"
                 name="toPrice"
                 className="col-md-3 col-sm-12"
-                isLeft={true}                
+                isLeft={true}
                 separator={true}
               />
             </div>
-            <button onClick={() =>this.loadDate(this.state.currentPage)} className="btn btn-success">
+            <button onClick={() => this.loadDate(this.state.currentPage)} className="btn btn-success">
               جستجو
             </button>
-            </div>
-            </div> 
-                {!this.state.loading ? (
+          </div>
+        </div>
+        {!this.state.loading ? (
           <Loading />
-        ) : (  <>
-            <div className="row" key={this.state.updateKey}>
-              {this.state.data.map((x) => (
-                <ProductItem
-                  data={x}
-                  key={x.id}
-                  shopItem={(e1, e2) => this.shopItem(e1, e2)}
-                />
-              ))}
-            </div>
-            <br />
+        ) : (<>
+          <div className="row" key={this.state.updateKey}>
+            {this.state.data.map((x) => (
+              <ProductItem
+                data={x}
+                key={x.id}
+                shopItem={(e1, e2) => this.shopItem(e1, e2)}
+              />
+            ))}
+          </div>
+          <br />
 
-            <Pageing
-              updateKey={this.state.updateKey}
-              currentPage={this.state.currentPage}
-              pageCount={this.state.pageCount}
-              totalCount={this.state.totalCount}
-              onChangePage={(e) => this.loadDate(e)}
-            />
-          </>
+          <Pageing
+            updateKey={this.state.updateKey}
+            currentPage={this.state.currentPage}
+            pageCount={this.state.pageCount}
+            totalCount={this.state.totalCount}
+            onChangePage={(e) => this.loadDate(e)}
+          />
+        </>
         )}
       </>
     );
