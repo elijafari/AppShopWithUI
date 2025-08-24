@@ -13,6 +13,7 @@ namespace AppShop.Business.Entity
         public int Count { get; set; }
         public int Price { get; set; }
         public virtual OrderBuy OrderBuyEntity { get; set; }
+        public virtual Product ProductEntity { get; set; }
 
     }
 }

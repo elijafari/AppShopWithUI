@@ -12,7 +12,7 @@ import { DropdownApp } from "../tools/DropdownApp";
 import { Checkbox } from "../tools/CheckBox";
 import { ErrorHanding } from "../Utility";
 import { ButtonWaith } from "../tools/ButtonWaith";
-import { ButtonReturn} from "../tools/ButtonReturn";
+import { ButtonReturn } from "../tools/ButtonReturn";
 
 export class Product extends Component {
     constructor(props) {
@@ -53,11 +53,28 @@ export class Product extends Component {
             });
         }
     }
+    validInput(input, title) {
+
+        if (input == ""||input == undefined || input == null) {
+            NotificationManager.error(title + "وارد نشده است ", "خطا");
+            return false;
+        }
+        return true;
+    }
+
     AddData() {
         if (this.isEdit == false && this.state.fileData == undefined) {
             NotificationManager.error("فایل انتخاب نشده است", "خطا");
             return;
         }
+        if (!this.validInput(this.state.code, "کد"))
+            return;
+        if (!this.validInput(this.state.name, "نام"))
+            return;
+        if (!this.validInput(this.state.price, "قیمت"))
+            return;
+        if (!this.validInput(this.state.description, "توضیحات"))
+            return;
 
         const formData = new FormData();
         if (this.state.fileData != undefined)
@@ -94,7 +111,7 @@ export class Product extends Component {
             code: null,
             name: null,
             price: null,
-            discription: null,
+            description: null,
             file: [],
             updateKey: this.state.updateKey + 1,
         });
@@ -173,7 +190,7 @@ export class Product extends Component {
                         <ButtonWaith onClick={() => this.AddData()}
                             loading={this.state.loading}
                             title="ثبت" />
-                        <ButtonReturn/>
+                        <ButtonReturn />
                     </div>
                 </div >
 

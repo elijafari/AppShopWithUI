@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppShop.Business.Migrations
 {
     [DbContext(typeof(AppShopDBContext))]
-    [Migration("20250824081158_shop-002")]
-    partial class shop002
+    [Migration("20250824141655_shop-001")]
+    partial class shop001
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -137,6 +137,8 @@ namespace AppShop.Business.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("OrderId");
+
+                    b.HasIndex("ProductId");
 
                     b.ToTable("OrderBuyItem", (string)null);
                 });
@@ -349,7 +351,15 @@ namespace AppShop.Business.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("AppShop.Business.Entity.Product", "ProductEntity")
+                        .WithMany("ItemBuys")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("OrderBuyEntity");
+
+                    b.Navigation("ProductEntity");
                 });
 
             modelBuilder.Entity("AppShop.Business.Entity.OrderBuy", b =>
@@ -415,6 +425,11 @@ namespace AppShop.Business.Migrations
                     b.Navigation("ItemBuys");
 
                     b.Navigation("OrderBuyStatues");
+                });
+
+            modelBuilder.Entity("AppShop.Business.Entity.Product", b =>
+                {
+                    b.Navigation("ItemBuys");
                 });
 
             modelBuilder.Entity("AppShop.Business.Entity.User", b =>

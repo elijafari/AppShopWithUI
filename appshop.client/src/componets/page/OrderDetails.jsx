@@ -1,5 +1,6 @@
 import React from "react";
 import api from "../tools/axiosConfig";
+import WithRouter from "../tools/WithRouter";
 import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css"
 import {
   NotificationContainer,
@@ -8,7 +9,8 @@ import {
 import "react-notifications/lib/notifications.css";
 import "../../App.css";
 import { ErrorHanding } from "../Utility";
-export default class OrderDetails extends Component {
+
+ class OrderDetails extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -20,13 +22,14 @@ export default class OrderDetails extends Component {
   componentDidMount() {
     this.getOrder();
   }
-  getOrders() {
-        const id = this.props.match?.params?.trackingCode || "";
+  getOrder() {
+    debugger
+        const id = this.props.params?.id || "";
     api.post("/orderBuy/GetById/",{id:id})
       .then(res => {
         this.setState({ loading: false });
         if (res.status === 200) {
-         this.setState({ order: response.data, loading: false });
+         this.setState({ order: res.data.data, loading: false });
         } else {
           ErrorHanding(NotificationManager, res.data.message);
         }
@@ -53,6 +56,8 @@ export default class OrderDetails extends Component {
 
         <div className="mb-3 text-center">
           <p>شماره پیگیری: <span className="fw-bold">{order.trackingCode}</span></p>
+          <p>نام و نام خانوادگی: {order.fullName}</p>
+          <p>شماره همراه {order.phone}</p>
           <p>تاریخ سفارش: {order.solorDateOrder}</p>
           <p>تاریخ تحویل: {order.solorDateDelivery}</p>
           <p>آدرس کامل: {order.strAddress}</p>
@@ -101,3 +106,4 @@ export default class OrderDetails extends Component {
     );
   }
 }
+export default WithRouter(OrderDetails);

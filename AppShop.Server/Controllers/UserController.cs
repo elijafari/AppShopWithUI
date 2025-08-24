@@ -5,6 +5,7 @@ using AppShop.Business.IService;
 using AppShop.Server.Helper;
 using AppShop.Business.DataModel;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace AppShop.Server.Controllers
 {

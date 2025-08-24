@@ -23,7 +23,7 @@ namespace AppShop.Business.Service
             {
                 new Claim(nameof(entity.Id).ToLower(), entity.Id.ToString()),
                 new Claim("name", entity.FullName),
-                new Claim(ClaimTypes.Role, entity.IsAdmin?"Admin":"User")
+                new Claim("role", entity.IsAdmin?"Admin":"User")
             };
 
             // 2. کلید امضا

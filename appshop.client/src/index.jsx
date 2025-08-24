@@ -36,7 +36,7 @@ root.render(
 
         {/* کپی‌رایت */}
         <div className="col-md-4 text-center text-md-end">
-          <h5 className="fw-bold mb-3">EjElectro</h5>
+          <h5 className="fw-bold mb-3">ElectroEj</h5>
           <p className="text-white-50 small mb-0">
             &copy; 2025 فروشگاه اینترنتی لوازم الکتریکی. تمام حقوق محفوظ است.
           </p>

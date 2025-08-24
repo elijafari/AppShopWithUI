@@ -20,6 +20,7 @@ namespace AppShop.Business.Mapping
             
 
             builder.HasOne(c => c.OrderBuyEntity).WithMany(c => c.ItemBuys).HasForeignKey(c => c.OrderId);
+            builder.HasOne(c => c.ProductEntity).WithMany(c => c.ItemBuys).HasForeignKey(c => c.ProductId);
         }
     }
 }

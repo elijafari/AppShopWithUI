@@ -166,7 +166,7 @@ export class Cart extends Component {
 
     this.state.data.map((x, i) =>
       data.items.push({
-        productId: x.data.productId,
+        productId: x.data.id,
         price: x.data.price,
         count: x.count
       }))
@@ -178,8 +178,8 @@ export class Cart extends Component {
       .then((res) => {
         this.setState({ loading: false });
         if (res.status === 200) {
-          this.setState({ trackingCode: res.data.data.trackingCode, step: 2 });
-          localStorage.clear("selectedItem");
+          this.setState({ trackingCode: res.data.data, step: 2 });
+          localStorage.removeItem("selectedItem");
 
         } else
           ErrorHanding(NotificationManager, res.data.message);

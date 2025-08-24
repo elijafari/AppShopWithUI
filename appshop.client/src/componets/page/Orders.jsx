@@ -8,7 +8,8 @@ import {
 import "react-notifications/lib/notifications.css";
 import "../../App.css";
 import { ErrorHanding } from "../Utility";
-export  class Orders extends React.Component {
+import { parseJwt } from "../Utility";
+export class Orders extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -19,18 +20,22 @@ export  class Orders extends React.Component {
   }
 
   componentDidMount() {
-   this.getOrders();
+    this.getOrders();
   }
 
   getOrders() {
+    let token = localStorage.getItem("token");
+    let user = parseJwt(token);
+    debugger
     api.post("/orderBuy/GetAll")
       .then(res => {
         this.setState({ loading: false });
         if (res.status === 200) {
+
           this.setState({
             orders: res.data.data,
             loading: false,
-            isAdmin: localStorage.getItem("role") === "Admin" // نقش از پروفایل
+            isAdmin: user.role == "Admin" ? true : false
           });
         } else {
           ErrorHanding(NotificationManager, res.data.message);
@@ -63,18 +68,21 @@ export  class Orders extends React.Component {
               <thead className="table-dark">
                 <tr>
                   {this.state.isAdmin && <th>کاربر</th>}
+                  {this.state.isAdmin && <th>شماره همراه</th>}
                   <th>کد پیگیری</th>
                   <th>تاریخ سفارش</th>
                   <th>تاریخ تحویل</th>
                   <th>مبلغ (تومان)</th>
                   <th>وضعیت</th>
                   <th>جزئیات</th>
+                  <th>عملیات</th>
                 </tr>
               </thead>
               <tbody>
                 {this.state.orders.map((order, index) => (
                   <tr key={index}>
-                    {this.state.isAdmin && <td>{order.userName}</td>}
+                    {this.state.isAdmin && <td>{order.fullName}</td>}
+                    {this.state.isAdmin && <td>{order.phone}</td>}
                     <td>{order.trackingCode}</td>
                     <td>{order.solorDateOrder}</td>
                     <td>{order.solorDateDelivery}</td>
@@ -83,10 +91,27 @@ export  class Orders extends React.Component {
                     <td>
                       <button
                         className="btn btn-sm btn-info"
-                        onClick={() => alert("نمایش جزئیات سفارش " + order.trackingCode)}
+                        onClick={() => window.location.href = `/OrderDetails/${order.id}`}
                       >
                         مشاهده
                       </button>
+                    </td>
+                    <td>
+                      {this.state.isAdmin ? (
+                        <button
+                          className="btn btn-sm btn-warning"
+                          onClick={() => window.location.href = `/OrderDetails/${order.id}`}
+                        >                          تغییر وضعیت
+                        </button>
+                      ) : (
+                        <button
+                          className="btn btn-sm btn-danger"
+                          onClick={() => window.location.href = `/OrderDetails/${order.id}`}
+                        >
+                          لغو سفارش
+                        </button>
+
+                      )}
                     </td>
                   </tr>
                 ))}

@@ -117,9 +117,11 @@ namespace AppShop.Business.Service
 
             return query.ProjectTo<OrderBuyVm>(mapper.ConfigurationProvider).ToList(); 
         }
-        public OrderBuy GetById(Guid id)
+        public OrderBuyVm GetById(Guid id)
         {
-            return db.OrderBuys.Where(x => x.Id == id).SingleOrDefault();
+            var query= db.OrderBuys.Where(x => x.Id == id);
+            return query.ProjectTo<OrderBuyVm>(mapper.ConfigurationProvider).SingleOrDefault();
+
         }
         public List<KeyValue> GetDays()
         {

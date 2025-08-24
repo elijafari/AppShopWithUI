@@ -135,6 +135,8 @@ namespace AppShop.Business.Migrations
 
                     b.HasIndex("OrderId");
 
+                    b.HasIndex("ProductId");
+
                     b.ToTable("OrderBuyItem", (string)null);
                 });
 
@@ -346,7 +348,15 @@ namespace AppShop.Business.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("AppShop.Business.Entity.Product", "ProductEntity")
+                        .WithMany("ItemBuys")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("OrderBuyEntity");
+
+                    b.Navigation("ProductEntity");
                 });
 
             modelBuilder.Entity("AppShop.Business.Entity.OrderBuy", b =>
@@ -412,6 +422,11 @@ namespace AppShop.Business.Migrations
                     b.Navigation("ItemBuys");
 
                     b.Navigation("OrderBuyStatues");
+                });
+
+            modelBuilder.Entity("AppShop.Business.Entity.Product", b =>
+                {
+                    b.Navigation("ItemBuys");
                 });
 
             modelBuilder.Entity("AppShop.Business.Entity.User", b =>

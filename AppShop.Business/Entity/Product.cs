@@ -16,7 +16,7 @@ namespace AppShop.Business.Entity
         public byte[]? image { get; set; }
         public int Price { get; set; }
         public virtual Category CategoryEntity { get; set; }
-
+        public virtual List<ItemBuy> ItemBuys { get; set; } = new List<ItemBuy>();
 
     }
 }

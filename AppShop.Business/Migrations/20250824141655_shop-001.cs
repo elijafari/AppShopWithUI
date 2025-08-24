@@ -153,7 +153,7 @@ namespace AppShop.Business.Migrations
                     DateOrder = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DateDelivery = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Statues = table.Column<int>(type: "int", nullable: false),
-                    TrackingCode = table.Column<decimal>(type: "decimal(18,2)", nullable: false, defaultValueSql: "NEXT VALUE FOR shared.TrackingCodeSeq"),
+                    TrackingCode = table.Column<long>(type: "bigint", nullable: false, defaultValueSql: "NEXT VALUE FOR shared.TrackingCodeSeq"),
                     PayType = table.Column<int>(type: "int", nullable: false),
                     AddressId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -191,6 +191,12 @@ namespace AppShop.Business.Migrations
                         name: "FK_OrderBuyItem_OrderBuy_OrderId",
                         column: x => x.OrderId,
                         principalTable: "OrderBuy",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_OrderBuyItem_Product_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Product",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -245,6 +251,11 @@ namespace AppShop.Business.Migrations
                 name: "IX_OrderBuyItem_OrderId",
                 table: "OrderBuyItem",
                 column: "OrderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderBuyItem_ProductId",
+                table: "OrderBuyItem",
+                column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrderBuyStatues_OrderId",

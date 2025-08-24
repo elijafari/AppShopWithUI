@@ -8,7 +8,7 @@ namespace AppShop.Business.IService
         decimal Add(InOrderBuy input,Guid userid);
         bool ChangeShopStatues(Guid id, ShopStatues shopStatues);
         List<OrderBuyVm> GetAll(Guid userId, bool isAdmin);
-        OrderBuy GetById(Guid id);
         List<KeyValue> GetDays();
+        OrderBuyVm GetById(Guid id);
     }
 }

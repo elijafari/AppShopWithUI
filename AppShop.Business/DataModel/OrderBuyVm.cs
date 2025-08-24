@@ -16,9 +16,12 @@ namespace AppShop.Business.DataModel
         public int TotalPrice { get; set; }
         public long TrackingCode { get; set; }
         public string FullName { get; set; }
+        public string AddressStr { get; set; }
         public string SolorDateOrder => Utility.GetPersion(this.DateOrder);
         public string SolorDateDelivery => Utility.GetPersion(this.DateDelivery);
         public string StrStatues => this.Statues.GetEnumDescription();
+        public List<ItemBuyVM> Items { get; set; } = new List<ItemBuyVM>();
+        public string Phone { get;  set; }
     }
 
 }

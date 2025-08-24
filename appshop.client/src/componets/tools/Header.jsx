@@ -13,7 +13,7 @@ export default class Header extends React.Component {
    
           {/* عنوان فروشگاه */}
           <div className="text-center flex-grow-1">
-            <h4 className="fw-bold mb-1">فروشگاه اینترنتی لوازم الکتریکی EjElectro</h4>
+            <h4 className="fw-bold mb-1">فروشگاه اینترنتی لوازم الکتریکی الکترو ایجی</h4>
             <p className="mb-0 fs-6">خرید آسان و سریع انواع تجهیزات و قطعات برقی</p>
           </div>
         </div>
