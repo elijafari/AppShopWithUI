@@ -16,6 +16,6 @@ namespace AppShop.Business.Entity
 
         public virtual  User UserEntity { get; set; }
         public virtual City CitiEntity { get; set; }
-        public virtual ICollection<OrderBuy> OrderBuys { get; set; }
+        public virtual ICollection<OrderBuy> OrderBuys { get; set; } = new List<OrderBuy>();
     }
 }

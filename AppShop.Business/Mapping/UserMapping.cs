@@ -23,7 +23,8 @@ namespace AppShop.Business.Mapping
             builder.Property(p => p.IsAdmin).HasDefaultValue(false);
             builder.Property(p => p.Phone).HasColumnType("nvarchar(50)");
 
-            builder.HasMany(p => p.Addresses).WithOne(p => p.UserEntity);
+      
+
         
         }
     }

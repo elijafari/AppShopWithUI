@@ -11,7 +11,7 @@ namespace AppShop.Business.Mapping
           
             builder.ToTable("OrderBuy");
             builder.HasKey(c => c.Id);
-            builder.Property(p => p.Id).UseIdentityColumn();
+            builder.Property(p => p.Id);
             builder.Property(p => p.UserId).IsRequired();
             builder.Property(p => p.DateDelivery).IsRequired();
             builder.Property(p => p.Statues).IsRequired();
@@ -19,9 +19,10 @@ namespace AppShop.Business.Mapping
             builder.Property(p => p.AddressId).IsRequired();
             builder.Property(p => p.PayType).IsRequired();
             builder.Property(p => p.TrackingCode).HasDefaultValueSql("NEXT VALUE FOR shared.TrackingCodeSeq");
+        
+            builder.HasOne(c => c.UserEntity).WithMany(c => c.OrderBuys).HasForeignKey(c => c.UserId).OnDelete(DeleteBehavior.NoAction); ;
+            builder.HasOne(c => c.AddressEntity).WithMany(c => c.OrderBuys).HasForeignKey(c => c.AddressId);
 
-            builder.HasMany(p => p.ItemBuys).WithOne(p => p.OrderBuyEntity);
-            builder.HasMany(p => p.OrderBuyStatues).WithOne(p => p.OrderBuyEntity);
 
         }
     }

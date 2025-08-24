@@ -20,6 +20,8 @@ namespace AppShop.Business.Mapping
             builder.Property(p => p.image).IsRequired(false);
             builder.Property(p => p.Description).HasColumnType("nvarchar(1000)");
 
+            builder.HasOne(c => c.CategoryEntity).WithMany(c => c.Products).HasForeignKey(c => c.CategoryId);
+
         }
     }
 }

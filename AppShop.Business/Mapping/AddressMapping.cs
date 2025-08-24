@@ -19,7 +19,9 @@ namespace AppShop.Business.Mapping
             builder.Property(p => p.IsLast).HasDefaultValue(true);
 
 
-            builder.HasMany(p => p.OrderBuys).WithOne(p => p.AddressEntity);
+
+            builder.HasOne(c => c.UserEntity).WithMany(c => c.Addresses).HasForeignKey(c => c.UserId);
+            builder.HasOne(c => c.CitiEntity).WithMany(c => c.Addresses).HasForeignKey(c => c.CityId);
         }
     }
 }

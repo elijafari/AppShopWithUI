@@ -18,6 +18,7 @@ namespace AppShop.Business.Entity
         public int Question { get;  set; }
         public string Answer { get;  set; }
 
-        public virtual ICollection<Address> Addresses { get; set; }
+        public virtual ICollection<Address> Addresses { get; set; } = new List<Address>();
+        public virtual ICollection<OrderBuy> OrderBuys { get; set; } = new List<OrderBuy>();
     }
 }

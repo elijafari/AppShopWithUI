@@ -17,6 +17,9 @@ namespace AppShop.Business.Mapping
             builder.Property(p => p.Count).IsRequired();
             builder.Property(p => p.Price).IsRequired();
 
+            
+
+            builder.HasOne(c => c.OrderBuyEntity).WithMany(c => c.ItemBuys).HasForeignKey(c => c.OrderId);
         }
     }
 }

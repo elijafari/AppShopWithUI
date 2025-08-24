@@ -12,9 +12,11 @@ namespace AppShop.Business.Mapping
             builder.ToTable("OrderBuyStatues");
             builder.HasKey(c => c.Id);
             builder.Property(p => p.Id).UseIdentityColumn();
-            builder.Property(p => p.IdOrder).IsRequired();
+            builder.Property(p => p.OrderId).IsRequired();
             builder.Property(p => p.DateStatues).IsRequired();
             builder.Property(p => p.Statues).IsRequired();
+
+            builder.HasOne(c => c.OrderBuyEntity).WithMany(c => c.OrderBuyStatues).HasForeignKey(c => c.OrderId);
 
         }
     }

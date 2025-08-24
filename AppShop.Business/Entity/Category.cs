@@ -12,6 +12,6 @@ namespace AppShop.Business.Entity
         public int Code { get; set; }
         public string Name { get; set; }  
         public bool IsActive { get; set; }
-        public virtual ICollection<Product> Products { get; set; }
+        public virtual ICollection<Product> Products { get; set; } = new List<Product>();
     }
 }

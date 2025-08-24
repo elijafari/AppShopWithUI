@@ -12,6 +12,9 @@ namespace AppShop.Business
             CreateMap<InProduct, Product>();
             CreateMap<InAddress, Address>();
             CreateMap<InItemBuy, ItemBuy>();
-        }
+            CreateMap<OrderBuy, OrderBuyVm>()
+            .ForMember(dest => dest.TotalPrice, opt => opt.MapFrom(src => src.ItemBuys.Sum(x => x.Count * x.Price)))
+            .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.UserEntity.FullName));
+                }
     }
 }

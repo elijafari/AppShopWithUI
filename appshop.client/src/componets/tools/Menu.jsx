@@ -11,6 +11,7 @@ import {
 } from "react-notifications";
 import "react-notifications/lib/notifications.css";
 import { parseJwt } from "../Utility";
+import Watch from "./watch";
 
 
 export class Menu extends Component {
@@ -51,13 +52,18 @@ export class Menu extends Component {
   render() {
     return (
       <>
-        <div className="userInfo">
-          {this.state.user != null && (
-            <p>
-              کاربر گرامی :{" "}
-              {this.state.user.name}
-            </p>)}
-        </div>
+     <div className="row d-flex justify-content-between align-items-center">
+<Watch />
+
+  {/* سمت چپ: نام کاربر */}
+  <div className="col-auto small text-black-200 mt-2">
+    {this.state.user != null && (
+      <p className="mb-0">
+        کاربر گرامی : {this.state.user.name}
+      </p>
+    )}
+  </div>
+</div>
         <nav className="navbar navbar-expand-lg bg-success navbar-dark">
           <button
             className="navbar-toggler"
@@ -89,7 +95,7 @@ export class Menu extends Component {
                 </a>
               </li>
               <li className="nav-item active">
-                <a className="nav-link" href="\invoce">
+                <a className="nav-link" href="\orders">
                   لیست سفارشات<span className="sr-only"></span>
                 </a>
               </li>

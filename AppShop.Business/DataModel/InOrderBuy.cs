@@ -29,6 +29,6 @@ namespace AppShop.Business.DataModel
     }
     public class InId
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
     }
 }

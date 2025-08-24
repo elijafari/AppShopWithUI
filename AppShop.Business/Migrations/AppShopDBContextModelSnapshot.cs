@@ -22,6 +22,9 @@ namespace AppShop.Business.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.HasSequence<int>("TrackingCodeSeq", "shared")
+                .StartsAt(1001L);
+
             modelBuilder.Entity("AppShop.Business.Entity.Address", b =>
                 {
                     b.Property<int>("Id")
@@ -38,7 +41,9 @@ namespace AppShop.Business.Migrations
                         .HasColumnType("int");
 
                     b.Property<bool>("IsLast")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
 
                     b.Property<string>("PostalCode")
                         .IsRequired()
@@ -53,7 +58,7 @@ namespace AppShop.Business.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Address");
+                    b.ToTable("Address", (string)null);
                 });
 
             modelBuilder.Entity("AppShop.Business.Entity.Category", b =>
@@ -117,11 +122,8 @@ namespace AppShop.Business.Migrations
                     b.Property<int>("Count")
                         .HasColumnType("int");
 
-                    b.Property<int>("OrderBuyEntityId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Price")
                         .HasColumnType("int");
@@ -131,7 +133,7 @@ namespace AppShop.Business.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OrderBuyEntityId");
+                    b.HasIndex("OrderId");
 
                     b.ToTable("OrderBuyItem", (string)null);
                 });
@@ -161,11 +163,9 @@ namespace AppShop.Business.Migrations
 
             modelBuilder.Entity("AppShop.Business.Entity.OrderBuy", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("AddressId")
                         .HasColumnType("int");
@@ -182,10 +182,10 @@ namespace AppShop.Business.Migrations
                     b.Property<int>("Statues")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("TrackingCode")
+                    b.Property<long>("TrackingCode")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("decimal(18,2)")
-                        .HasDefaultValue(1000m);
+                        .HasColumnType("bigint")
+                        .HasDefaultValueSql("NEXT VALUE FOR shared.TrackingCodeSeq");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -193,6 +193,8 @@ namespace AppShop.Business.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AddressId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("OrderBuy", (string)null);
                 });
@@ -208,18 +210,15 @@ namespace AppShop.Business.Migrations
                     b.Property<DateTime>("DateStatues")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("IdOrder")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OrderBuyEntityId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Statues")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OrderBuyEntityId");
+                    b.HasIndex("OrderId");
 
                     b.ToTable("OrderBuyStatues", (string)null);
                 });
@@ -343,7 +342,7 @@ namespace AppShop.Business.Migrations
                 {
                     b.HasOne("AppShop.Business.Entity.OrderBuy", "OrderBuyEntity")
                         .WithMany("ItemBuys")
-                        .HasForeignKey("OrderBuyEntityId")
+                        .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -358,14 +357,22 @@ namespace AppShop.Business.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("AppShop.Business.Entity.User", "UserEntity")
+                        .WithMany("OrderBuys")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.Navigation("AddressEntity");
+
+                    b.Navigation("UserEntity");
                 });
 
             modelBuilder.Entity("AppShop.Business.Entity.OrderBuyStatues", b =>
                 {
                     b.HasOne("AppShop.Business.Entity.OrderBuy", "OrderBuyEntity")
                         .WithMany("OrderBuyStatues")
-                        .HasForeignKey("OrderBuyEntityId")
+                        .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -410,6 +417,8 @@ namespace AppShop.Business.Migrations
             modelBuilder.Entity("AppShop.Business.Entity.User", b =>
                 {
                     b.Navigation("Addresses");
+
+                    b.Navigation("OrderBuys");
                 });
 #pragma warning restore 612, 618
         }

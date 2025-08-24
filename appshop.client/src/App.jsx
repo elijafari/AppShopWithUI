@@ -11,6 +11,7 @@ import { ProductList } from './componets/page/ProductList';
 import { ProductView } from './componets/page/ProductView';
 import { NoAccess } from './componets/page/NoAccess';
 import { ForgtoPassword } from './componets/page/ForgtoPassword';
+import { Orders } from './componets/page/Orders';
 import AboutUs from './componets/page/AboutUs';
 import ContactUs from './componets/page/ContactUs';
 
@@ -41,6 +42,7 @@ export default class App extends Component {
               <Route path="/aboutUs" element={<AboutUs />} />
               <Route path="/contactUs" element={<ContactUs />} />
               <Route path="/forgtoPassword" element={<ForgtoPassword />}/>
+              <Route path="/orders" element={<Orders />}/>
             </Route>
           </Routes>
 

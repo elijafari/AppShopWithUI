@@ -32,7 +32,7 @@ namespace AppShop.Business.Mapping
             modelBuilder.ApplyConfiguration(new AddressMapping());
 
             modelBuilder.HasSequence<int>("TrackingCodeSeq", schema: "shared")
-           .StartsAt(1000)  // شروع از 1000
+           .StartsAt(1001)  // شروع از 1000
            .IncrementsBy(1); // افزایش 1 واحدی
         }
     }

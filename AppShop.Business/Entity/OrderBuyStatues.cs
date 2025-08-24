@@ -1,4 +1,5 @@
-﻿using AppShop.Business.Service;
+﻿using AppShop.Business.DataModel;
+using AppShop.Business.Service;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -10,13 +11,9 @@ namespace AppShop.Business.Entity
 {
     public class OrderBuyStatues:BaseEntity
     {
-        public int IdOrder { get; set; }
+        public  Guid OrderId { get; set; }
         public DateTime DateStatues { get; set; }
         public ShopStatues Statues { get; set; }
         public virtual OrderBuy  OrderBuyEntity {get; set; }
-        [NotMapped]
-        public string StrStatues { get { return Statues.GetEnumDescription(); } }
-        [NotMapped]
-        public string PersionDate { get { return Utility.GetPersion(DateStatues); } }
     }
 }

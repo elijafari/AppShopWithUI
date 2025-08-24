@@ -18,7 +18,8 @@ namespace AppShop.Business.Mapping
             builder.Property(p => p.IsActive).HasDefaultValue(true);
 
 
-            builder.HasMany(p => p.Products).WithOne(p => p.CategoryEntity);
+          
+
         }
     }
 }

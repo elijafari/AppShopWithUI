@@ -2,51 +2,48 @@
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
+import Header from './componets/tools/Header';
 //import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
+<div dir="rtl" className="pageMain d-flex flex-column min-vh-100 bg-light">
+  {/* هدر */}
+ <Header />
 
-    // <React.StrictMode>
-    <>
-        <div dir="rtl" className='pageMain pt-4 pb-3' style={{ backgroundColor: "#cae7ca" }}>
-            <a className="navbar-brand fw-bold" href="#">
-                <br />
-                <h3>فروشگاه اینترنتی لوازم الکتریکی EjElectro</h3>
-                <br />
-                <h5> خرید آسان و سریع انواع تجهیزات و قطعات برقی</h5>
-            </a>
-            <App />
-            <footer className="bg-dark text-white pt-4 pb-3">
-                <div className="container">
-                    <div className="row">
-                        {/* لینک‌ها زیر هم */}
-                        <div className="col-md-6 mb-3 mb-md-0">
-                            <ul className="nav flex-column">
-                                <li className="nav-item mb-1">
-                                    <a className="nav-link text-white px-0" href="/contactUs">تماس با ما</a>
-                                </li>
-                                <li className="nav-item">
-                                    <a className="nav-link text-white px-0" href="/aboutUs">درباره ما</a>
-                                </li>
-                                <li className="nav-item">
-                                    {/* کپی‌رایت */}
-                                    <div className="col-md-6 text-md-end text-center text-white">
-                                        &copy; 2025 فروشگاه شما. تمام حقوق محفوظ است.
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </footer>
+  {/* محتوای اصلی */}
+  <main className="flex-grow-1">
+    <App />
+  </main>
 
+  {/* فوتر */}
+  <footer className="bg-dark text-white pt-5 pb-4 mt-5">
+    <div className="container">
+      <div className="row">
+
+        {/* لینک‌ها */}
+        <div className="col-md-4 mb-4 mb-md-0">
+          <h5 className="fw-bold mb-3">لینک‌های سریع</h5>
+          <ul className="nav flex-column">
+            <li className="nav-item mb-2">
+              <a className="nav-link text-white-50 px-0" href="/contactUs">تماس با ما</a>
+            </li>
+            <li className="nav-item mb-2">
+              <a className="nav-link text-white-50 px-0" href="/aboutUs">درباره ما</a>
+            </li>
+          </ul>
         </div>
-    </>
-    //</React.StrictMode>
-);
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-//reportWebVitals();
+        {/* کپی‌رایت */}
+        <div className="col-md-4 text-center text-md-end">
+          <h5 className="fw-bold mb-3">EjElectro</h5>
+          <p className="text-white-50 small mb-0">
+            &copy; 2025 فروشگاه اینترنتی لوازم الکتریکی. تمام حقوق محفوظ است.
+          </p>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>
+
+);

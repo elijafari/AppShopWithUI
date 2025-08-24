@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppShop.Business.Migrations
 {
     [DbContext(typeof(AppShopDBContext))]
-    [Migration("20250905093237_shop-001")]
-    partial class shop001
+    [Migration("20250824081158_shop-002")]
+    partial class shop002
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,45 @@ namespace AppShop.Business.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.HasSequence<int>("TrackingCodeSeq", "shared")
+                .StartsAt(1001L);
+
+            modelBuilder.Entity("AppShop.Business.Entity.Address", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AddressStr")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CityId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsLast")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
+                    b.Property<string>("PostalCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CityId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Address", (string)null);
+                });
 
             modelBuilder.Entity("AppShop.Business.Entity.Category", b =>
                 {
@@ -83,24 +122,21 @@ namespace AppShop.Business.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("IdOrder")
+                    b.Property<int>("Count")
                         .HasColumnType("int");
 
-                    b.Property<int>("IdProduct")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Number")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OrderBuyEntityId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Price")
                         .HasColumnType("int");
 
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("OrderBuyEntityId");
+                    b.HasIndex("OrderId");
 
                     b.ToTable("OrderBuyItem", (string)null);
                 });
@@ -130,11 +166,12 @@ namespace AppShop.Business.Migrations
 
             modelBuilder.Entity("AppShop.Business.Entity.OrderBuy", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<int>("AddressId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("DateDelivery")
                         .HasColumnType("datetime2");
@@ -142,18 +179,23 @@ namespace AppShop.Business.Migrations
                     b.Property<DateTime>("DateOrder")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("PayType")
+                        .HasColumnType("int");
+
                     b.Property<int>("Statues")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("TrackingCode")
+                    b.Property<long>("TrackingCode")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("decimal(18,2)")
-                        .HasDefaultValue(1000m);
+                        .HasColumnType("bigint")
+                        .HasDefaultValueSql("NEXT VALUE FOR shared.TrackingCodeSeq");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AddressId");
 
                     b.HasIndex("UserId");
 
@@ -171,18 +213,15 @@ namespace AppShop.Business.Migrations
                     b.Property<DateTime>("DateStatues")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("IdOrder")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OrderBuyId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Statues")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OrderBuyId");
+                    b.HasIndex("OrderId");
 
                     b.ToTable("OrderBuyStatues", (string)null);
                 });
@@ -232,21 +271,16 @@ namespace AppShop.Business.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Address")
-                        .HasColumnType("nvarchar(1000)");
-
                     b.Property<string>("Answer")
                         .IsRequired()
                         .HasColumnType("nvarchar(100)");
-
-                    b.Property<int?>("CityId")
-                        .HasColumnType("int");
 
                     b.Property<string>("CreatedDate")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("Email")
+                    b.Property<string>("FullName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<bool>("IsAdmin")
@@ -257,14 +291,7 @@ namespace AppShop.Business.Migrations
                     b.Property<string>("LastLogin")
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("Mobail")
-                        .HasColumnType("nvarchar(50)");
-
                     b.Property<string>("ModifiedDate")
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Password")
@@ -272,9 +299,6 @@ namespace AppShop.Business.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Phone")
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("PostalCode")
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("Question")
@@ -287,6 +311,25 @@ namespace AppShop.Business.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users", (string)null);
+                });
+
+            modelBuilder.Entity("AppShop.Business.Entity.Address", b =>
+                {
+                    b.HasOne("AppShop.Business.Entity.City", "CitiEntity")
+                        .WithMany("Addresses")
+                        .HasForeignKey("CityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AppShop.Business.Entity.User", "UserEntity")
+                        .WithMany("Addresses")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CitiEntity");
+
+                    b.Navigation("UserEntity");
                 });
 
             modelBuilder.Entity("AppShop.Business.Entity.City", b =>
@@ -302,7 +345,7 @@ namespace AppShop.Business.Migrations
                 {
                     b.HasOne("AppShop.Business.Entity.OrderBuy", "OrderBuyEntity")
                         .WithMany("ItemBuys")
-                        .HasForeignKey("OrderBuyEntityId")
+                        .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -311,24 +354,32 @@ namespace AppShop.Business.Migrations
 
             modelBuilder.Entity("AppShop.Business.Entity.OrderBuy", b =>
                 {
-                    b.HasOne("AppShop.Business.Entity.User", "UserEntity")
-                        .WithMany()
-                        .HasForeignKey("UserId")
+                    b.HasOne("AppShop.Business.Entity.Address", "AddressEntity")
+                        .WithMany("OrderBuys")
+                        .HasForeignKey("AddressId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("AppShop.Business.Entity.User", "UserEntity")
+                        .WithMany("OrderBuys")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("AddressEntity");
 
                     b.Navigation("UserEntity");
                 });
 
             modelBuilder.Entity("AppShop.Business.Entity.OrderBuyStatues", b =>
                 {
-                    b.HasOne("AppShop.Business.Entity.OrderBuy", "OrderBuy")
+                    b.HasOne("AppShop.Business.Entity.OrderBuy", "OrderBuyEntity")
                         .WithMany("OrderBuyStatues")
-                        .HasForeignKey("OrderBuyId")
+                        .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("OrderBuy");
+                    b.Navigation("OrderBuyEntity");
                 });
 
             modelBuilder.Entity("AppShop.Business.Entity.Product", b =>
@@ -342,6 +393,11 @@ namespace AppShop.Business.Migrations
                     b.Navigation("CategoryEntity");
                 });
 
+            modelBuilder.Entity("AppShop.Business.Entity.Address", b =>
+                {
+                    b.Navigation("OrderBuys");
+                });
+
             modelBuilder.Entity("AppShop.Business.Entity.Category", b =>
                 {
                     b.Navigation("Products");
@@ -349,6 +405,8 @@ namespace AppShop.Business.Migrations
 
             modelBuilder.Entity("AppShop.Business.Entity.City", b =>
                 {
+                    b.Navigation("Addresses");
+
                     b.Navigation("Cities");
                 });
 
@@ -357,6 +415,13 @@ namespace AppShop.Business.Migrations
                     b.Navigation("ItemBuys");
 
                     b.Navigation("OrderBuyStatues");
+                });
+
+            modelBuilder.Entity("AppShop.Business.Entity.User", b =>
+                {
+                    b.Navigation("Addresses");
+
+                    b.Navigation("OrderBuys");
                 });
 #pragma warning restore 612, 618
         }

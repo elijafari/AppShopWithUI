@@ -11,7 +11,7 @@ namespace AppShop.Business.Entity
         public string Name { get; set; }
         public int? ParentId { get; set; }
         public City Parent { get; set; }
-        public virtual ICollection<City>   Cities { get; set; }
-        public virtual ICollection<Address> Addresses { get; set; }
+        public virtual ICollection<City> Cities { get; set; } = new List<City>();
+        public virtual ICollection<Address> Addresses { get; set; } = new List<Address>();
     }
 }

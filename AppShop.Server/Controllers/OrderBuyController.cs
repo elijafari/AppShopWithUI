@@ -45,11 +45,17 @@ namespace AppShop.Server.Controllers
         [HttpPost]
         public IActionResult RejectOrder(InId input) => Response(() => service.ChangeShopStatues(input.Id, ShopStatues.Reject));
          [HttpPost]
-        public IActionResult GetAll(InputRequest inputRequest)=>Response(() =>service.GetAll(inputRequest));
+        public IActionResult GetAll()
+        {
+            return Response(() =>
+            {
+                var id = User.FindFirstValue("id");
+                var isAdmin=User.FindFirstValue(ClaimTypes.Role) == "Admin" ? true : false;
+                return service.GetAll( new Guid(id),isAdmin);
+            });
+        }
         [HttpPost]
-        public IActionResult GetAllUser(InputRequest inputRequest) => Response(() => service.GetAllUser(inputRequest,new Guid()));
-        [HttpPost]
-        public IActionResult GetById(int id)=>Response(()=>service.GetById(id));
+        public IActionResult GetById(InId input) =>Response(()=>service.GetById(input.Id));
         [HttpGet]        
         public IActionResult GetDays() => Response(() => service.GetDays());
     }

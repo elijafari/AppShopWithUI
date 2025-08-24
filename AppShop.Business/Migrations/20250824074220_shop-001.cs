@@ -11,6 +11,14 @@ namespace AppShop.Business.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.EnsureSchema(
+                name: "shared");
+
+            migrationBuilder.CreateSequence<int>(
+                name: "TrackingCodeSeq",
+                schema: "shared",
+                startValue: 1001L);
+
             migrationBuilder.CreateTable(
                 name: "Category",
                 columns: table => new
@@ -66,17 +74,12 @@ namespace AppShop.Business.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(50)", nullable: false),
-                    Mobail = table.Column<string>(type: "nvarchar(50)", nullable: true),
+                    FullName = table.Column<string>(type: "nvarchar(50)", nullable: false),
                     Phone = table.Column<string>(type: "nvarchar(50)", nullable: true),
-                    PostalCode = table.Column<string>(type: "nvarchar(50)", nullable: true),
                     CreatedDate = table.Column<string>(type: "nvarchar(50)", nullable: false),
                     ModifiedDate = table.Column<string>(type: "nvarchar(50)", nullable: true),
                     LastLogin = table.Column<string>(type: "nvarchar(50)", nullable: true),
                     IsAdmin = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-                    CityId = table.Column<int>(type: "int", nullable: true),
-                    Address = table.Column<string>(type: "nvarchar(1000)", nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(50)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(100)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(100)", nullable: false),
                     Question = table.Column<int>(type: "int", nullable: false),
@@ -113,26 +116,61 @@ namespace AppShop.Business.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "OrderBuy",
+                name: "Address",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CityId = table.Column<int>(type: "int", nullable: false),
+                    PostalCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AddressStr = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsLast = table.Column<bool>(type: "bit", nullable: false, defaultValue: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Address", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Address_City_CityId",
+                        column: x => x.CityId,
+                        principalTable: "City",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Address_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OrderBuy",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     DateOrder = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DateDelivery = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Statues = table.Column<int>(type: "int", nullable: false),
-                    TrackingCode = table.Column<decimal>(type: "decimal(18,2)", nullable: false, defaultValue: 1000m)
+                    TrackingCode = table.Column<decimal>(type: "decimal(18,2)", nullable: false, defaultValueSql: "NEXT VALUE FOR shared.TrackingCodeSeq"),
+                    PayType = table.Column<int>(type: "int", nullable: false),
+                    AddressId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_OrderBuy", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_OrderBuy_Address_AddressId",
+                        column: x => x.AddressId,
+                        principalTable: "Address",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "FK_OrderBuy_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -141,18 +179,17 @@ namespace AppShop.Business.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    IdOrder = table.Column<int>(type: "int", nullable: false),
-                    IdProduct = table.Column<int>(type: "int", nullable: false),
-                    Number = table.Column<int>(type: "int", nullable: false),
-                    Price = table.Column<int>(type: "int", nullable: false),
-                    OrderBuyEntityId = table.Column<int>(type: "int", nullable: false)
+                    OrderId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    Count = table.Column<int>(type: "int", nullable: false),
+                    Price = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_OrderBuyItem", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_OrderBuyItem_OrderBuy_OrderBuyEntityId",
-                        column: x => x.OrderBuyEntityId,
+                        name: "FK_OrderBuyItem_OrderBuy_OrderId",
+                        column: x => x.OrderId,
                         principalTable: "OrderBuy",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -164,21 +201,30 @@ namespace AppShop.Business.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    IdOrder = table.Column<int>(type: "int", nullable: false),
+                    OrderId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     DateStatues = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Statues = table.Column<int>(type: "int", nullable: false),
-                    OrderBuyId = table.Column<int>(type: "int", nullable: false)
+                    Statues = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_OrderBuyStatues", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_OrderBuyStatues_OrderBuy_OrderBuyId",
-                        column: x => x.OrderBuyId,
+                        name: "FK_OrderBuyStatues_OrderBuy_OrderId",
+                        column: x => x.OrderId,
                         principalTable: "OrderBuy",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Address_CityId",
+                table: "Address",
+                column: "CityId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Address_UserId",
+                table: "Address",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_City_ParentId",
@@ -186,19 +232,24 @@ namespace AppShop.Business.Migrations
                 column: "ParentId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_OrderBuy_AddressId",
+                table: "OrderBuy",
+                column: "AddressId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_OrderBuy_UserId",
                 table: "OrderBuy",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrderBuyItem_OrderBuyEntityId",
+                name: "IX_OrderBuyItem_OrderId",
                 table: "OrderBuyItem",
-                column: "OrderBuyEntityId");
+                column: "OrderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrderBuyStatues_OrderBuyId",
+                name: "IX_OrderBuyStatues_OrderId",
                 table: "OrderBuyStatues",
-                column: "OrderBuyId");
+                column: "OrderId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Product_CategoryId",
@@ -209,9 +260,6 @@ namespace AppShop.Business.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "City");
-
             migrationBuilder.DropTable(
                 name: "Log");
 
@@ -231,7 +279,17 @@ namespace AppShop.Business.Migrations
                 name: "Category");
 
             migrationBuilder.DropTable(
+                name: "Address");
+
+            migrationBuilder.DropTable(
+                name: "City");
+
+            migrationBuilder.DropTable(
                 name: "Users");
+
+            migrationBuilder.DropSequence(
+                name: "TrackingCodeSeq",
+                schema: "shared");
         }
     }
 }

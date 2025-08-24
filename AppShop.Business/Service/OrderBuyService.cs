@@ -3,6 +3,7 @@ using AppShop.Business.Entity;
 using AppShop.Business.IService;
 using AppShop.Business.Mapping;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -23,29 +24,30 @@ namespace AppShop.Business.Service
             mapper = _mapper;
 
         }
-        public decimal Add(InOrderBuy input,Guid userId)
+        public decimal Add(InOrderBuy input, Guid userId)
         {
             Validtion(input);
             var entity = new OrderBuy();
+            entity.Id = Guid.NewGuid();
             entity.PayType = input.PayType;
             entity.DateDelivery = DateTime.Now.AddDays(input.DateDelivery);
             entity.UserId = userId;
             entity.DateOrder = DateTime.Now;
             entity.Statues = ShopStatues.Register;
             var addressEntity = mapper.Map<InAddress, Address>(input.Address);
-           addressEntity.UserId = entity.UserId;
+            addressEntity.UserId = entity.UserId;
 
-       var ex_address=     db.Addresss.FirstOrDefault(x => x.UserId == addressEntity.UserId
-            && x.CityId == addressEntity.CityId
-            && x.PostalCode == addressEntity.PostalCode
-            && x.AddressStr == addressEntity.AddressStr);
+            var ex_address = db.Addresss.FirstOrDefault(x => x.UserId == addressEntity.UserId
+                 && x.CityId == addressEntity.CityId
+                 && x.PostalCode == addressEntity.PostalCode
+                 && x.AddressStr == addressEntity.AddressStr);
 
             if (ex_address == null)
                 entity.AddressEntity = addressEntity;
             else
                 entity.AddressId = ex_address.Id;
 
-                entity.ItemBuys = new List<ItemBuy>();
+            entity.ItemBuys = new List<ItemBuy>();
             entity.ItemBuys.AddRange(mapper.Map<List<ItemBuy>>(input.Items));
 
             var statues = new OrderBuyStatues();
@@ -91,7 +93,7 @@ namespace AppShop.Business.Service
             }
 
         }
-        public bool ChangeShopStatues(int id, ShopStatues shopStatues)
+        public bool ChangeShopStatues(Guid id, ShopStatues shopStatues)
         {
             var entity = db.OrderBuys.AsNoTracking().FirstOrDefault(x => x.Id == id);
 
@@ -105,22 +107,17 @@ namespace AppShop.Business.Service
             db.SaveChanges();
             return true;
         }
-        public DataView GetAll(InputRequest inputRequest)
+        public List<OrderBuyVm> GetAll(Guid userId, bool isAdmin)
         {
+            var query = db.OrderBuys.Select(x=>x);
+            if (!isAdmin)
+                query =query.Where(x => x.UserId == userId);
 
-            var result = new DataView(20, inputRequest.PageNumber);
-            result.Data = db.OrderBuys.OrderByDescending(x => x.DateOrder).Skip(result.StartRow).Take(20).Cast<object>().ToList();
-            result.TotalCount = db.Products.Count();
-            return result;
+            query = query.OrderByDescending(x => x.DateOrder);
+
+            return query.ProjectTo<OrderBuyVm>(mapper.ConfigurationProvider).ToList(); 
         }
-        public DataView GetAllUser(InputRequest inputRequest, Guid userId)
-        {
-            var result = new DataView(20, inputRequest.PageNumber);
-            result.Data = db.OrderBuys.Where(x => x.UserId == userId).Skip(result.StartRow).Take(20).Cast<object>().ToList();
-            result.TotalCount = db.Products.Count();
-            return result;
-        }
-        public OrderBuy GetById(int id)
+        public OrderBuy GetById(Guid id)
         {
             return db.OrderBuys.Where(x => x.Id == id).SingleOrDefault();
         }
