@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { ProductItem } from "./ProductItem";
-import { Pageing } from "./Pageing";
-import "../../node_modules/bootstrap/dist/css/bootstrap.min.css";
-import "../App.css";
-import { Loading } from "./Loading";
-import { TextBox } from "./TextBox";
-import DropdownApp from "./DropdownApp";
-import {GetLocalhostServer } from "./ChangeRoute";
+import { ProductItem } from "../page/ProductItem";
+import { Pageing } from "../tools/Pageing";
+import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
+import "../../App.css";
+import { Loading } from "../tools/Loading";
+import { TextBox } from "../tools/TextBox";
+import DropdownApp from "../tools/DropdownApp";
+import {GetLocalhostServer } from "../tools/ChangeRoute";
 
 export class Home extends Component {
   constructor(props) {
@@ -111,6 +111,7 @@ export class Home extends Component {
                 context={this}
                 name="categoryId"
                 title="گروه کالا"
+                className="col-md-3 col-sm-12"
                 data={this.state.cat}
               />
               <TextBox

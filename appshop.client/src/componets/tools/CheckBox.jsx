@@ -12,16 +12,8 @@ export class Checkbox extends React.Component {
   render() {
     return (
       <>
-        <div className={"form-check form-switch " + this.props.className}>
-          {/* <label className="form-check-input">{this.props.title}</label>
-              <input
-                className="form-check-label"
-                name={this.props.name}
-              />
-
-              </div> */}
-          <div className="form-check form-switch">
-            <label className="form-check-label" for="flexSwitchCheckChecked">
+        <div className={"form-check form-switch " + this.props.className} style={{padding : "12px"}}>
+            <label className="form-check-label">
               {this.props.title}
             </label>
             <input
@@ -33,7 +25,6 @@ export class Checkbox extends React.Component {
               onChange={(e) => this.handleInputChange(e)}
               key={this.props.name + this.props.updateKey}
             />
-          </div>
         </div>
       </>
     );

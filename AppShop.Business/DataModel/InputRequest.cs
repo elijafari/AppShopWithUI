@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 
 namespace AppShop.Business.DataModel
 {
+    public class InputRequestProduct
+    {
+        public int PageNumber { get; set; }
+
+    }
     public class InputRequest
     {
         public int PageNumber { get; set; }

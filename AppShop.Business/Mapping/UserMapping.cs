@@ -22,6 +22,12 @@ namespace AppShop.Business.Mapping
             builder.Property(p => p.PasswordHash).IsRequired().HasColumnType("nvarchar(100)"); 
             builder.Property(p => p.NormalizedEmail).IsRequired().HasColumnType("nvarchar(50)"); 
             builder.Property(p => p.IsAdmin).HasDefaultValue(false);
+            builder.Property(p => p.Family).IsRequired().HasColumnType("nvarchar(50)");
+            builder.Property(p => p.PostalCode).IsRequired().HasColumnType("nvarchar(50)");
+            builder.Property(p => p.Phone).IsRequired().HasColumnType("nvarchar(50)");
+            builder.Property(p => p.PhoneNumber).IsRequired().HasColumnType("nvarchar(50)");
+            builder.Property(p => p.Region).IsRequired().HasColumnType("nvarchar(50)");
+
 
 
         }

@@ -1,9 +1,9 @@
 import { Component } from "react";
-import { TextBox } from "./TextBox";
-import "../../node_modules/bootstrap/dist/css/bootstrap.min.css";
-import "../App.css";
-import DropdownApp from "./DropdownApp";
-import { ChangeRoute } from "./ChangeRoute";
+import { TextBox } from "../tools/TextBox";
+import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
+import "../../App.css";
+import DropdownApp from "../tools/DropdownApp";
+import { ChangeRoute } from "../tools/ChangeRoute";
 export class Cart extends Component {
   constructor(props) {
     super(props);

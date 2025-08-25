@@ -5,14 +5,15 @@ export default function DropdownApp(props) {
      props.context.setState({ [props.name]: e.target.value });
    };
   return (
-  
-    <div className="col-md-2 col-sm-12 form-group">
+
+      <div className={"form-group " + props.className}  >
           <span>{props.title}</span>
       <select
       className="form-select form-select-sm" aria-label=".form-select-sm example"
         onChange={(e) => handleChange(e)}
         value={props.context.state[props.name]}
       >
+         <option key="-1" value="0">انتخاب کنید ...</option>
         {props.data.map((x, index) => (
           <option key={index} value={x.value}>{x.title}</option>
         ))}

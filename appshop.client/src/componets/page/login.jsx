@@ -1,16 +1,16 @@
 import React, { Component } from "react";
 import axios from "axios";
-import "../../node_modules/bootstrap/dist/css/bootstrap.min.css";
+import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import {
   NotificationContainer,
   NotificationManager,
 } from "react-notifications";
 import "react-notifications/lib/notifications.css";
-import "../App.css";
-import { TextBox } from "./TextBox";
-import { ChangeRoute, GetLocalhostServer } from "./ChangeRoute";
+import "../../App.css";
+import { TextBox } from "../tools/TextBox";
+import { ChangeRoute, GetLocalhostServer } from "../tools/ChangeRoute";
 import { FaLock } from "react-icons/fa";
-import { ButtonRoute } from "./ButtonRoute";
+import { ButtonRoute } from "../tools/ButtonRoute";
 
 export class Login extends Component {
   constructor(props) {
