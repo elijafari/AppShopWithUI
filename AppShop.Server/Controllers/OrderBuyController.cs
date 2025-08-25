@@ -3,6 +3,7 @@ using AppShop.Business.DataModel;
 using AppShop.Business.Entity;
 using AppShop.Business.IService;
 using AppShop.Business.Service;
+using AppShop.Server.Helper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -14,140 +15,35 @@ namespace AppShop.Server.Controllers
     [ApiController]
     [Route("api/[controller]/[action]")]
     [Authorize]
-    public class OrderBuyController : ControllerBase
+    public class OrderBuyController : BaseController
     {
 
         private readonly IOrderBuyService service;
-        private readonly ILogService logService;
-        public OrderBuyController(IOrderBuyService _service, ILogService _logService)
+        public OrderBuyController(IOrderBuyService _service, ILogService _logService):base(_logService)
         {
             service = _service;
-            logService = _logService;
         }
         [HttpPost]
-        public ActionResult Add(InOrderBuy input)
-        {
-            try
-            {
-                    return Ok(service.Add(input));
-            }
-            catch (Exception ex)
-            {
-                logService.Add(ex.Message, ex.StackTrace);
-                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
-            }
-        }
+        public IActionResult Add(InOrderBuy input)=>Response(()=>service.Add(input));
+        [Authorize(Roles = "Admin")]
         [HttpPost]
-        public ActionResult ConfirmOrder(InId input)
-        {
-            try
-            {
-                service.ChangeShopStatues(input.Id, ShopStatues.Confirm);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                logService.Add(ex.Message, ex.StackTrace);
-                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
-            }
-        }
+        public IActionResult ConfirmOrder(InId input) => Response(() => service.ChangeShopStatues(input.Id, ShopStatues.Confirm));
+        [Authorize(Roles = "Admin")]
         [HttpPost]
-        public ActionResult SendOrder(InId input)
-        {
-            try
-            {
-                service.ChangeShopStatues(input.Id, ShopStatues.Send);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                logService.Add(ex.Message, ex.StackTrace);
-                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
-            }
-        }
+        public IActionResult SendOrder(InId input) => Response(() => service.ChangeShopStatues(input.Id, ShopStatues.Send));
+        [Authorize(Roles = "Admin")]
         [HttpPost]
-        public ActionResult DeliveryOrder(InId input)
-        {
-            try
-            {
-                service.ChangeShopStatues(input.Id, ShopStatues.Delivery);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                logService.Add(ex.Message, ex.StackTrace);
-                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
-            }
-        }
+        public IActionResult DeliveryOrder(InId input) => Response(() => service.ChangeShopStatues(input.Id, ShopStatues.Delivery));
+        [Authorize(Roles = "Admin")]
         [HttpPost]
-        public ActionResult RejectOrder(InId input)
-        {
-            try
-            {
-                service.ChangeShopStatues(input.Id, ShopStatues.Reject);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                logService.Add(ex.Message, ex.StackTrace);
-                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
-            }
-        }
+        public IActionResult RejectOrder(InId input) => Response(() => service.ChangeShopStatues(input.Id, ShopStatues.Reject));
+         [HttpPost]
+        public IActionResult GetAll(InputRequest inputRequest)=>Response(() =>service.GetAll(inputRequest));
         [HttpPost]
-        public ActionResult GetAll(InputRequest inputRequest)
-        {
-            //push 25 aban 1403
-            try
-            {
-                var param = new DataRequest(inputRequest.PageNumber, 100);
-                return Ok(service.GetAll(param));
-            }
-            catch (Exception ex)
-            {
-                logService.Add(ex.Message, ex.StackTrace);
-                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
-            }
-        }
+        public IActionResult GetAllUser(InputRequest inputRequest) => Response(() => service.GetAllUser(inputRequest));
         [HttpPost]
-        public ActionResult GetAllUser(InputRequest inputRequest)
-        {
-            try
-            {
-                var userId = Guid.NewGuid();
-                var param = new DataRequest(inputRequest.PageNumber, 100);
-                return Ok(service.GetAllUser(param, userId));
-            }
-            catch (Exception ex)
-            {
-                logService.Add(ex.Message, ex.StackTrace);
-                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
-            }
-        }
+        public IActionResult GetById(int id)=>Response(()=>service.GetById(id));
         [HttpPost]
-        public ActionResult GetById(int id)
-        {
-            try
-            {
-                return Ok(service.GetById(id));
-            }
-            catch (Exception ex)
-            {
-                logService.Add(ex.Message, ex.StackTrace);
-                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
-            }
-        }
-        [HttpPost]
-        public ActionResult GetDays()
-        {
-            try
-            {
-                return Ok(service.GetDays());
-            }
-            catch (Exception ex)
-            {
-                logService.Add(ex.Message, ex.StackTrace);
-                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
-            }
-        }
+        public IActionResult GetDays() => Response(() => service.GetDays());
     }
 }

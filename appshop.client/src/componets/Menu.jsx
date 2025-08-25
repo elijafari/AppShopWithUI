@@ -29,7 +29,7 @@ export class Menu extends Component {
   componentDidMount() {
     setInterval(() => {
       let array = JSON.parse(localStorage.getItem("selectedItem"));
-      let user = JSON.parse(localStorage.getItem("user"));
+      let user =localStorage.getItem("user");
       let sum = 0;
       if (array != null)
         if (array.length > 0) {
@@ -46,32 +46,32 @@ export class Menu extends Component {
     }, 1000);
   }
   logout() {
-    const someUrl = GetLocalhostServer("api/user/signOut");
-    axios
-      .post(someUrl, this.state)
-      .then((response) => {
-        if (response.status === 200) {
     localStorage.clear();
           ChangeRoute("/Home");
-        } else {
-          NotificationManager.error("خطای سیستمی رخ داده است", "خطا");
-        }
-      })
-      .catch((error) => {
-        NotificationManager.error(error.response.data, "خطا");
-      });
+    //const someUrl = GetLocalhostServer("api/user/signOut");
+    //axios
+    //  .post(someUrl, this.state)
+    //  .then((response) => {
+    //    if (response.status === 200) {
+    //    } else {
+    //      NotificationManager.error("خطای سیستمی رخ داده است", "خطا");
+    //    }
+    //  })
+    //  .catch((error) => {
+    //    NotificationManager.error(error.response.data.data, "خطا");
+    //  });
   }
 
   render() {
     return (
       <>
         <div className="userInfo">
-          {this.state.user != null && (
-            <p>
-              کاربر گرامی :{" "}
-              {this.state.user.name + " " + this.state.user.family}
-            </p>
-          )}
+          {/*{this.state.user != null && (*/}
+          {/*  //<p>*/}
+          {/*  //  کاربر گرامی :{" "}*/}
+          {/*  //  {this.state.user.name + " " + this.state.user.family}*/}
+          {/*  //</p>*/}
+          {/*)}*/}
         </div>
         <nav className="navbar navbar-expand-lg bg-success navbar-dark">
           <button

@@ -45,9 +45,9 @@ export class Home extends Component {
       .post(someUrl, { filter: filter, pageNumber: pageNumber })
       .then((response) => {
         this.setState({
-          data: response.data.data,
-          pageCount: response.data.pageCount,
-          totalCount: response.data.totalCount,
+          data: response.data.data.data,
+          pageCount: response.data.data.pageCount,
+          totalCount: response.data.data.totalCount,
           currentPage: pageNumber,
           loading: true,
           updateKey: this.state.updateKey + 1,
@@ -58,7 +58,7 @@ export class Home extends Component {
     var someUrl = GetLocalhostServer("api/category/GetAllForSearch");
     axios.get(someUrl).then((response) => {
       var cat = [];
-      response.data.forEach((element) => {
+      response.data.data.forEach((element) => {
         cat.push({ title: element.name, value: element.id });
       });
       this.setState({ cat });

@@ -37,12 +37,12 @@ export class ProductList extends Component {
     const someUrl = GetLocalhostServer("api/product/GetAllAdmin");
     axios.post(someUrl, { pageNumber: pageNumber }).then((response) => {
       this.setState({
-        data: response.data.data,
-        pageCount: response.data.pageCount,
-        totalCount: response.data.totalCount,
-        pageSize: response.data.pageSize,
+        data: response.data.data.data,
+        pageCount: response.data.data.pageCount,
+        totalCount: response.data.data.totalCount,
+        pageSize: response.data.data.pageSize,
         currentPage: pageNumber,
-        startRow: response.data.startRow,
+        startRow: response.data.data.startRow,
         loading: true,
         updateKey: this.state.updateKey + 1,
       });

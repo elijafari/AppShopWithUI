@@ -24,12 +24,12 @@ export class ProductView extends Component {
     let someUrl = GetLocalhostServer("api/product/GetById?id=" + this.state.id);
     axios.get(someUrl).then((response) => {
       this.setState({
-        data:response.data,
-        code: response.data.code,
-        name: response.data.name,
-        price: response.data.price,
-        description: response.data.description,
-        file: "data:image/png;base64," + response.data.image,
+        data:response.data.data,
+        code: response.data.data.code,
+        name: response.data.data.name,
+        price: response.data.data.price,
+        description: response.data.data.description,
+        file: "data:image/png;base64," + response.data.data.image,
         updateKey: this.state.updateKey + 1,
       });
     });

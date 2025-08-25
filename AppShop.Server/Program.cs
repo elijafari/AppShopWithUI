@@ -1,23 +1,20 @@
-using AppShop.Business;
-using AppShop.Business.Entity;
-using AppShop.Business.ErrorHandle;
+﻿using AppShop.Business;
 using AppShop.Business.IService;
 using AppShop.Business.Mapping;
 using AppShop.Business.Service;
 using AutoMapper;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using System.Text;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 
-builder.Services.AddControllers();
-builder.Services.AddAuthorization();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<AppShopDBContext>(option =>
-    option.UseSqlServer(builder.Configuration.GetConnectionString("Connection")));
+// 👉 تنظیمات EF Core برای SQL Server
+builder.Services.AddDbContext<AppShopDBContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Connection")));
 
 var mapperConfig = new MapperConfiguration(mc =>
 {
@@ -26,39 +23,70 @@ var mapperConfig = new MapperConfiguration(mc =>
 
 IMapper mapper = mapperConfig.CreateMapper();
 builder.Services.AddSingleton(mapper);
-builder.Services.AddIdentityApiEndpoints<User>()
-  .AddEntityFrameworkStores<AppShopDBContext>()
-  .AddErrorDescriber<UserIdentityError>();
-builder.Services.AddIdentityCore<User>(options =>
+
+// 👉 افزودن کنترلرها
+builder.Services.AddControllers();
+
+// 👉 Swagger + JWT Support
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(c =>
 {
-    options.SignIn.RequireConfirmedAccount = true;
-    options.Password.RequireDigit = true;
-    options.Password.RequireNonAlphanumeric = true;
-    options.Password.RequireUppercase = false;
-    options.Password.RequiredLength = 4;
-    options.Password.RequiredUniqueChars = 0;
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "فروشگاه لوازم الکتریکی", Version = "v1" });
 
-    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(3600);
-    options.Lockout.MaxFailedAccessAttempts = 5;
-    options.Lockout.AllowedForNewUsers = true;
+    // افزودن تعریف امنیتی JWT
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = "توکن JWT را وارد کنید. مثال: Bearer {your token}",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
+    });
 
-    // User settings.
-    options.User.AllowedUserNameCharacters =
-    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
-    options.User.RequireUniqueEmail = true;
-
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
+            },
+            new string[] {}
+        }
+    });
 });
-//builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-builder.Services.AddScoped<ICategoryService, CategoryService>();
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IProductService, ProductService>();
-builder.Services.AddScoped<IOrderBuyService, OrderBuyService>();
-builder.Services.AddScoped<ILogService, LogService>();
-//builder.Services.AddScoped<ICookiService,CookiService>();
-builder.Services.AddScoped<IOrderBuyStatuesService, OrderBuyStatuesService>();
+// 👉 JWT Authentication
+var jwtKey = builder.Configuration["Jwt:Key"];
+var jwtIssuer = builder.Configuration["Jwt:Issuer"];
 
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.RequireHttpsMetadata = false; // فقط برای تست در لوکال
+    options.SaveToken = true;
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = jwtIssuer,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
+    };
+});
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
+});
 
+// 👉 سرویس‌های دیگر
+// builder.Services.AddScoped<...>();
+
+builder.Services.AddScoped<TokenService>();
 
 builder.Services.AddCors(options =>
 {
@@ -67,37 +95,40 @@ builder.Services.AddCors(options =>
 
 
 
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IOrderBuyService, OrderBuyService>();
+builder.Services.AddScoped<ILogService, LogService>();
+builder.Services.AddScoped<IOrderBuyStatuesService, OrderBuyStatuesService>();
+
 var app = builder.Build();
-app.UseCors("CORSPolicy");
 
-app.UseDefaultFiles();
-app.UseStaticFiles();
-
-// Configure the HTTP request pipeline.
+// 👉 Middleware ها
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication(); // مهم: قبل از Authorization
 app.UseAuthorization();
-app.MapIdentityApi<User>();
-app.MapFallbackToFile("/index.html");
+
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "فروشگاه v1");
+        c.DocumentTitle = "مستندات فروشگاه";
+    });
 }
 else
 {
     app.UseExceptionHandler("/Error");
     app.UseHsts();
 }
-
-app.UseHttpsRedirection();
-
-app.UseCors("myAppCors");
-
+app.UseCors("CORSPolicy");
 app.MapControllers();
-
-app.MapFallbackToFile("/index.html");
 
 app.Run();

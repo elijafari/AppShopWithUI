@@ -16,16 +16,17 @@ export class User extends React.Component {
     const someUrl = GetLocalhostServer("api/user/add");
     axios
       .post(someUrl, this.state)
-      .then((response) => {
-        if (response.status === 200) {
-          NotificationManager.success("اطلاعات با موفقیت ثبت شد", "پیام");
-          localStorage.setItem("user",JSON.stringify(this.state));
+        .then((response) => {
+            debugger
+            if (response.data.success) {
+            NotificationManager.success(response.data.message, "پیام");
+            localStorage.setItem("user", response.data.data);
         } else {
-          NotificationManager.error("خطای سیستمی رخ داده است", "خطا");
+            NotificationManager.error(response.data.message, "خطا");
         }
       })
       .catch((error) => {
-        NotificationManager.error(error.response.data, "خطا");
+          NotificationManager.error(error.response.data.message, "خطا");
       });
   }
   handleInputChange(e) {
@@ -37,13 +38,7 @@ export class User extends React.Component {
         <h5> اطلاعات کاربری</h5>
         <div className="formInfo">
           <div className="row">
-            <TextBox context={this} title="نام" name="name" colMd="col-md-6" />
-            <TextBox
-              context={this}
-              title="نام خانوادگی"
-              name="family"
-              colMd="col-md-6"
-            />
+            <TextBox context={this} title="نام و نام خانوادگی" name="name" colMd="col-md-6" />
             <TextBox
               context={this}
               title="نام کاربری"
@@ -104,17 +99,6 @@ export class User extends React.Component {
             className="btn btn-primary">
             ثبت
           </button>
-
-
-          {/* <ButtonCallApi
-title="hhhhhhhhhhhh"
-url="api/user/add"
-keyStorage="user"
-path="/home"
-data={this.state}
-            onClick={() => this.AddData2()}
-            className="btn btn-primary"
-          /> */}
         </div>
 
         <NotificationContainer/>

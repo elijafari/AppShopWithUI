@@ -24,14 +24,14 @@ export class Login extends Component {
       .post(someUrl, this.state)
       .then((response) => {
         if (response.status === 200) {
-          localStorage.setItem("user", JSON.stringify(response.data));
+          localStorage.setItem("user", JSON.stringify(response.data.data));
           ChangeRoute("/Home");
         } else {
           NotificationManager.error("خطای سیستمی رخ داده است", "خطا");
         }
       })
       .catch((error) => {
-        NotificationManager.error(error.response.data, "خطا");
+        NotificationManager.error(error.response.data.data, "خطا");
       });
   }
   render() {

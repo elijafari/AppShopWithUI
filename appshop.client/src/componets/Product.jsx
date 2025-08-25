@@ -38,7 +38,7 @@ export class Product extends Component {
     var someUrl = GetLocalhostServer("api/category/GetAll");
     axios.get(someUrl).then((response) => {
       var cat = [];
-      response.data.forEach((element) => {
+      response.data.data.forEach((element) => {
         cat.push({ title: element.name, value: element.id });
       });
       this.setState({ cat });
@@ -48,13 +48,13 @@ export class Product extends Component {
       axios.get(someUrl).then((response) => {
         debugger;
         this.setState({
-          code: response.data.code,
-          name: response.data.name,
-          price: response.data.price,
-          categoryId: response.data.categoryId,
-          description: response.data.description,
-          file: "data:image/png;base64," + response.data.image,
-          isActive: response.data.isActive,
+          code: response.data.data.code,
+          name: response.data.data.name,
+          price: response.data.data.price,
+          categoryId: response.data.data.categoryId,
+          description: response.data.data.description,
+          file: "data:image/png;base64," + response.data.data.image,
+          isActive: response.data.data.isActive,
           updateKey: this.state.updateKey + 1,
         });
       });
@@ -106,7 +106,7 @@ export class Product extends Component {
         }
       })
       .catch((error) => {
-        NotificationManager.error(error.response.data, "خطا");
+        NotificationManager.error(error.response.data.data, "خطا");
       });
   }
   render() {

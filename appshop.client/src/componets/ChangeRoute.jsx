@@ -6,6 +6,6 @@ window.location='http://localhost:5173'+to;
 }
 
 export function GetLocalhostServer(action) {
- //return 'https://localhost:7023/'+action;
- return 'http://localhost:5179/'+action;
+return 'https://localhost:7107/'+action;
+ // return 'http://localhost:5179/'+action;
   }

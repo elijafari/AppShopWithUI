@@ -31,7 +31,7 @@ export function ButtonCallApi(props) {
         }
       })
       .catch((error) => {
-        NotificationManager.error(error.response.data, "خطا");
+        NotificationManager.error(error.response.data.data, "خطا");
       });
   }
   return  (

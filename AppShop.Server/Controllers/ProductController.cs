@@ -3,6 +3,8 @@ using AppShop.Business.DataModel;
 using AppShop.Business.Entity;
 using AppShop.Business.IService;
 using AppShop.Business.Service;
+using AppShop.Server.Helper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -11,48 +13,34 @@ namespace AppShop.Server.Controllers
 {
     [ApiController]
     [Route("api/[controller]/[action]")]
-    public class ProductController : ControllerBase
+    public class ProductController : BaseController
     {
 
         private readonly IProductService service;
-        private readonly ILogService logService;
-        public ProductController(IProductService _service, ILogService _logService)
+        public ProductController(IProductService _service, ILogService _logService):base(_logService)
         {
             service = _service;
-            logService = _logService;
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult Add()
         {
-            try
+            return Response(() =>
             {
                 var input = ConvertToDto();
-                service.Add(input);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                logService.Add(ex.Message, ex.StackTrace);
-                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
-            }
+                return service.Add(input);
+            });
         }
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult Update()
         {
-            try
+            return Response(() =>
             {
                 var input = ConvertToDto();
-                service.Update(input);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                logService.Add(ex.Message, ex.StackTrace);
-                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
-            }
+                return service.Update(input);
+            });
         }
-
         private InProduct ConvertToDto()
         {
 
@@ -83,77 +71,32 @@ namespace AppShop.Server.Controllers
         }
 
 
-        //[HttpPost]
-        //public void Add()
-        //{
-        //    //for (int i = 0; i < 1000; i++)
-        //    //{
-        //    //    service.Add(new Product()
-        //    //    {
-        //    //        Name = "لامپ 100",
-        //    //        CategoryId = 1,
-        //    //        Code = 1 + i,
-        //    //        Price = 100 * (i + 1)
-        //    //    });
-        //    //}
-
-        //}
         [HttpPost]
-        public ActionResult GetAll(InputRequest inputRequest)
+        public IActionResult GetAll(InputRequest inputRequest)
         {
-            try
+            return Response(() =>
             {
                 var param = new DataRequest(inputRequest.PageNumber, 20);
                 param.Filter = inputRequest.Filter;
-                return Ok(service.GetAll(param));
-            }
-            catch (Exception ex)
-            {
-                logService.Add(ex.Message, ex.StackTrace);
-                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
-            }
+                return service.GetAll(param);
+            }); 
         }
         [HttpPost]
-        public ActionResult GetAllAdmin(InputRequest inputRequest)
-        {
-            //push 25 aban 1403
+        [Authorize(Roles = "Admin")]
 
-            try
+        public IActionResult GetAllAdmin(InputRequest inputRequest)
+        {
+            return Response(() =>
             {
                 var param = new DataRequest(inputRequest.PageNumber, 100);
-                return Ok(service.GetAll(param));
-            }
-            catch (Exception ex)
-            {
-                logService.Add(ex.Message, ex.StackTrace);
-                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
-            }
+                return service.GetAll(param);
+            });
         }
         [HttpGet]
-        public ActionResult GetById(int id)
-        {
-            try
-            {
-                return Ok(service.GetById(id));
-            }
-            catch (Exception ex)
-            {
-                logService.Add(ex.Message, ex.StackTrace);
-                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
-            }
-        }
+        public IActionResult GetById(int id) => Response(() => service.GetById(id));
         [HttpGet]
-        public ActionResult DeleteAll()
-        {
-            try
-            {
-                return Ok(service.DeleteAll());
-            }
-            catch (Exception ex)
-            {
-                logService.Add(ex.Message, ex.StackTrace);
-                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
-            }
-        }
+        [Authorize(Roles = "Admin")]
+
+        public IActionResult DeleteAll() => Response(() => service.DeleteAll());
     }
 }
