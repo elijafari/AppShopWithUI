@@ -157,6 +157,27 @@ else
     app.UseExceptionHandler("/Error");
     app.UseHsts();
 }
+app.UseStaticFiles(new StaticFileOptions
+{
+    OnPrepareResponse = ctx =>
+    {
+        var path = ctx.File.PhysicalPath;
+
+        if (path != null && path.EndsWith("index.html"))
+        {
+            // برای index.html کش رو غیر فعال کن
+            ctx.Context.Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
+            ctx.Context.Response.Headers["Pragma"] = "no-cache";
+            ctx.Context.Response.Headers["Expires"] = "0";
+        }
+        else
+        {
+            // برای فایل‌های استاتیک (js, css, images) کش طولانی بذار
+            ctx.Context.Response.Headers["Cache-Control"] = "public,max-age=31536000,immutable";
+        }
+    }
+});
+
 app.MapControllers();
 app.MapFallbackToFile("/index.html");
 app.Run();
