@@ -9,6 +9,7 @@ import "react-notifications/lib/notifications.css";
 import "../../App.css";
 import { ErrorHanding } from "../Utility";
 import { parseJwt } from "../Utility";
+import { Loading } from "../tools/Loading";
 export class Orders extends React.Component {
   constructor(props) {
     super(props);
@@ -26,7 +27,7 @@ export class Orders extends React.Component {
   getOrders() {
     let token = localStorage.getItem("token");
     let user = parseJwt(token);
-    debugger
+
     api.post("/orderBuy/GetAll")
       .then(res => {
         this.setState({ loading: false });
@@ -49,7 +50,7 @@ export class Orders extends React.Component {
 
   render() {
     if (this.state.loading) {
-      return <div className="text-center mt-5">⏳ در حال بارگذاری...</div>;
+        return <Loading />
     }
 
     return (

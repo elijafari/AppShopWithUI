@@ -22,7 +22,7 @@ namespace AppShop.Business.Service
             entity.CreateDateTime= DateTime.Now;
             entity.UserId= Guid.NewGuid();
             db.Logs.Add(entity);
-            db.SaveChanges();
+          //  db.SaveChanges();
           //  throw new Exception(message);
         }
     }
