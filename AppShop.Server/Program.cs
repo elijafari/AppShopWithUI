@@ -3,6 +3,7 @@ using AppShop.Business.IService;
 using AppShop.Business.Mapping;
 using AppShop.Business.Service;
 using AutoMapper;
+using DNTCaptcha.Core;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -115,7 +116,25 @@ builder.Services.AddCors(options =>
         builder.WebHost.UseUrls("http://0.0.0.0:5000");
     }
 });
+// اضافه کردن سرویس کپچا
 
+
+builder.Services.AddDNTCaptcha(options =>
+{
+    options.UseCookieStorageProvider(SameSiteMode.Unspecified)   // یا session/memory/distributed بسته به نیاز
+             .ShowThousandsSeparators(false)
+             .WithEncryptionKey("a-very-long-secret-key-here") // ضروری
+             .WithNonceKey("MY_NONCE")
+             .AbsoluteExpiration(minutes: 5)
+       .WithNoise(0.01f, 0.0f, 1, 0.0f)
+             .InputNames(new DNTCaptchaComponent
+             {
+                 CaptchaHiddenInputName ="DntCaptchaTextValue",
+                 CaptchaHiddenTokenName = "DntCaptchaTokenValue",
+                 CaptchaInputName =  "CaptchaInput",
+             })
+             .Identifier("dntCaptcha");
+    });
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IProductService, ProductService>();
@@ -177,7 +196,10 @@ app.UseStaticFiles(new StaticFileOptions
         }
     }
 });
-
+app.UseCookiePolicy(new CookiePolicyOptions
+{
+    MinimumSameSitePolicy = SameSiteMode.None
+});
 app.MapControllers();
 app.MapFallbackToFile("/index.html");
 app.Run();

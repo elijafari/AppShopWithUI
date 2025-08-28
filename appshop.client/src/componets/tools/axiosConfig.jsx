@@ -4,7 +4,8 @@ import axios from "axios";
 console.log("url:" + import.meta.env.VITE_API_URL);
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
-  timeout: 10000
+  timeout: 10000,
+    withCredentials: true   // 👈 اینجا
 });
 
 // قبل از ارسال هر درخواست
@@ -19,9 +20,15 @@ api.interceptors.request.use(
     // اگر داده‌ها از نوع FormData بودن → content-type رو تغییر بده
     if (config.data instanceof FormData) {
       config.headers["Content-Type"] = "multipart/form-data";
-    } else {
+    }
+   else if (config.data instanceof URLSearchParams) {
+      // برای form-urlencoded
+      config.headers["Content-Type"] = "application/x-www-form-urlencoded";
+    } 
+    else {
       // پیش‌فرض JSON
       config.headers["Content-Type"] = "application/json";
+      
     }
 
     return config;

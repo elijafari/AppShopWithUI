@@ -5,7 +5,9 @@ using AppShop.Business.IService;
 using AppShop.Server.Helper;
 using AppShop.Business.DataModel;
 using Microsoft.AspNetCore.Authorization;
-using System.Security.Claims;
+using DNTCaptcha.Core;
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.Extensions.Primitives;
 
 namespace AppShop.Server.Controllers
 {
@@ -14,18 +16,30 @@ namespace AppShop.Server.Controllers
     public class UserController : BaseController
     {
         private readonly IUserService service;
-        public UserController(IUserService _service, ILogService _logService) : base(_logService)
+        private readonly IDNTCaptchaValidatorService validator;
+
+        public UserController(IUserService _service, ILogService _logService,
+            IDNTCaptchaValidatorService _validator) : base(_logService)
         {
             service = _service;
+            validator = _validator;
         }
 
         [HttpPost]
-        public IActionResult Add([FromBody] User input) => Response(() => service.Add(input));
+        public IActionResult Add([FromBody] User input, [FromServices] IDNTCaptchaValidatorService validatorService) => Response(() => service.Add(input));
         [Authorize]
         [HttpPost]
         public IActionResult Edit([FromBody] User input) => Response(() => service.Edit(input));
         [HttpPost]
-        public IActionResult Login([FromBody] InUser input) => Response(() => service.Login(input));
+        public IActionResult Login([FromForm] InUser input) => Response(() =>
+                {
+                    var token = service.Login(input);
+                    if (!validator.HasRequestValidCaptchaEntry())
+                    {
+                        throw new Exception("کپچا اشتباه است!");
+                    }
+                    return token;
+                });
         [HttpPost]
         public IActionResult AddAdmin() => Response(() => service.AddAdmin());
         [HttpPost]
