@@ -35,24 +35,6 @@ export class Login extends React. Component {
       })
       .catch((error) => ErrorHanding(NotificationManager, error));
   }
-  //     const data = {
-  //   username: "test",
-  //   password: "12345",
-  //   DNTCaptchaText: captcha.text,        // از سرور گرفتی
-  //   DNTCaptchaInputText: captchaInput,   // کاربر وارد کرده
-  //   DNTCaptchaToken: captcha.token       // از سرور گرفتی
-  // };
-  // axios.defaults.withCredentials = true;
-  // axios.post(import.meta.env.VITE_API_URL+"/user/login", qs.stringify(this.state), {
-  //   headers: {
-  //     "Content-Type": "application/x-www-form-urlencoded"
-  //   }
-  // })
-  // .then(res => {
-  //   console.log(res.data);
-  // })
-  // .catch((error) => ErrorHanding(NotificationManager, error));
-  //   };
   createUser() {
     window.location.href = "/user";
   }

@@ -4,6 +4,9 @@ import { TextBox } from "../tools/TextBox";
 import { DropdownApp } from "../tools/DropdownApp";
 import { ButtonReturn } from "../tools/ButtonReturn";
 import { ButtonWaith } from "../tools/ButtonWaith";
+import Modal from "react-bootstrap/Modal";
+import { ErrorHanding } from "../Utility";
+import { TrackingCode } from "../tools/TrackingCode";
 import {
   NotificationContainer,
   NotificationManager,
@@ -11,8 +14,6 @@ import {
 import "react-notifications/lib/notifications.css";
 import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import "../../App.css";
-import { ErrorHanding } from "../Utility";
-import { TrackingCode } from "../tools/TrackingCode";
 export class Cart extends Component {
   constructor(props) {
     super(props);
@@ -26,11 +27,13 @@ export class Cart extends Component {
       province: [],
       city: [],
       trackingCode: 10001,
+      show: false,
       payTypies: [{
         title: "پرداخت در محل", value: 1,
         // title:"آنلاین",value:2
       }],
-      loading: false
+      loading: false,
+      address: []
     };
 
     this.header = [
@@ -189,6 +192,19 @@ export class Cart extends Component {
         this.setState({ loading: false });
       });
   }
+  showModal() {
+
+    api.get("/Address/GetByUserId").then((response) => {
+      this.setState({ address: response.data.data, show: true });
+    })
+      .catch((error) => {
+        ErrorHanding(NotificationManager, error);
+        this.setState({ loading: false });
+      });
+  }
+  closeModal() {
+    this.setState({ show: false });
+  }
   render() {
     return (
       <div>
@@ -256,66 +272,115 @@ export class Cart extends Component {
 
             <div className="card mb-1">
               <h5 className="card-header">ثبت آدرس</h5>
-              <div className="row g-3 p-3">
-                <DropdownApp
-                  context={this}
-                  name="provinceId"
-                  title="استان"
-                  className="col-md-4 col-sm-12"
-                  data={this.state.province}
-                  onChange={(e) => this.onChangeProvice(e)}
-                />
-                <DropdownApp
-                  context={this}
-                  name="cityId"
-                  title="شهر"
-                  className="col-md-4 col-sm-12"
-                  data={this.state.city}
-                  updateKey={this.state.updateKeyCity}
-                />
-                <TextBox
-                  context={this}
-                  title="کد پستی"
-                  name="postalCode"
-                  type="number"
-                  className="col-md-4 col-sm-12"
-                />
-                <TextBox
-                  context={this}
-                  title="آدرس"
-                  name="addressStr"
-                  colMd="col-md-12"
-                  readOnly={true}
-                />
+              <div className="g-3 p-3">
+                <button className="col-md-1 col-sm-12 btn btn-primary" onClick={() => this.showModal()}>تاریخچه آدرس</button>
+                <div className="row">
+                  <DropdownApp
+                    context={this}
+                    name="provinceId"
+                    title="استان"
+                    className="col-md-4 col-sm-12"
+                    data={this.state.province}
+                    onChange={(e) => this.onChangeProvice(e)}
+                  />
+                  <DropdownApp
+                    context={this}
+                    name="cityId"
+                    title="شهر"
+                    className="col-md-4 col-sm-12"
+                    data={this.state.city}
+                    updateKey={this.state.updateKeyCity}
+                  />
+
+                  <TextBox
+                    context={this}
+                    title="کد پستی"
+                    name="postalCode"
+                    type="number"
+                    className="col-md-4 col-sm-12"
+                  />
+
+                  <TextBox
+                    context={this}
+                    title="آدرس"
+                    name="addressStr"
+                    className="col-md-12 col-sm-12"
+                    readOnly={true}
+                  />
+                </div>
+              </div>
+
+              <div className="card mb-1">
+                <h5 className="card-header">انتخاب تاریخ تحویل سفارش</h5>
+                <div className="row g-3 p-3">
+                  <DropdownApp
+                    title="تاریخ دریافت سفارش"
+                    className="col-md-4 col-sm-12"
+                    context={this}
+                    name="dateDelivery"
+                    data={this.state.days}
+                  />
+                  <DropdownApp
+                    title="نوع پرداخت"
+                    className="col-md-4 col-sm-12"
+                    context={this}
+                    name="payType"
+                    data={this.state.payTypies}
+                  />
+                </div>
+                <div className="d-flex justify-content-start p-3">
+                  <ButtonWaith onClick={() => this.AddData()}
+                    className="btn btn-success"
+                    loading={this.state.loading}
+                    title="ثبت سفارش" />
+                  <ButtonReturn />
+                </div>
               </div>
             </div>
 
-            <div className="card mb-1">
-              <h5 className="card-header">انتخاب تاریخ تحویل سفارش</h5>
-              <div className="row g-3 p-3">
-                <DropdownApp
-                  title="تاریخ دریافت سفارش"
-                  className="col-md-4 col-sm-12"
-                  context={this}
-                  name="dateDelivery"
-                  data={this.state.days}
-                />
-                <DropdownApp
-                  title="نوع پرداخت"
-                  className="col-md-4 col-sm-12"
-                  context={this}
-                  name="payType"
-                  data={this.state.payTypies}
-                />
-              </div>
-              <div className="d-flex justify-content-start p-3">
-                <ButtonWaith onClick={() => this.AddData()}
-                  className="btn btn-success"
-                  loading={this.state.loading}
-                  title="ثبت سفارش" />
-                <ButtonReturn />
-              </div>
-            </div>
+            <Modal
+              show={this.state.show}
+              onHide={() => this.closeModal()}
+              backdrop="static"
+              keyboard={false}
+               size="xl"   
+            >
+              <Modal.Header closeButton>
+                <Modal.Title className="fs-6">تاریخچه آدرس</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <div className="table-responsive">
+                  <table className="table table-bordered table-striped text-center align-middle">
+                    <thead className="table-dark">
+                      <tr>
+                        <th></th>
+                        <th>شهر</th>
+                        <th>کد پستی</th>
+                        <th>آدرس</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {this.state.address.map((x, index) => (
+                        <tr key={index}>
+                          <td>
+                            <button
+                              className="btn btn-sm btn-info"
+                              onClick={() => window.location.href = `/OrderDetails/${order.id}`}
+                            >
+                              انتخاب
+                            </button>
+                          </td>
+                          <td>{x.city}</td>
+                          <td>{x.postalCode}</td>
+                          <td>{x.addressStr}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </Modal.Body>
+              <Modal.Footer />
+            </Modal>
 
 
             <NotificationContainer />

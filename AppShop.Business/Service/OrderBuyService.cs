@@ -7,6 +7,7 @@ using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
@@ -97,6 +98,21 @@ namespace AppShop.Business.Service
         {
             var entity = db.OrderBuys.AsNoTracking().FirstOrDefault(x => x.Id == id);
 
+            if (shopStatues == ShopStatues.Cancel && entity.Statues != ShopStatues.Register)
+                throw new Exception("با نوجه به وضعیت جاری سفارش امکان لغو سفارش وجود ندارد");
+
+            if (shopStatues == ShopStatues.Confirm && entity.Statues != ShopStatues.Register)
+                throw new Exception("با نوجه به وضعیت جاری سفارش امکان تایید سفارش وجود ندارد");
+
+            if (shopStatues == ShopStatues.Send && entity.Statues != ShopStatues.Confirm)
+                throw new Exception("با نوجه به وضعیت جاری سفارش امکان ارسال سفارش وجود ندارد");
+
+            if (shopStatues == ShopStatues.Delivery && entity.Statues != ShopStatues.Send)
+                throw new Exception("با نوجه به وضعیت جاری سفارش امکان تحویل سفارش وجود ندارد");
+
+            if (shopStatues == ShopStatues.Reject && entity.Statues != ShopStatues.Delivery)
+                throw new Exception("با نوجه به وضعیت جاری سفارش امکان مرجوع سفارش وجود ندارد");
+
             var statues = new OrderBuyStatues();
             statues.Statues = shopStatues;
             statues.DateStatues = DateTime.Now;
@@ -109,17 +125,19 @@ namespace AppShop.Business.Service
         }
         public List<OrderBuyVm> GetAll(Guid userId, bool isAdmin)
         {
-            var query = db.OrderBuys.Select(x=>x);
-            if (!isAdmin)
-                query =query.Where(x => x.UserId == userId);
+            var query = db.OrderBuys.Select(x => x);
+            if (isAdmin)
+                query = query.Where(x => x.Statues != ShopStatues.Cancel);
+            else
+                query = query.Where(x => x.UserId == userId);
 
             query = query.OrderByDescending(x => x.DateOrder);
 
-            return query.ProjectTo<OrderBuyVm>(mapper.ConfigurationProvider).ToList(); 
+            return query.ProjectTo<OrderBuyVm>(mapper.ConfigurationProvider).ToList();
         }
         public OrderBuyVm GetById(Guid id)
         {
-            var query= db.OrderBuys.Where(x => x.Id == id);
+            var query = db.OrderBuys.Where(x => x.Id == id);
             return query.ProjectTo<OrderBuyVm>(mapper.ConfigurationProvider).SingleOrDefault();
 
         }

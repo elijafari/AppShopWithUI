@@ -42,7 +42,7 @@ export class Menu extends Component {
                 sum: sum,
                 user: user,
                 isLoging: user != null,
-                isAdmin: use != null && user.role == "admin"
+                isAdmin: user != null && user.role == "Admin"
             });
         }, 1000);
     }
@@ -86,7 +86,7 @@ export class Menu extends Component {
                                     جسنجوی کالا <span className="sr-only"></span>
                                 </a>
                             </li>
-                            {this.state.user && this.state.isAdmin && (
+                            {this.state.isAdmin && (
                                 <>
                                     <li className="nav-item active">
                                         <a className="nav-link" href="\product">

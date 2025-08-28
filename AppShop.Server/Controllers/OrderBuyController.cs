@@ -34,17 +34,11 @@ namespace AppShop.Server.Controllers
         }
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public IActionResult ConfirmOrder(InId input) => Response(() => service.ChangeShopStatues(input.Id, ShopStatues.Confirm));
-        [Authorize(Roles = "Admin")]
+        public IActionResult ChangeShopStatues(InChangeStatues input) => Response(() => service.ChangeShopStatues(input.Id, input.shopStatues));
+        [Authorize]
         [HttpPost]
-        public IActionResult SendOrder(InId input) => Response(() => service.ChangeShopStatues(input.Id, ShopStatues.Send));
-        [Authorize(Roles = "Admin")]
+        public IActionResult CancelOrder(InId input) => Response(() => service.ChangeShopStatues(input.Id, ShopStatues.Cancel));
         [HttpPost]
-        public IActionResult DeliveryOrder(InId input) => Response(() => service.ChangeShopStatues(input.Id, ShopStatues.Delivery));
-        [Authorize(Roles = "Admin")]
-        [HttpPost]
-        public IActionResult RejectOrder(InId input) => Response(() => service.ChangeShopStatues(input.Id, ShopStatues.Reject));
-         [HttpPost]
         public IActionResult GetAll()
         {
             return Response(() =>

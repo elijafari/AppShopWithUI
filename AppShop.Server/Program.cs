@@ -140,7 +140,8 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IOrderBuyService, OrderBuyService>();
 builder.Services.AddScoped<ILogService, LogService>();
-builder.Services.AddScoped<ICityService,CityService>();
+builder.Services.AddScoped<ICityService,CityService>(); 
+builder.Services.AddScoped<IAddressService, AddressService>();
 
 var app = builder.Build();
 
