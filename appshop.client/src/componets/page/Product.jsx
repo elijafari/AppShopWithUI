@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import axios from "axios";
+import api from "../tools/axiosConfig";
 import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import {
     NotificationContainer,
@@ -9,20 +9,21 @@ import "react-notifications/lib/notifications.css";
 import "../../App.css";
 import { TextBox } from "../tools/TextBox";
 import DropdownApp from "../tools/DropdownApp";
-import { ChangeRoute, GetLocalhostServer } from "../tools/ChangeRoute";
 import { Checkbox } from "../tools/CheckBox";
+import { ErrorHanding } from "../Utility";
 
 export class Product extends Component {
     constructor(props) {
         super(props);
         this.isEdit = props.isEdit,
-        this.state = {
-            id: props.isEdit ? window.location.href.split("/")[4] : 0,
-            cat: [],
-            file: null,
-            updateKeyImage: 1,
-            updateKey: 1,
-        };
+            this.state = {
+                id: props.isEdit ? window.location.href.split("/")[4] : 0,
+                cat: [],
+                file: null,
+                isActive:true,
+                updateKeyImage: 1,
+                updateKey: 1,
+            };
     }
     onChangeFile(e) {
         this.setState({
@@ -35,25 +36,19 @@ export class Product extends Component {
         this.setState({
             loading: false,
         });
-        var someUrl = GetLocalhostServer("api/category/GetAll");
-        axios.get(someUrl).then((response) => {
+        api.get("/category/GetAll").then((response) => {
             var cat = [];
-            response.data.forEach((element) => {
+            response.data.data.forEach((element) => {
                 cat.push({ title: element.name, value: element.id });
             });
             this.setState({ cat });
         });
-        if (this.state.id != null) {
-            someUrl = GetLocalhostServer("api/product/GetById?id=" + this.state.id);
-            axios.get(someUrl).then((response) => {
+        if (this.isEdit) {
+            api.get("product/GetById?id=" + this.state.id).then((response) => {
+                var result = response.data;
                 this.setState({
-                    code: response.data.code,
-                    name: response.data.name,
-                    price: response.data.price,
-                    categoryId: response.data.categoryId,
-                    description: response.data.description,
-                    file: "data:image/png;base64," + response.data.image,
-                    isActive: response.data.isActive,
+                    result,
+                    file: "data:image/png;base64," + result.image,
                     updateKey: this.state.updateKey + 1,
                 });
             });
@@ -64,8 +59,6 @@ export class Product extends Component {
             NotificationManager.error("فایل انتخاب نشده است", "خطا");
             return;
         }
-
-        const someUrl = this.isEdit ? GetLocalhostServer("api/product/update") : GetLocalhostServer("api/product/add");
 
         const formData = new FormData();
         if (this.state.fileData != undefined)
@@ -78,35 +71,29 @@ export class Product extends Component {
         formData.append("id", this.state.id);
         formData.append("categoryId", this.state.categoryId);
         formData.append("isActive", this.state.isActive);
-        axios
-            .post(someUrl, formData, {
-                headers: {
-                    "content-type": "multipart/form-data",
-                },
+
+        api.post(this.isEdit ? "/product/update" : "/product/add", formData, { isMultipart: true })
+            .then((res) => {
+                if (res.status === 200) {
+                    NotificationManager.success(res.data.message, "پیام");
+                    if (this.isEdit)
+                        window.location.href = "/productList";
+                    else
+                        this.clearInput();
+                } else
+                    ErrorHanding(NotificationManager, res.data.message);
             })
-            .then((response) => {
-                if (response.status === 200) {
-                    if (this.isEdit) {
-                        NotificationManager.success("اطلاعات با موفقیت ویرایش شد", "پیام");
-                        ChangeRoute("/productList");
-                    } else {
-                        NotificationManager.success("اطلاعات با موفقیت ثبت شد", "پیام");
-                        this.setState({
-                            code: null,
-                            name: null,
-                            price: null,
-                            discription: null,
-                            file: [],
-                            updateKey: this.state.updateKey + 1,
-                        });
-                    }
-                } else {
-                    NotificationManager.error("خطای سیستمی رخ داده است", "خطا");
-                }
-            })
-            .catch((error) => {
-                NotificationManager.error(error.response.data, "خطا");
-            });
+            .catch((error) => ErrorHanding(NotificationManager, error));
+    }
+    clearInput() {
+        this.setState({
+            code: null,
+            name: null,
+            price: null,
+            discription: null,
+            file: [],
+            updateKey: this.state.updateKey + 1,
+        });
     }
     render() {
         return (
@@ -183,7 +170,7 @@ export class Product extends Component {
                             ثبت
                         </button>
                         <button onClick={() => this.AddData()} className="btn btn-light leftBtn">
-                         بازگشت
+                            بازگشت
                         </button>
                     </div>
                 </div>

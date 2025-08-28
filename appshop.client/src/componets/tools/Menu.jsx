@@ -1,19 +1,20 @@
 import React, { Component } from "react";
 import "bootstrap/dist/css/bootstrap.rtl.min.css";
-import "../App.css";
+import "../../App.css";
 import { Outlet } from "react-router-dom";
 import { FaShoppingCart } from "react-icons/fa";
 import { ModalApp } from "./ModalApp";
 import { ButtonRoute } from "./ButtonRoute";
 import axios from "axios";
-import "../../node_modules/bootstrap/dist/css/bootstrap.min.css";
+import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import {
   NotificationContainer,
   NotificationManager,
 } from "react-notifications";
 import "react-notifications/lib/notifications.css";
 import { ChangeRoute, GetLocalhostServer } from "./ChangeRoute";
-
+import { parseJwt } from "../Utility";
+import { ErrorHanding } from "../Utility";
 
 
 export class Menu extends Component {
@@ -22,14 +23,15 @@ export class Menu extends Component {
     this.state = {
       sum: 0,
       isLoging: false,
-      isAdmin:true,
+      isAdmin: true,
     };
   }
 
   componentDidMount() {
     setInterval(() => {
       let array = JSON.parse(localStorage.getItem("selectedItem"));
-      let user =localStorage.getItem("user");
+      let token = localStorage.getItem("token");
+      let user = parseJwt(token);
       let sum = 0;
       if (array != null)
         if (array.length > 0) {
@@ -47,31 +49,18 @@ export class Menu extends Component {
   }
   logout() {
     localStorage.clear();
-          ChangeRoute("/Home");
-    //const someUrl = GetLocalhostServer("api/user/signOut");
-    //axios
-    //  .post(someUrl, this.state)
-    //  .then((response) => {
-    //    if (response.status === 200) {
-    //    } else {
-    //      NotificationManager.error("خطای سیستمی رخ داده است", "خطا");
-    //    }
-    //  })
-    //  .catch((error) => {
-    //    NotificationManager.error(error.response.data.data, "خطا");
-    //  });
+    window.location.href="/";
   }
 
   render() {
     return (
       <>
         <div className="userInfo">
-          {/*{this.state.user != null && (*/}
-          {/*  //<p>*/}
-          {/*  //  کاربر گرامی :{" "}*/}
-          {/*  //  {this.state.user.name + " " + this.state.user.family}*/}
-          {/*  //</p>*/}
-          {/*)}*/}
+          {this.state.user != null && (
+            <p>
+              کاربر گرامی :{" "}
+              {this.state.user.name}
+            </p>)}
         </div>
         <nav className="navbar navbar-expand-lg bg-success navbar-dark">
           <button

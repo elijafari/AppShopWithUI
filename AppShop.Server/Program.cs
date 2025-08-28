@@ -5,8 +5,10 @@ using AppShop.Business.Service;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -59,6 +61,7 @@ builder.Services.AddSwaggerGen(c =>
 var jwtKey = builder.Configuration["Jwt:Key"];
 var jwtIssuer = builder.Configuration["Jwt:Issuer"];
 
+JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -75,25 +78,42 @@ builder.Services.AddAuthentication(options =>
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
         ValidIssuer = jwtIssuer,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
+        ValidAudience = jwtIssuer, 
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
+        RoleClaimType = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role",
     };
 });
+
+
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
 });
-
 // 👉 سرویس‌های دیگر
 // builder.Services.AddScoped<...>();
 
 builder.Services.AddScoped<TokenService>();
-
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("CORSPolicy", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+    if (builder.Environment.IsDevelopment())
+    {
+        // محیط توسعه
+        options.AddPolicy("AllowFrontend", policy =>
+            policy.WithOrigins("https://localhost:5173")
+                  .AllowAnyHeader()
+                  .AllowAnyMethod()
+                  .AllowCredentials());
+    }
+    else
+    {
+        // محیط عملیاتی
+        options.AddPolicy("AllowFrontend", policy =>
+            policy.WithOrigins("https://shop.example.com")
+                  .AllowAnyHeader()
+                  .AllowAnyMethod()
+                  .AllowCredentials());
+    }
 });
-
-
 
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IUserService, UserService>();
@@ -108,6 +128,7 @@ var app = builder.Build();
 
 app.UseHttpsRedirection();
 
+app.UseCors("AllowFrontend");
 app.UseAuthentication(); // مهم: قبل از Authorization
 app.UseAuthorization();
 
@@ -128,7 +149,6 @@ else
     app.UseExceptionHandler("/Error");
     app.UseHsts();
 }
-app.UseCors("CORSPolicy");
 app.MapControllers();
 
 app.Run();

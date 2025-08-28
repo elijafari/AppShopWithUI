@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using AppShop.Business.Entity;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -15,13 +16,14 @@ namespace AppShop.Business.Service
             _configuration = configuration;
         }
 
-        public string CreateToken(string username, string role)
+        public string CreateToken(User entity)
         {
             // 1. Claims (ادعاها)
             var claims = new[]
             {
-                new Claim(ClaimTypes.Name, username),
-                new Claim(ClaimTypes.Role, role)
+                new Claim(nameof(entity.Id).ToLower(), entity.Id.ToString()),
+                new Claim(nameof(entity.Name).ToLower(), entity.Name),
+                new Claim(ClaimTypes.Role, entity.IsAdmin?"Admin":"User")
             };
 
             // 2. کلید امضا
@@ -35,7 +37,7 @@ namespace AppShop.Business.Service
                 issuer: _configuration["Jwt:Issuer"],
                 audience: _configuration["Jwt:Issuer"],
                 claims: claims,
-                expires: DateTime.UtcNow.AddDays(7),
+                expires: DateTime.UtcNow.AddDays(2),
                 signingCredentials: creds
             );
 

@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import axios from "axios";
 import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import {
   NotificationContainer,
@@ -8,32 +7,28 @@ import {
 import "react-notifications/lib/notifications.css";
 import "../../App.css";
 import { TextBox } from "../tools/TextBox";
-import { ChangeRoute, GetLocalhostServer } from "../tools/ChangeRoute";
+import  api  from "../tools/axiosConfig";
 import { FaLock } from "react-icons/fa";
 import { ButtonRoute } from "../tools/ButtonRoute";
+import { ErrorHanding } from "../Utility";
 
 export class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {};
-  }
-  signIn() {
-    const someUrl = GetLocalhostServer("api/user/signIn");
+  } 
 
-    axios
-      .post(someUrl, this.state)
-      .then((response) => {
-        if (response.status === 200) {
-          localStorage.setItem("user", JSON.stringify(response.data.data));
-          ChangeRoute("/Home");
-        } else {
-          NotificationManager.error("خطای سیستمی رخ داده است", "خطا");
-        }
-      })
-      .catch((error) => {
-        NotificationManager.error(error.response.data.data, "خطا");
-      });
-  }
+    login = () => {
+        api.post("/user/login", {
+            userName: this.state.userName,
+            password: this.state.password
+        })
+        .then(res => {
+            localStorage.setItem("token", res.data.data);
+            window.location.href = "/"; 
+        })
+        .catch((error) =>ErrorHanding(NotificationManager,error));
+    };
   render() {
     return (
       <>
@@ -61,7 +56,7 @@ export class Login extends Component {
                     <TextBox
                       context={this}
                       title="رمز عبور"
-                      name="passWord"
+                      name="password"
                       type="password"
                       className="col-md-12 col-sm-12"
                       isLeft={true}
@@ -85,7 +80,7 @@ export class Login extends Component {
                       data-mdb-ripple-init
                       className="btn btn-primary btn-lg btn-block marginApp"
                       type="submit"
-                      onClick={() => this.signIn()}
+                      onClick={() => this.login()}
                     >
                       ورود
                     </button>

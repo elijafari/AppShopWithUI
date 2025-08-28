@@ -95,3 +95,17 @@
     left: 22px;
     position: absolute;
 }
+.animate-card {
+    animation: fadeInUp 0.7s ease-in-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

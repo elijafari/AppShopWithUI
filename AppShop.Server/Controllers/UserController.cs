@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using AppShop.Business.IService;
 using AppShop.Server.Helper;
+using AppShop.Business.DataModel;
 
 namespace AppShop.Server.Controllers
 {
@@ -19,7 +20,7 @@ namespace AppShop.Server.Controllers
         [HttpPost]
         public IActionResult Add([FromBody] User input)=> Response(() => service.Add(input));
         [HttpPost]
-        public IActionResult Login([FromBody] User input)=> Response(() => service.Login(input));
+        public IActionResult Login([FromBody] InUser input)=> Response(() => service.Login(input));
         [HttpPost]
         public IActionResult AddAdmin() => Response(() => service.AddAdmin());
 

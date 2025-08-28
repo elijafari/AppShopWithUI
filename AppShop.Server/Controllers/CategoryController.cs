@@ -20,7 +20,7 @@ namespace AppShop.Server.Controllers
         [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult Add(Category input) => Response(() => service.Add(input));
-        [Authorize(Roles = "Admin")]
+       
         [HttpPost]
         public IActionResult AddRange() => Response(() => service.AddRange());
         [HttpGet]

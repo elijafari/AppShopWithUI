@@ -12,25 +12,29 @@ namespace AppShop.Business.Service
 {
     public class UserService:IUserService
     {
-        AppShopDBContext db;    
-        public UserService(AppShopDBContext _db) {
+        AppShopDBContext db;
+        TokenService tokenService;
+        public UserService(AppShopDBContext _db, TokenService _tokenService) {
         db= _db;
+            tokenService = _tokenService;
         }
-        public bool Add(User entity)
+        public string  Add(User entity)
         {
             if(db.Users.Where(x=>x.UserName==entity.UserName).Any()) {
              throw new Exception("نام کاربری تکراری است");
             }
             db.Users.Add(entity);
             db.SaveChanges();
-            return true;
+            var token=tokenService.CreateToken(entity);
+            return token;
         }
-        public User Login(User entity)
+        public string Login(InUser input)
         {
-            var result = db.Users.Where(x => x.UserName == entity. UserName && x.Password == entity.Password).FirstOrDefault();
-            if (result == null)
+            var entity = db.Users.Where(x => x.UserName == input. UserName && x.Password == input.Password).FirstOrDefault();
+            if (entity == null)
                 throw new Exception("نام کاربری یا رمز عبور یافت نشد");
-            return result;
+            var token = tokenService.CreateToken(entity);
+            return token;
         }
         public bool AddAdmin()
         {

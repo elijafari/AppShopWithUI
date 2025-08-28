@@ -46,19 +46,21 @@ namespace AppShop.Business.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(50)", nullable: false),
+                    Mobail = table.Column<string>(type: "nvarchar(50)", nullable: true),
+                    Phone = table.Column<string>(type: "nvarchar(50)", nullable: true),
+                    Region = table.Column<string>(type: "nvarchar(50)", nullable: true),
+                    PostalCode = table.Column<string>(type: "nvarchar(50)", nullable: true),
                     CreatedDate = table.Column<string>(type: "nvarchar(50)", nullable: false),
-                    ModifiedDate = table.Column<string>(type: "nvarchar(50)", nullable: false),
-                    LastLogin = table.Column<string>(type: "nvarchar(50)", nullable: false),
+                    ModifiedDate = table.Column<string>(type: "nvarchar(50)", nullable: true),
+                    LastLogin = table.Column<string>(type: "nvarchar(50)", nullable: true),
                     IsAdmin = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-                    City = table.Column<string>(type: "nvarchar(50)", nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(1000)", nullable: false),
-                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(50)", maxLength: 256, nullable: false),
-                    PasswordHash = table.Column<string>(type: "nvarchar(50)", nullable: false),
-                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    City = table.Column<string>(type: "nvarchar(50)", nullable: true),
+                    Address = table.Column<string>(type: "nvarchar(1000)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(50)", nullable: true),
+                    UserName = table.Column<string>(type: "nvarchar(100)", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(100)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -100,17 +102,17 @@ namespace AppShop.Business.Migrations
                     DateOrder = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DateDelivery = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Statues = table.Column<int>(type: "int", nullable: false),
-                    TrackingCode = table.Column<decimal>(type: "decimal(18,2)", nullable: false, defaultValue: 1000m),
-                    UserEntityId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    TrackingCode = table.Column<decimal>(type: "decimal(18,2)", nullable: false, defaultValue: 1000m)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_OrderBuy", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_OrderBuy_Users_UserEntityId",
-                        column: x => x.UserEntityId,
+                        name: "FK_OrderBuy_Users_UserId",
+                        column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -159,9 +161,9 @@ namespace AppShop.Business.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrderBuy_UserEntityId",
+                name: "IX_OrderBuy_UserId",
                 table: "OrderBuy",
-                column: "UserEntityId");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrderBuyItem_OrderBuyEntityId",
@@ -177,13 +179,6 @@ namespace AppShop.Business.Migrations
                 name: "IX_Product_CategoryId",
                 table: "Product",
                 column: "CategoryId");
-
-            migrationBuilder.CreateIndex(
-                name: "UserNameIndex",
-                table: "Users",
-                column: "NormalizedUserName",
-                unique: true,
-                filter: "[NormalizedUserName] IS NOT NULL");
         }
 
         /// <inheritdoc />
