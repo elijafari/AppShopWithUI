@@ -108,7 +108,7 @@ builder.Services.AddCors(options =>
     {
         // محیط عملیاتی
         options.AddPolicy("AllowFrontend", policy =>
-            policy.WithOrigins("https://shop.example.com")
+           policy.WithOrigins("https://localhost:5000")
                   .AllowAnyHeader()
                   .AllowAnyMethod()
                   .AllowCredentials());
