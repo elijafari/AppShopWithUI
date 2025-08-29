@@ -66,31 +66,31 @@ namespace AppShop.Business.Service
         {
             if (input.Items == null)
             {
-                throw new Exception("ایتمی برای ثبت سفارش وجود ندارد");
+                throw new PersianException("ایتمی برای ثبت سفارش وجود ندارد");
 
             }
             if (!input.Items.Any())
             {
-                throw new Exception("ایتمی برای ثبت سفارش وجود ندارد");
+                throw new PersianException("ایتمی برای ثبت سفارش وجود ندارد");
             }
             if (input.Address.CityId == 0)
             {
-                throw new Exception("شهر انتخاب نشده است");
+                throw new PersianException("شهر انتخاب نشده است");
             }
 
             if (input.Address.PostalCode.Length == 0)
             {
-                throw new Exception("کدپستی وارد نشده است");
+                throw new PersianException("کدپستی وارد نشده است");
             }
 
             if (input.Address.AddressStr.Length == 0)
             {
-                throw new Exception("آدرس وارد نشده است");
+                throw new PersianException("آدرس وارد نشده است");
             }
 
             if (input.PayType == 0)
             {
-                throw new Exception("نوع پرداخت انتخاب نشده است");
+                throw new PersianException("نوع پرداخت انتخاب نشده است");
             }
 
         }
@@ -99,19 +99,19 @@ namespace AppShop.Business.Service
             var entity = db.OrderBuys.AsNoTracking().FirstOrDefault(x => x.Id == id);
 
             if (shopStatues == ShopStatues.Cancel && entity.Statues != ShopStatues.Register)
-                throw new Exception("با نوجه به وضعیت جاری سفارش امکان لغو سفارش وجود ندارد");
+                throw new PersianException("با نوجه به وضعیت جاری سفارش امکان لغو سفارش وجود ندارد");
 
             if (shopStatues == ShopStatues.Confirm && entity.Statues != ShopStatues.Register)
-                throw new Exception("با نوجه به وضعیت جاری سفارش امکان تایید سفارش وجود ندارد");
+                throw new PersianException("با نوجه به وضعیت جاری سفارش امکان تایید سفارش وجود ندارد");
 
             if (shopStatues == ShopStatues.Send && entity.Statues != ShopStatues.Confirm)
-                throw new Exception("با نوجه به وضعیت جاری سفارش امکان ارسال سفارش وجود ندارد");
+                throw new PersianException("با نوجه به وضعیت جاری سفارش امکان ارسال سفارش وجود ندارد");
 
             if (shopStatues == ShopStatues.Delivery && entity.Statues != ShopStatues.Send)
-                throw new Exception("با نوجه به وضعیت جاری سفارش امکان تحویل سفارش وجود ندارد");
+                throw new PersianException("با نوجه به وضعیت جاری سفارش امکان تحویل سفارش وجود ندارد");
 
             if (shopStatues == ShopStatues.Reject && entity.Statues != ShopStatues.Delivery)
-                throw new Exception("با نوجه به وضعیت جاری سفارش امکان مرجوع سفارش وجود ندارد");
+                throw new PersianException("با نوجه به وضعیت جاری سفارش امکان مرجوع سفارش وجود ندارد");
 
             var statues = new OrderBuyStatues();
             statues.Statues = shopStatues;

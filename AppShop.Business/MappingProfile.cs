@@ -23,7 +23,8 @@ namespace AppShop.Business
         .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.ProductEntity.Name));
 
             CreateMap<Address, AddressVM>()
-                .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.CitiEntity.Name));
+                .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.CitiEntity.Name))
+                .ForMember(dest => dest.ProvinceId, opt => opt.MapFrom(src => src.CitiEntity.ParentId));
         }
     }
 }

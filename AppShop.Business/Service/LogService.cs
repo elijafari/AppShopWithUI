@@ -15,14 +15,14 @@ namespace AppShop.Business.Service
         public LogService(AppShopDBContext _db) {
         db= _db;
         }
-        public void Add(string message ,string stackTrace)
+        public void Add(string message)
         {
             var entity=new Log();
             entity.Massege= message;
             entity.CreateDateTime= DateTime.Now;
             entity.UserId= Guid.NewGuid();
             db.Logs.Add(entity);
-          //  db.SaveChanges();
+           db.SaveChanges();
           //  throw new Exception(message);
         }
     }

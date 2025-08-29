@@ -8,6 +8,6 @@ namespace AppShop.Business.IService
 {
     public interface ILogService
     {
-        void Add(string message, string stackTrace);
+        void Add(string message);
     }
 }

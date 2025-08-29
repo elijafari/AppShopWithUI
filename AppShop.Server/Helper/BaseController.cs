@@ -1,4 +1,5 @@
 ﻿
+using AppShop.Business;
 using AppShop.Business.DataModel;
 using AppShop.Business.IService;
 using AppShop.Business.Service;
@@ -53,9 +54,18 @@ namespace AppShop.Server.Helper
                     Message = "شما دسترسی لازم زا ندارید"
                 });
             }
+            catch (PersianException ex) //پیام ها
+            {
+                return StatusCode((int)HttpStatusCode.Conflict, new ApiResponse
+                {
+                    Success = false,
+                    Message = ex.Message
+                });
+            }
             catch (Exception ex) // سایر خطاها
             {
-                logService.Add(ex.Message, ex.StackTrace);
+
+                logService.Add(ex.Message);
                 return StatusCode((int)HttpStatusCode.InternalServerError, new ApiResponse
                 {
                     Success = false,

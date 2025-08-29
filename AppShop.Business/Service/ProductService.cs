@@ -46,33 +46,33 @@ namespace AppShop.Business.Service
         {
             if (entity.Code == 0)
             {
-                throw new Exception(Utility.GetMsgRequired("کد"));
+                throw new PersianException(Utility.GetMsgRequired("کد"));
             }
             else if (db.Products.Any(x => x.Code == entity.Code && x.Id!=entity.Id))
             {
-                throw new Exception(Utility.GetMsgRepert("کد"));
+                throw new PersianException(Utility.GetMsgRepert("کد"));
             }
             if (entity.Name == null || entity.Name.Length == 0)
             {
-                throw new Exception(Utility.GetMsgRequired("نام"));
+                throw new PersianException(Utility.GetMsgRequired("نام"));
             }
 
             else if (db.Products.Any(x => x.Name == entity.Name && x.Id != entity.Id))
             {
-                throw new Exception(Utility.GetMsgRepert("نام"));
+                throw new PersianException(Utility.GetMsgRepert("نام"));
             }
             if (entity.CategoryId == 0)
             {
-                throw new Exception(Utility.GetMsgRequired("گروه کالا"));
+                throw new PersianException(Utility.GetMsgRequired("گروه کالا"));
 
             }
             if (entity.Price == 0)
             {
-                throw new Exception(Utility.GetMsgRequired("قیمت"));
+                throw new PersianException(Utility.GetMsgRequired("قیمت"));
             }
             if (entity.image == null)
             {
-                throw new Exception(Utility.GetMsgRequired("عکس"));
+                throw new PersianException(Utility.GetMsgRequired("عکس"));
             }
         }
 

@@ -7,6 +7,8 @@ import { ButtonWaith } from "../tools/ButtonWaith";
 import Modal from "react-bootstrap/Modal";
 import { ErrorHanding } from "../Utility";
 import { TrackingCode } from "../tools/TrackingCode";
+import { CartEmpty } from "../tools/CartEmpty";
+import { Address } from "./Address";
 import {
   NotificationContainer,
   NotificationManager,
@@ -18,7 +20,7 @@ export class Cart extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      step: 1,
+      step: 0,
       data: [],
       updateKey: 1,
       updateKeyCity: 1,
@@ -109,6 +111,7 @@ export class Cart extends Component {
   refreshTable(data) {
     this.setState({
       data: data,
+      step: data != null && data.length > 0 ? 1 : 0,
       updateKey: this.state.updateKey + 1,
     });
     localStorage.setItem("selectedItem", JSON.stringify(data));
@@ -205,9 +208,26 @@ export class Cart extends Component {
   closeModal() {
     this.setState({ show: false });
   }
+  selectAddress(e) {
+    var city = this.state.cityAll.filter(x => x.parentId == e.provinceId);
+    var array = [];
+    city.forEach((element) => {
+      array.push({ title: element.name, value: element.id });
+    });
+    this.setState(
+      {
+        ...e,
+        city: array,
+        updateKeyCity: this.state.updateKeyCity + 1,
+        show: false
+      });
+  }
   render() {
     return (
       <div>
+        {this.state.step == 0 && (
+          <CartEmpty />
+        )}
         {this.state.step == 1 && (
           <>
             <div className="card mb-1">
@@ -343,41 +363,16 @@ export class Cart extends Component {
               onHide={() => this.closeModal()}
               backdrop="static"
               keyboard={false}
-               size="xl"   
+              size="xl"
             >
               <Modal.Header closeButton>
                 <Modal.Title className="fs-6">تاریخچه آدرس</Modal.Title>
               </Modal.Header>
               <Modal.Body>
-                <div className="table-responsive">
-                  <table className="table table-bordered table-striped text-center align-middle">
-                    <thead className="table-dark">
-                      <tr>
-                        <th></th>
-                        <th>شهر</th>
-                        <th>کد پستی</th>
-                        <th>آدرس</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {this.state.address.map((x, index) => (
-                        <tr key={index}>
-                          <td>
-                            <button
-                              className="btn btn-sm btn-info"
-                              onClick={() => window.location.href = `/OrderDetails/${order.id}`}
-                            >
-                              انتخاب
-                            </button>
-                          </td>
-                          <td>{x.city}</td>
-                          <td>{x.postalCode}</td>
-                          <td>{x.addressStr}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+                <Address
+                  data={this.state.address}
+                  showSelected={true}
+                />
               </Modal.Body>
               <Modal.Footer />
             </Modal>

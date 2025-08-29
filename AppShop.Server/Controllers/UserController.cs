@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using DNTCaptcha.Core;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Primitives;
+using AppShop.Business;
 
 namespace AppShop.Server.Controllers
 {
@@ -36,7 +37,7 @@ namespace AppShop.Server.Controllers
                     var token = service.Login(input);
                     if (!validator.HasRequestValidCaptchaEntry())
                     {
-                        throw new Exception("کپچا اشتباه است!");
+                        throw new PersianException("کد امنیتی اشتباه است. دوباره تلاش کنید");
                     }
                     return token;
                 });

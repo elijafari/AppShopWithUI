@@ -17,15 +17,19 @@ export function parseJwt(token) {
 }
 
 export function ErrorHanding(NotificationManager, error) {
-    if (error.response && error.response.status === 400) {
-        NotificationManager.error("اطلاعات وارد شده معتیر نیستند", "خطا");
-    }
-    else if (error.response && error.response.status === 401) {
-        // حذف توکن و انتقال به صفحه لاگین
-        localStorage.removeItem("token");
-        NotificationManager.error("لطفا به سیستم وارد شوید", "خطا");
-    }
+    if (error.response) {
+        if (error.response.status === 400) {
+            NotificationManager.error("اطلاعات وارد شده معتیر نیستند", "خطا");
+        }
+        else if (error.response.status === 401) {
+            // حذف توکن و انتقال به صفحه لاگین
+            localStorage.removeItem("token");
+            NotificationManager.error("لطفا به سیستم وارد شوید", "خطا");
+        }
 
-    else if (error.response && error.response.status === 500 && error.response.data && error.response.data.message)
-        NotificationManager.error(error.response.data.message, "خطا");
+        else if (error.response.status === 500 && error.response.data && error.response.data.message)
+            NotificationManager.error(error.response.data.message, "خطا");
+        else if (error.response.status === 409 && error.response.data && error.response.data.message)
+            NotificationManager.error(error.response.data.message, "خطا");
+    }
 }
