@@ -112,6 +112,7 @@ builder.Services.AddCors(options =>
                   .AllowAnyHeader()
                   .AllowAnyMethod()
                   .AllowCredentials());
+        builder.WebHost.UseUrls("http://0.0.0.0:5000");
     }
 });
 
