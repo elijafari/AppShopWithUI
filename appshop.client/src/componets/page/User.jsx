@@ -88,7 +88,7 @@ export class User extends React.Component {
     return (
       <>
         <div className="card">
-          <h5 className="card-header">اطلاعات کاربری</h5>
+          <p className="card-header">اطلاعات کاربری</p>
           <div className="card-body">
             <div className="row">
               <TextBox
@@ -140,7 +140,7 @@ export class User extends React.Component {
         </div>
 
         <div className="card">
-          <h5 className="card-header">تاریخچه آدرس</h5>
+          <p className="card-header">تاریخچه آدرس</p>
           <div className="card-body">
             <Address data={this.state.address}/>
           </div>

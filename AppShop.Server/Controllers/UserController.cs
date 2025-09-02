@@ -35,10 +35,10 @@ namespace AppShop.Server.Controllers
         public IActionResult Login([FromForm] InUser input) => Response(() =>
                 {
                     var token = service.Login(input);
-                    if (!validator.HasRequestValidCaptchaEntry())
-                    {
-                        throw new PersianException("کد امنیتی اشتباه است. دوباره تلاش کنید");
-                    }
+                    //if (!validator.HasRequestValidCaptchaEntry())
+                    //{
+                    //    throw new PersianException("کد امنیتی اشتباه است. دوباره تلاش کنید");
+                    //}
                     return token;
                 });
         [HttpPost]

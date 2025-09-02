@@ -10,9 +10,9 @@ namespace AppShop.Business.DataModel
     {
         public string UserName { get; set; }
         public string Password { get; set; }
-        public string CaptchaInput { get; set; }
-        public string DntCaptchaTextValue { get; set; }
-        public string DntCaptchaTokenValue { get; set; }
+        //public string CaptchaInput { get; set; }
+        //public string DntCaptchaTextValue { get; set; }
+        //public string DntCaptchaTokenValue { get; set; }
 
         //CaptchaHiddenInputName = "DNTCaptchaText",
         //         CaptchaHiddenTokenName = "DNTCaptchaToken",

@@ -6,7 +6,16 @@
   height: 40vmin;
   pointer-events: none;
 }
+@font-face {
+  font-family: 'Vazirmatn';
+  src: url('/fonts/Vazirmatn.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
 
+body {
+  font-family: 'Vazirmatn', sans-serif;
+}
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
@@ -153,6 +162,10 @@
   cursor: pointer;
 }
 .card-header{
-  background-color: #c8e9c8 !important;
+  background-color: #e6ff09 !important;
   margin-top: 1px !important;
+}
+.font-size{
+  font-size: 10px;
+  font-family:'Vazirmatn' !important;
 }

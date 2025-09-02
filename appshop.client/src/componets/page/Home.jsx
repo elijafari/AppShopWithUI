@@ -91,9 +91,9 @@ export class Home extends Component {
 
 
         <div className="card">
-          <h5 className="card-header">
+          <p className="card-header">
             فیلتر ها
-          </h5>
+          </p>
           <div className="card-body">
 
             <div className="row">

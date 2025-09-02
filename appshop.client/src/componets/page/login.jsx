@@ -22,9 +22,9 @@ export class Login extends React. Component {
     const formData = new URLSearchParams();
     formData.append("username", this.state.userName);
     formData.append("password", this.state.password);
-    formData.append("captchaInput", this.state.captchaInput);
-    formData.append("dntCaptchaTextValue", this.state.dntCaptchaTextValue);
-    formData.append("dntCaptchaTokenValue", this.state.dntCaptchaTokenValue);
+    //formData.append("captchaInput", this.state.captchaInput);
+    //formData.append("dntCaptchaTextValue", this.state.dntCaptchaTextValue);
+    //formData.append("dntCaptchaTokenValue", this.state.dntCaptchaTokenValue);
 
 
 
@@ -85,18 +85,18 @@ export class Login extends React. Component {
                         type="password"
                       />
                     </div>
-                    <div className="row align-items-center">
-                      <div className="col">
-                        <TextBox
-                          context={this}
-                          title="کد امنیتی"
-                          name="captchaInput"
-                        />
-                      </div>
-                      <div className="col-auto">
-                        <Capcha sentCapcha={(e) => this.ReadCapcha(e)} />
-                      </div>
-                    </div>
+                    {/*<div className="row align-items-center">*/}
+                    {/*  <div className="col">*/}
+                    {/*    <TextBox*/}
+                    {/*      context={this}*/}
+                    {/*      title="کد امنیتی"*/}
+                    {/*      name="captchaInput"*/}
+                    {/*    />*/}
+                    {/*  </div>*/}
+                    {/*  */}{/*<div className="col-auto">*/}
+                    {/*  */}{/*  <Capcha sentCapcha={(e) => this.ReadCapcha(e)} />*/}
+                    {/*  */}{/*</div>*/}
+                    {/*</div>*/}
                     {/* فراموشی رمز */}
                     <div className="d-flex justify-content-between align-items-center mb-4 flex-row-reverse">
                       <a

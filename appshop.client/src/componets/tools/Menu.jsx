@@ -5,145 +5,154 @@ import { Outlet } from "react-router-dom";
 import { FaShoppingCart } from "react-icons/fa";
 import { ModalApp } from "./ModalApp";
 import { ButtonRoute } from "./ButtonRoute";
-import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import {
-    NotificationContainer,
+  NotificationContainer,
 } from "react-notifications";
 import "react-notifications/lib/notifications.css";
 import { parseJwt } from "../Utility";
 import Watch from "./watch";
-import { use } from "react";
-
 
 export class Menu extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            sum: 0,
-            isLoging: false,
-            isAdmin: true,
-        };
-    }
+  constructor(props) {
+    super(props);
+    this.state = {
+      sum: 0,
+      isLoging: false,
+      isAdmin: false,
+      user: null,
+      isOpen: false, // ✅ کنترل باز/بسته شدن منو
+    };
+  }
 
-    componentDidMount() {
-        setInterval(() => {
-            let array = JSON.parse(localStorage.getItem("selectedItem"));
-            let token = localStorage.getItem("token");
-            let user = parseJwt(token);
-            let sum = 0;
-            if (array != null)
-                if (array.length > 0) {
-                    for (let index = 0; index < array.length; index++) {
-                        const element = array[index];
-                        sum += element.count;
-                    }
-                }
-            this.setState({
-                sum: sum,
-                user: user,
-                isLoging: user != null,
-                isAdmin: user != null && user.role == "Admin"
-            });
-        }, 1000);
-    }
-    logout() {
-        localStorage.clear();
-        window.location.href = "/";
-    }
+  componentDidMount() {
+    this.interval = setInterval(() => {
+      let array = JSON.parse(localStorage.getItem("selectedItem"));
+      let token = localStorage.getItem("token");
+      let user = parseJwt(token);
+      let sum = 0;
+      if (array && array.length > 0) {
+        for (let item of array) {
+          sum += item.count;
+        }
+      }
+      this.setState({
+        sum,
+        user,
+        isLoging: user != null,
+        isAdmin: user != null && user.role === "Admin",
+      });
+    }, 1000);
+  }
 
-    render() {
-        return (
-            <>
-                <div className="row d-flex justify-content-between align-items-center">
-                    <Watch />
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
 
-                    {/* سمت چپ: نام کاربر */}
-                    <div className="col-auto small text-black-200 mt-2">
-                        {this.state.user != null && (
-                            <p className="mb-0">
-                                کاربر گرامی : {this.state.user.name}
-                            </p>
-                        )}
-                    </div>
-                </div>
-                <nav className="navbar navbar-expand-lg bg-success navbar-dark">
-                    <button
-                        className="navbar-toggler"
-                        type="button"
-                        data-toggle="collapse"
-                        data-target="#navbarTogglerDemo02"
-                        aria-controls="navbarTogglerDemo02"
-                        aria-expanded="false"
-                        aria-label="Toggle navigation"
-                    >
-                        <span className="navbar-toggler-icon"></span>
-                    </button>
+  toggleMenu = () => {
+    this.setState({ isOpen: !this.state.isOpen });
+  };
 
-                    <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
-                        <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
-                            <li className="nav-item active">
-                                <a className="nav-link" href="\home">
-                                    جسنجوی کالا <span className="sr-only"></span>
-                                </a>
-                            </li>
-                            {this.state.isAdmin && (
-                                <>
-                                    <li className="nav-item active">
-                                        <a className="nav-link" href="\product">
-                                            تعریف کالا<span className="sr-only"></span>
-                                        </a>
-                                    </li>
-                                    <li className="nav-item active">
-                                        <a className="nav-link" href="\productList">
-                                            لیست کالا ها<span className="sr-only"></span>
-                                        </a>
-                                    </li>
-                                </>)}
+  logout = () => {
+    localStorage.clear();
+    window.location.href = "/";
+  };
 
-                            {this.state.user && (
-                                <>   <li className="nav-item active">
-                                    <a className="nav-link" href="\orders">
-                                        لیست سفارشات<span className="sr-only"></span>
-                                    </a>
-                                </li>
+  render() {
+    return (
+      <>
+        {/* بخش بالای Navbar */}
+        <div className="row d-flex justify-content-between align-items-center px-3">
+          <Watch />
+          <div className="col-auto small text-black-200 mt-2">
+            {this.state.user && (
+              <p className="mb-0">کاربر گرامی : {this.state.user.name}</p>
+            )}
+          </div>
+        </div>
 
-                                    <li className="nav-item active">
-                                        <a className="nav-link" href="\user">
-                                            ویرایش پروفایل کاربری<span className="sr-only"></span>
-                                        </a>
-                                    </li></>)}
-                        </ul>
-                    </div>
-                    {this.state.isLoging == false ? (
-                        <ButtonRoute
-                            title="ورود / ثبت نام"
-                            link="/login"
-                            className="btn btn-light"
-                        />
-                    ) : (
-                        <>
-                            <a className="nav-link" href="\cart">
-                                <span className="top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                    {this.state.sum}
-                                </span>{" "}
-                                <FaShoppingCart className="shopIcon" />
-                            </a>{" "}
-                            <ModalApp
-                                className="btn btn-danger"
-                                msg="آیا می خواهید از سسیتم خارج شوید؟"
-                                headerTitle="خروج"
-                                noTitle="خیر"
-                                yesTitle="بله"
-                                btnTitle="خروج"
-                                handleOk={() => this.logout()}
-                            ></ModalApp>
-                        </>
-                    )}
-                </nav>
-                <Outlet />
+        {/* Navbar اصلی */}
+        <nav className="navbar navbar-expand-lg  navbar-dark" style={{ backgroundColor: "#ecf019ff", fontFamily: "Vazirmatn",fontSize:"10px" }}>
+          {/* دکمه موبایل */}
+          <button
+            className="navbar-toggler"
+            type="button"
+            onClick={this.toggleMenu}
+          >
+            <span className="navbar-toggler-icon"></span>
+          </button>
 
-                <NotificationContainer />
-            </>
-        );
-    }
+          {/* منو */}
+          <div
+            className={`collapse navbar-collapse ${
+              this.state.isOpen ? "show" : ""
+            }`}
+            id="navbarTogglerDemo02"
+          >
+            <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
+              <li className="nav-item active">
+                <a className="nav-link" href="/home">جستجوی کالا</a>
+              </li>
+
+              {/* فقط برای ادمین */}
+              {this.state.isAdmin && (
+                <>
+                  <li className="nav-item">
+                    <a className="nav-link" href="/product">تعریف کالا</a>
+                  </li>
+                  <li className="nav-item">
+                    <a className="nav-link" href="/productList">لیست کالاها</a>
+                  </li>
+                </>
+              )}
+
+              {/* فقط برای کاربر لاگین‌شده */}
+              {this.state.user && (
+                <>
+                  <li className="nav-item">
+                    <a className="nav-link" href="/orders">لیست سفارشات</a>
+                  </li>
+                  <li className="nav-item">
+                    <a className="nav-link" href="/user">ویرایش پروفایل</a>
+                  </li>
+                </>
+              )}
+            </ul>
+          </div>
+
+          {/* سمت راست Navbar */}
+          {this.state.isLoging === false ? (
+            <ButtonRoute
+              title="ورود / ثبت نام"
+              link="/login"
+              className="btn btn-light"
+            />
+          ) : (
+            <div className="d-flex align-items-center">
+              <a className="nav-link position-relative" href="/cart">
+                <FaShoppingCart className="shopIcon" />
+                {this.state.sum > 0 && (
+                  <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    {this.state.sum}
+                  </span>
+                )}
+              </a>
+              <ModalApp
+                className="btn btn-danger ms-2"
+                msg="آیا می‌خواهید از سیستم خارج شوید؟"
+                headerTitle="خروج"
+                noTitle="خیر"
+                yesTitle="بله"
+                btnTitle="خروج"
+                handleOk={this.logout}
+              />
+            </div>
+          )}
+        </nav>
+
+        {/* خروجی صفحات */}
+        <Outlet />
+        <NotificationContainer />
+      </>
+    );
+  }
 }

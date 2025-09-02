@@ -94,28 +94,25 @@ builder.Services.AddAuthorization(options =>
 // builder.Services.AddScoped<...>();
 
 builder.Services.AddScoped<TokenService>();
+
+
+var urlFront = builder.Configuration["AppSettings:UrlFront"];
+
+// اضافه کردن CORS
 builder.Services.AddCors(options =>
 {
-    if (builder.Environment.IsDevelopment())
-    {
-        // محیط توسعه
-        options.AddPolicy("AllowFrontend", policy =>
-            policy.WithOrigins("https://localhost:5173")
-                  .AllowAnyHeader()
-                  .AllowAnyMethod()
-                  .AllowCredentials());
-    }
-    else
-    {
-        // محیط عملیاتی
-        options.AddPolicy("AllowFrontend", policy =>
-           policy.WithOrigins("https://localhost:5000")
-                  .AllowAnyHeader()
-                  .AllowAnyMethod()
-                  .AllowCredentials());
-        builder.WebHost.UseUrls("http://0.0.0.0:5000");
-    }
+    options.AddPolicy("AllowFrontend", policy =>
+        policy.WithOrigins(urlFront)
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials());
 });
+// فقط در محیط غیر Development UseUrls اعمال بشه
+if (!builder.Environment.IsDevelopment() && !string.IsNullOrEmpty(urlFront))
+{
+    builder.WebHost.UseUrls(urlFront);
+}
+
 // اضافه کردن سرویس کپچا
 
 

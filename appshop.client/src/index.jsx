@@ -1,13 +1,12 @@
-﻿import React from 'react';
+﻿
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import Header from './componets/tools/Header';
-//import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-<div dir="rtl" className="pageMain d-flex flex-column min-vh-100 bg-light">
+<div dir="rtl" className="d-flex flex-column min-vh-100 bg-light">
   {/* هدر */}
  <Header />
 

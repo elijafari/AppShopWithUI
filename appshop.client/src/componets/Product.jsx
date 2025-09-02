@@ -107,9 +107,9 @@ export class Product extends Component {
     return (
       <>
         <div className="card">
-          <h5 className="card-header">
+          <p className="card-header">
             {this.isEdit ? "ویرایش کالا" : "تعریف کالا"}
-          </h5>
+          </p>
           <div className="card-body">
             <div className="row">
               <TextBox

@@ -29,7 +29,7 @@ export class ProductItem extends Component {
     }
   }
   onView(e) {
-      window.location.href ="/productView/" + e.id;
+    window.location.href = "/productView/" + e.id;
   }
 
   render() {
@@ -41,33 +41,40 @@ export class ProductItem extends Component {
             onClick={() => this.onView(this.props.data)}
             className="img-fluid img-thumbnail"
             alt={this.props.data.name}
-            style={{cursor:"pointer", height: "350px",width:"350"}}
+            style={{ cursor: "pointer", height: "350px", width: "350" }}
           />
-          <br/>
+          <br />
           <span>{this.props.data.name}</span>
-          <br/>
-          <span>{this.props.data.price.toLocaleString()} تومان</span>
-          <br/>
-          <button
-            type="button"
-            className="btn btn-success"
-            on
-            onClick={() => this.add()}
-          >
-            +
-          </button>
-          <label className="counterLabel" key={this.state.updateKey}>
-            {this.state.count}
-          </label>
-          {this.state.count > 0 && (
-            <button
-              type="button"
-              className="btn btn-success"
-              onClick={() => this.remove()}
-            >
-              -
-            </button>
-          )}
+          <br />
+         {this.props.data.isActive ==true ?
+           <span>{this.props.data.price.toLocaleString()} تومان</span>
+           :
+           <span className="text-danger">ناموجود</span>
+         }
+          <br />
+          {this.props.data.isActive && (
+            <>
+
+              <button
+                type="button"
+                className="btn btn-success"
+                on
+                onClick={() => this.add()}
+              >
+                +
+              </button>
+              <label className="counterLabel" key={this.state.updateKey}>
+                {this.state.count}
+              </label>
+              {this.state.count > 0 && (
+                <button
+                  type="button"
+                  className="btn btn-success"
+                  onClick={() => this.remove()}
+                >
+                  -
+                </button>
+              )}  </>)}
           <button
             type="button"
             className="btn btn-info"

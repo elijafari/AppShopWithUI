@@ -231,7 +231,7 @@ export class Cart extends Component {
         {this.state.step == 1 && (
           <>
             <div className="card mb-1">
-              <h5 className="card-header">سبد خرید</h5>
+              <p className="card-header">سبد خرید</p>
               <div className="table-responsive">
                 <table className="table table-striped">
                   <thead>
@@ -291,7 +291,7 @@ export class Cart extends Component {
             </div>
 
             <div className="card mb-1">
-              <h5 className="card-header">ثبت آدرس</h5>
+              <p className="card-header">ثبت آدرس</p>
               <div className="g-3 p-3">
                 <button className="col-md-1 col-sm-12 btn btn-primary" onClick={() => this.showModal()}>تاریخچه آدرس</button>
                 <div className="row">
@@ -331,7 +331,7 @@ export class Cart extends Component {
               </div>
 
               <div className="card mb-1">
-                <h5 className="card-header">انتخاب تاریخ تحویل سفارش</h5>
+                <p className="card-header">انتخاب تاریخ تحویل سفارش</p>
                 <div className="row g-3 p-3">
                   <DropdownApp
                     title="تاریخ دریافت سفارش"
@@ -372,6 +372,7 @@ export class Cart extends Component {
                 <Address
                   data={this.state.address}
                   showSelected={true}
+                  selectAddress={(x) => this.selectAddress(x)}
                 />
               </Modal.Body>
               <Modal.Footer />

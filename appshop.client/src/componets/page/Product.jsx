@@ -43,7 +43,7 @@ export class Product extends Component {
             this.setState({ cat });
         });
         if (this.isEdit) {
-            api.get("product/GetById?id=" + this.state.id).then((response) => {
+            api.post("product/GetById",{id: this.state.id}).then((response) => {
                 var result = response.data.data;
                 this.setState({
                     ...result,
@@ -120,9 +120,9 @@ export class Product extends Component {
         return (
             <>
                 <div className="card">
-                    <h5 className="card-header">
+                    <p className="card-header">
                         {this.isEdit ? "ویرایش کالا" : "تعریف کالا"}
-                    </h5>
+                    </p>
                     <div className="card-body">
                         <div className="row">
                             <TextBox
@@ -156,7 +156,7 @@ export class Product extends Component {
                             />
                             <Checkbox
                                 context={this}
-                                title="فعال"
+                                title="موجود"
                                 name="isActive"
                                 className="col-md-1 col-sm-1"
                                 updateKey={this.state.updateKey}

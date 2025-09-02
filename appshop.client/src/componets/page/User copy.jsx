@@ -114,7 +114,7 @@ export class User1 extends React.Component {
     return (
       <>
         <div className="card">
-          <h5 className="card-header">اطلاعات کاربری</h5>
+          <p className="card-header">اطلاعات کاربری</p>
           <div className="card-body">
             <div className="row">
               <TextBox

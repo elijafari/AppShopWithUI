@@ -20,7 +20,10 @@ export default class Watch extends React.Component {
 
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     const dateStr = dateTime.toLocaleDateString('fa-IR', options);
-    const timeStr = dateTime.toLocaleTimeString('fa-IR');
+    const timeStr = dateTime.toLocaleTimeString('fa-IR',{
+  hour: '2-digit',
+  minute: '2-digit'
+}); 
 
     return (
           <>

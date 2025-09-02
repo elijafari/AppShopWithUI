@@ -43,7 +43,7 @@ export class ProductView extends Component {
     return (
       <>
         <div className="card">
-          <h5 className="card-header">{this.state.name}</h5>
+          <p className="card-header">{this.state.name}</p>
           <div className="card-body">
             <div className="row">
               <div className="col-md-9">

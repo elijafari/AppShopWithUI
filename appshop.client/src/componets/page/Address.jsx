@@ -1,4 +1,5 @@
 export function Address(props) {
+
   return (
     <div className="table-responsive">
       <table className="table table-bordered table-striped text-center align-middle">
@@ -17,7 +18,7 @@ export function Address(props) {
                    {props.showSelected &&(  <td>
                 <button
                   className="btn btn-sm btn-info"
-                  onClick={() => this.selectAddress(x)}
+                  onClick={() =>props.selectAddress(x)}
                 >
                   انتخاب
                 </button>

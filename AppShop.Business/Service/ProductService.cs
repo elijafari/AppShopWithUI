@@ -81,7 +81,6 @@ namespace AppShop.Business.Service
             var result = new DataView(param.Take, param.PageNumber);
 
             var query = from p in db.Products
-                        where p.IsActive == true
                         select p;
                        
             if (param != null)

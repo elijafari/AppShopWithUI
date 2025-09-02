@@ -22,7 +22,7 @@ export class ProductList extends Component {
       "کد محصول",
       "نام محصول",
       "قیمت واحد تومان",
-      "فعال",
+      "موجود",
       "",
     ];
   }
