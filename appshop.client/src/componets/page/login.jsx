@@ -49,11 +49,8 @@ export class Login extends React. Component {
       <>
 
         <section
-          className="vh-100 d-flex align-items-center"
-          style={{
-            background: "linear-gradient(135deg, #c6e9ba, #a8dadc)",
-            direction: "rtl", // راست چین
-          }}
+          className="align-items-center"
+          style={{direction: "rtl"}}
         >
           <div className="container">
             <div className="row justify-content-center">
@@ -63,7 +60,7 @@ export class Login extends React. Component {
                   style={{ borderRadius: "1.2rem" }}
                 >
                   <div className="card-body p-5">
-                    <h3 className="mb-4 text-center fw-bold text-primary">
+                    <h3 className="mb-4 text-center fw-bold text-warning">
                       ورود به سیستم <FaLock className="mb-1" />
                     </h3>
 
@@ -101,7 +98,7 @@ export class Login extends React. Component {
                     <div className="d-flex justify-content-between align-items-center mb-4 flex-row-reverse">
                       <a
                         href="#"
-                        className="text-decoration-none text-primary fw-semibold"
+                        className="text-decoration-none text-warning fw-semibold"
                         onClick={() => this.forgtoPassword()}
                       >
                         فراموشی رمز عبور؟
@@ -110,7 +107,7 @@ export class Login extends React. Component {
 
                     {/* دکمه ورود */}
                     <button
-                      className="btn btn-primary btn-lg w-100 mb-3"
+                      className="btn btn-warning btn-lg w-100 mb-3"
                       type="submit"
                       onClick={() => this.login()}
                     >
@@ -119,7 +116,7 @@ export class Login extends React. Component {
 
                     {/* دکمه ایجاد کاربر جدید */}
                     <button
-                      className="btn btn-outline-primary btn-lg w-100"
+                      className="btn btn-outline-warning btn-lg w-100"
                       onClick={() => this.createUser()}
                     >
                       ایجاد حساب کاربری جدید

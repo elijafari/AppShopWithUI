@@ -53,11 +53,6 @@ onEdit(e)
   render() {
     return (
       <>
-        <ButtonRoute
-          title="ثبت کالا جدید"
-          link="/product"
-          className="btn btn-info"
-        />
         <div className="card" style={{ cursor: "pointer" }}>
           <div className="card-header">
             <h5> لیست کالاهای موجود
@@ -89,7 +84,7 @@ onEdit(e)
                           <td>
                             <button
                               type="button"
-                              className="btn btn-success marginApp"
+                              className="btn btn-warning marginApp"
                               onClick={() => this.onEdit(x)}
                             >
                               ویرایش

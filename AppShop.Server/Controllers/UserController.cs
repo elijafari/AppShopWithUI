@@ -5,10 +5,6 @@ using AppShop.Business.IService;
 using AppShop.Server.Helper;
 using AppShop.Business.DataModel;
 using Microsoft.AspNetCore.Authorization;
-using DNTCaptcha.Core;
-using Microsoft.AspNetCore.Http.Features;
-using Microsoft.Extensions.Primitives;
-using AppShop.Business;
 
 namespace AppShop.Server.Controllers
 {
@@ -17,17 +13,14 @@ namespace AppShop.Server.Controllers
     public class UserController : BaseController
     {
         private readonly IUserService service;
-        private readonly IDNTCaptchaValidatorService validator;
 
-        public UserController(IUserService _service, ILogService _logService,
-            IDNTCaptchaValidatorService _validator) : base(_logService)
+        public UserController(IUserService _service, ILogService _logService) : base(_logService)
         {
             service = _service;
-            validator = _validator;
         }
 
         [HttpPost]
-        public IActionResult Add([FromBody] User input, [FromServices] IDNTCaptchaValidatorService validatorService) => Response(() => service.Add(input));
+        public IActionResult Add([FromBody] User input) => Response(() => service.Add(input));
         [Authorize]
         [HttpPost]
         public IActionResult Edit([FromBody] User input) => Response(() => service.Edit(input));
