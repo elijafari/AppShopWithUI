@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "bootstrap/dist/css/bootstrap.rtl.min.css";
+import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import "../../App.css";
 import { Outlet } from "react-router-dom";
 import { FaShoppingCart } from "react-icons/fa";
@@ -71,83 +71,111 @@ export class Menu extends Component {
         </div>
 
         {/* Navbar اصلی */}
-        <nav className="navbar navbar-expand-lg  navbar-dark" style={{ backgroundColor: "#ecf019ff", fontFamily: "Vazirmatn",fontSize:"10px" }}>
-          {/* دکمه موبایل */}
-          <button
-            className="navbar-toggler"
-            type="button"
-            onClick={this.toggleMenu}
+<nav
+  className="navbar navbar-expand-lg navbar-dark"
+  style={{
+    backgroundColor: "#FFD700", // رنگ طلایی
+    fontFamily: "Vazirmatn",
+    fontSize: "12px",
+  }}
+>
+  {/* دکمه موبایل */}
+  <button
+    className="navbar-toggler p-1"
+    type="button"
+    onClick={this.toggleMenu}
+    style={{ border: "none" }}
+  >
+    <span
+      className="navbar-toggler-icon"
+      style={{ width: "20px", height: "20px" }} // کوچکتر کردن آیکون
+    ></span>
+  </button>
+
+  {/* منو */}
+  <div
+    className={`collapse navbar-collapse ${
+      this.state.isOpen ? "show" : ""
+    }`}
+    id="navbarTogglerDemo02"
+  >
+    <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
+      <li className="nav-item active">
+        <a className="nav-link custom-link" href="/home">
+          جستجوی کالا
+        </a>
+      </li>
+
+      {/* فقط برای ادمین */}
+      {this.state.isAdmin && (
+        <>
+          <li className="nav-item">
+            <a className="nav-link custom-link" href="/product">
+              تعریف کالا
+            </a>
+          </li>
+          <li className="nav-item">
+            <a className="nav-link custom-link" href="/productList">
+              لیست کالاها
+            </a>
+          </li>
+        </>
+      )}
+
+      {/* فقط برای کاربر لاگین‌شده */}
+      {this.state.user && (
+        <>
+          <li className="nav-item">
+            <a className="nav-link custom-link" href="/orders">
+              لیست سفارشات
+            </a>
+          </li>
+          <li className="nav-item">
+            <a className="nav-link custom-link" href="/user">
+              ویرایش پروفایل
+            </a>
+          </li>
+        </>
+      )}
+    </ul>
+  </div>
+
+  {/* سمت راست Navbar */}
+  {this.state.isLoging === false ? (
+    <ButtonRoute
+      title="ورود / ثبت نام"
+      link="/login"
+      className="btn btn-light"
+    />
+  ) : (
+    <div className="d-flex align-items-center">
+      <a className="nav-link position-relative" href="/cart">
+        <FaShoppingCart className="shopIcon fs-2" />
+        {this.state.sum > 0 && (
+          <span
+            className="position-absolute badge rounded-pill bg-danger"
+            style={{
+              top: "-5px",
+              right: "-10px",
+              fontSize: "0.7rem",
+            }}
           >
-            <span className="navbar-toggler-icon"></span>
-          </button>
-
-          {/* منو */}
-          <div
-            className={`collapse navbar-collapse ${
-              this.state.isOpen ? "show" : ""
-            }`}
-            id="navbarTogglerDemo02"
-          >
-            <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
-              <li className="nav-item active">
-                <a className="nav-link" href="/home">جستجوی کالا</a>
-              </li>
-
-              {/* فقط برای ادمین */}
-              {this.state.isAdmin && (
-                <>
-                  <li className="nav-item">
-                    <a className="nav-link" href="/product">تعریف کالا</a>
-                  </li>
-                  <li className="nav-item">
-                    <a className="nav-link" href="/productList">لیست کالاها</a>
-                  </li>
-                </>
-              )}
-
-              {/* فقط برای کاربر لاگین‌شده */}
-              {this.state.user && (
-                <>
-                  <li className="nav-item">
-                    <a className="nav-link" href="/orders">لیست سفارشات</a>
-                  </li>
-                  <li className="nav-item">
-                    <a className="nav-link" href="/user">ویرایش پروفایل</a>
-                  </li>
-                </>
-              )}
-            </ul>
-          </div>
-
-          {/* سمت راست Navbar */}
-          {this.state.isLoging === false ? (
-            <ButtonRoute
-              title="ورود / ثبت نام"
-              link="/login"
-              className="btn btn-light"
-            />
-          ) : (
-            <div className="d-flex align-items-center">
-              <a className="nav-link position-relative" href="/cart">
-                <FaShoppingCart className="shopIcon" />
-                {this.state.sum > 0 && (
-                  <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                    {this.state.sum}
-                  </span>
-                )}
-              </a>
-              <ModalApp
-                className="btn btn-danger ms-2"
-                msg="آیا می‌خواهید از سیستم خارج شوید؟"
-                headerTitle="خروج"
-                noTitle="خیر"
-                yesTitle="بله"
-                btnTitle="خروج"
-                handleOk={this.logout}
-              />
-            </div>
-          )}
-        </nav>
+            {this.state.sum}
+          </span>
+        )}
+      </a>
+      <ModalApp
+        className="btn btn-danger ms-2"
+        msg="آیا می‌خواهید از سیستم خارج شوید؟"
+        headerTitle="خروج"
+        noTitle="خیر"
+        yesTitle="بله"
+        btnTitle="خروج"
+        handleOk={this.logout}
+      />
+    </div>
+  )}
+</nav>
 
         {/* خروجی صفحات */}
         <Outlet />
