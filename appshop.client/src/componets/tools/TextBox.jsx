@@ -1,4 +1,5 @@
 import React from "react";
+import { toEnglishDigits} from "../Utility";
 export class TextBox extends React.Component {
   constructor(props) {
     super(props);
@@ -7,20 +8,29 @@ export class TextBox extends React.Component {
     this.props.context.setState({ [this.props.name]: "" });
   }
   handleInputChange = (e) => {
-    this.props.context.setState({ [e.target.name]: e.target.value });
+    var value=e.target.value;
+    if(this.props.type=="number"  )
+      value=toEnglishDigits(e.target.value);
+
+
+    // فقط عدد
+        if (this.props.separator)
+  value = Number(value.replace(/\D/g, "")).toLocaleString("fa-IR");
+
+    this.props.context.setState({ [e.target.name]: value });
   };
   handleOnKeyUp = (e) => {
-    if (this.props.separator)
-        if( e.target.value!="")
-        if( e.target.value!="Nan")
-            if( e.target.value!=null)
+    // if (this.props.separator)
+    //     if( e.target.value!="")
+    //     if( e.target.value!="Nan")
+    //         if( e.target.value!=null)
             
-            {
-      var n = e.target.value.replaceAll(",", "");
-      this.props.context.setState({
-        [e.target.name]: parseInt(n).toLocaleString(),
-      });
-    }
+    //         {
+    //   var n = e.target.value.replaceAll(",", "");
+    //   this.props.context.setState({
+    //     [e.target.name]: parseInt(n).toLocaleString(),
+    //   });
+   // }
   };
   render() {
     return (
@@ -40,6 +50,7 @@ export class TextBox extends React.Component {
                 ? this.props.title + " را وارد کنید "
                 : ""
             }
+            maxLength={this.props.maxLength}
             style={{textAlign:this.props.isLeft? "left":"right"}}
             onKeyUp={(e) => this.handleOnKeyUp(e)}
             key={this.props.name + this.props.updateKey}

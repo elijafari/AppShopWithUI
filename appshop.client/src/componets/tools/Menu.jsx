@@ -71,8 +71,9 @@ export class Menu extends Component {
         </div>
 
         {/* Navbar اصلی */}
+        
 <nav
-  className="navbar navbar-expand-lg navbar-dark"
+  className="navbar navbar-expand-lg navbar-dark p-2"
   style={{
     backgroundColor: "#FFD700", // رنگ طلایی
     fontFamily: "Vazirmatn",
@@ -81,13 +82,13 @@ export class Menu extends Component {
 >
   {/* دکمه موبایل */}
   <button
-    className="navbar-toggler p-1"
+    className="navbar-toggler p-2"
     type="button"
     onClick={this.toggleMenu}
-    style={{ border: "none" }}
+    style={{ border: "outset" }}
   >
     <span
-      className="navbar-toggler-icon"
+      className="navbar-toggler-icon "
       style={{ width: "20px", height: "20px" }} // کوچکتر کردن آیکون
     ></span>
   </button>

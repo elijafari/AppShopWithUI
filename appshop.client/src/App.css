@@ -134,6 +134,7 @@ body {
   border-radius: 50px;
   transition: 0.4s;
   cursor: pointer;
+   -webkit-appearance: none;
 }
 
 .custom-switch input:checked {
@@ -213,3 +214,35 @@ header p {
     font-size: 12px;
   }
 }
+@media (max-width: 576px) {
+  table.table thead {
+    display: none; /* هدر حذف میشه در موبایل */
+  }
+
+  table.table tr {
+    display: block;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 8px;
+  }
+
+  table.table td, 
+  table.table th {
+    display: block;
+    text-align: right;
+    width: 100%;
+    padding: 6px 10px;
+    border: none;
+  }
+
+  table.table td::before {
+    content: attr(data-label); /* متن هدر میاد */
+    font-weight: bold;
+    margin-left: 5px;
+    color: #444;
+    display: inline-block;
+    min-width: 70px;
+  }
+}
+

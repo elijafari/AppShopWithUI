@@ -72,28 +72,28 @@ onEdit(e)
                       ))}
                     </tr>
                   </thead>
-                  <tbody key={this.state.updateKey}>
-                    {this.state.data.map((x, i) => (
-                      <>
-                        <tr key={"tr" + i}>
-                          <th scope="row">{this.state.startRow + i}</th>
-                          <td>{x.code}</td>
-                          <td>{x.name}</td>
-                          <td>{x.price.toLocaleString()}</td>
-                          <td>{x.isActive ? `*` : ``}</td>
-                          <td>
-                            <button
-                              type="button"
-                              className="btn btn-warning marginApp"
-                              onClick={() => this.onEdit(x)}
-                            >
-                              ویرایش
-                            </button>
-                          </td>
-                        </tr>
-                      </>
-                    ))}
-                  </tbody>
+<tbody>
+  {this.state.data.map((x, i) => (
+    <tr key={"tr" + i}>
+      <td data-label="ردیف">{this.state.startRow + i}</td>
+      <td data-label="کد">{x.code}</td>
+      <td data-label="نام">{x.name}</td>
+      <td data-label="قیمت">{x.price.toLocaleString()}</td>
+      <td data-label="فعال">{x.isActive ? "*" : ""}</td>
+      <td data-label="عملیات">
+        <button
+          type="button"
+          className="btn btn-warning marginApp"
+          onClick={() => this.onEdit(x)}
+        >
+          ویرایش
+        </button>
+      </td>
+    </tr>
+  ))}
+</tbody>
+
+
                 </table>
                 <br />
                 {this.state.pageCount > 0 && (

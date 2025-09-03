@@ -10,7 +10,7 @@ import "../../App.css";
 import { TextBox } from "../tools/TextBox";
 import { DropdownApp } from "../tools/DropdownApp";
 import { Checkbox } from "../tools/CheckBox";
-import { ErrorHanding } from "../Utility";
+import { ErrorHanding, toEnglishDigits,normalizePrice } from "../Utility";
 import { ButtonWaith } from "../tools/ButtonWaith";
 import { ButtonReturn } from "../tools/ButtonReturn";
 
@@ -43,10 +43,11 @@ export class Product extends Component {
             this.setState({ cat });
         });
         if (this.isEdit) {
-            api.post("product/GetById",{id: this.state.id}).then((response) => {
+            api.post("product/GetById", { id: this.state.id }).then((response) => {
                 var result = response.data.data;
                 this.setState({
                     ...result,
+                    price:result.price.toLocaleString("fa-IR"),
                     file: "data:image/png;base64," + result.image,
                     updateKey: this.state.updateKey + 1,
                 });
@@ -55,8 +56,8 @@ export class Product extends Component {
     }
     validInput(input, title) {
 
-        if (input == ""||input == undefined || input == null) {
-            NotificationManager.error(title + "وارد نشده است ", "خطا");
+        if (input == "" || input == undefined || input == null) {
+            NotificationManager.error(title + " وارد نشده است ", "خطا");
             return false;
         }
         return true;
@@ -80,9 +81,10 @@ export class Product extends Component {
         if (this.state.fileData != undefined)
             formData.append("file", this.state.fileData);
 
+        debugger
         formData.append("code", this.state.code);
         formData.append("name", this.state.name);
-        formData.append("price", this.state.price);
+        formData.append("price",normalizePrice( toEnglishDigits(this.state.price)));
         formData.append("description", this.state.description);
         formData.append("id", this.state.id);
         formData.append("categoryId", this.state.categoryId);
@@ -129,6 +131,7 @@ export class Product extends Component {
                                 context={this}
                                 title="کد کالا"
                                 name="code"
+                                type="number"
                                 className="col-md-4 col-sm-12"
                                 updateKey={this.state.updateKey}
                             />
@@ -146,21 +149,33 @@ export class Product extends Component {
                                 className="col-md-4 col-sm-12"
                                 data={this.state.cat}
                             />
-                            <TextBox
-                                context={this}
-                                title="قیمت"
-                                name="price"
-                                className="col-md-4 col-sm-12"
-                                type="number"
-                                updateKey={this.state.updateKey}
-                            />
-                            <Checkbox
-                                context={this}
-                                title="موجود"
-                                name="isActive"
-                                className="col-md-1 col-sm-1"
-                                updateKey={this.state.updateKey}
-                            />
+                            <div className="form-outline mb-3">
+                                <div className="row align-items-center">
+                                    <div className="col-md-4 col-sm-12 d-flex align-items-center">
+                                        <TextBox
+                                            context={this}
+                                            title="قیمت"
+                                            name="price"
+                                            className="col-md-11 col-sm-12"
+                                            type="number"
+                                            updateKey={this.state.updateKey}
+                                            separator={true}
+                                            maxLength={13}
+                                        />
+                                        <span className="ms-2">تومان</span>
+                                    </div>
+
+                                    <div className="col-md-2 col-sm-12 d-flex align-items-center">
+                                        <Checkbox
+                                            context={this}
+                                            title="موجود"
+                                            name="isActive"
+                                            updateKey={this.state.updateKey}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
                             <TextBox
                                 context={this}
                                 title="توضیحات"

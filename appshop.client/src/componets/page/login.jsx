@@ -9,12 +9,13 @@ import "../../App.css";
 import { TextBox } from "../tools/TextBox";
 import { Capcha } from "../tools/Capcha";
 import api from "../tools/axiosConfig";
-import { FaLock } from "react-icons/fa";
-import { ErrorHanding } from "../Utility";  
-export class Login extends React. Component {
+import { FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
+import { ErrorHanding } from "../Utility";
+export class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      showPassword: false
     };
   }
 
@@ -44,13 +45,19 @@ export class Login extends React. Component {
   ReadCapcha(e) {
     this.setState({ ...e });
   }
+  togglePassword = () => {
+    this.setState({ showPassword: !this.state.showPassword });
+  };
+  handleInputChange = (e) => {
+    this.setState({ "password": e.target.value });
+  };
   render() {
     return (
       <>
 
         <section
           className="align-items-center"
-          style={{direction: "rtl"}}
+          style={{ direction: "rtl" }}
         >
           <div className="container">
             <div className="row justify-content-center">
@@ -75,25 +82,23 @@ export class Login extends React. Component {
 
                     {/* رمز عبور */}
                     <div className="form-outline mb-3">
-                      <TextBox
-                        context={this}
-                        title="رمز عبور"
-                        name="password"
-                        type="password"
-                      />
+                      <label className="form-label">رمز عبور</label>
+                      <div className="input-group">
+                        <input
+                          type={this.state.showPassword ? "text" : "password"}
+                          className="form-control"
+                          name="password"
+                          onChange={(e) => this.handleInputChange(e)}
+                        />
+                        <span
+                          className="input-group-text"
+                          style={{ cursor: "pointer" }}
+                          onClick={this.togglePassword}
+                        >
+                          {!this.state.showPassword ? <FaEyeSlash /> : <FaEye />}
+                        </span>
+                      </div>
                     </div>
-                    {/*<div className="row align-items-center">*/}
-                    {/*  <div className="col">*/}
-                    {/*    <TextBox*/}
-                    {/*      context={this}*/}
-                    {/*      title="کد امنیتی"*/}
-                    {/*      name="captchaInput"*/}
-                    {/*    />*/}
-                    {/*  </div>*/}
-                    {/*  */}{/*<div className="col-auto">*/}
-                    {/*  */}{/*  <Capcha sentCapcha={(e) => this.ReadCapcha(e)} />*/}
-                    {/*  */}{/*</div>*/}
-                    {/*</div>*/}
                     {/* فراموشی رمز */}
                     <div className="d-flex justify-content-between align-items-center mb-4 flex-row-reverse">
                       <a

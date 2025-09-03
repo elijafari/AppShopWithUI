@@ -27,7 +27,6 @@ export class User extends React.Component {
   componentDidMount() {
     this.getUser();
     this.getQuestions();
-    this.getAddress();
 
   }
   getUser() {
@@ -38,6 +37,7 @@ export class User extends React.Component {
         api.post("/User/GetById/", { id: user.id }).then((response) => {
           var result = response.data.data;
           this.setState({ ...result, isEdit: true });
+         this.getAddress();
         });
       }
   }
@@ -138,13 +138,13 @@ export class User extends React.Component {
               title="ثبت" />
           </div>
         </div>
-
-        <div className="card">
+{this.state.isEdit &&(        <div className="card">
           <p className="card-header">تاریخچه آدرس</p>
           <div className="card-body">
             <Address data={this.state.address}/>
           </div>
         </div>
+)}
         <NotificationContainer />
       </>
     );

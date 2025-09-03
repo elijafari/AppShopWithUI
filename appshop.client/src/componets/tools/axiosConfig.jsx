@@ -5,7 +5,7 @@ console.log("url:" + import.meta.env.VITE_API_URL);
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
   timeout: 10000,
-    withCredentials: true   // 👈 اینجا
+  withCredentials: true   // 👈 اینجا
 });
 
 // قبل از ارسال هر درخواست
@@ -17,24 +17,27 @@ api.interceptors.request.use(
       config.headers.Authorization = `Bearer ${token}`;
     }
 
+    config.headers["Cache-Control"] = "no-cache";
+    config.headers["Pragma"] = "no-cache";
+    config.headers["Expires"] = "0";
     // اگر داده‌ها از نوع FormData بودن → content-type رو تغییر بده
     if (config.data instanceof FormData) {
       config.headers["Content-Type"] = "multipart/form-data";
     }
-   else if (config.data instanceof URLSearchParams) {
+    else if (config.data instanceof URLSearchParams) {
       // برای form-urlencoded
       config.headers["Content-Type"] = "application/x-www-form-urlencoded";
-    } 
+    }
     else {
       // پیش‌فرض JSON
       config.headers["Content-Type"] = "application/json";
-      
+
     }
 
     return config;
   },
   api.interceptors.response.use(
-    
+
     (response) => response,
     (error) => {
       if (error.response && error.response.status === 401) {

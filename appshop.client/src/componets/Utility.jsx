@@ -33,3 +33,13 @@ export function ErrorHanding(NotificationManager, error) {
             NotificationManager.error(error.response.data.message, "خطا");
     }
 }
+export function toEnglishDigits(str) {
+  return str.replace(/[\u06F0-\u06F9]/g, d => d.charCodeAt(0) - 1776)
+            .replace(/[\u0660-\u0669]/g, d => d.charCodeAt(0) - 1632);
+}
+export function normalizePrice(str) {
+  return str
+    .replace(/[\u06F0-\u06F9]/g, d => d.charCodeAt(0) - 1776) // اعداد فارسی
+    .replace(/[\u0660-\u0669]/g, d => d.charCodeAt(0) - 1632) // اعداد عربی
+    .replace(/[^0-9]/g, ""); // حذف جداکننده‌ها و کاراکترهای غیرعددی
+}
