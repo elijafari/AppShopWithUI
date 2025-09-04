@@ -9,27 +9,38 @@ root.render(
 
     // <React.StrictMode>
     <>
-        <div dir="rtl" className='pageMain' style={{backgroundColor:"#cae7ca"}}>
+        <div dir="rtl" className='pageMain pt-4 pb-3' style={{ backgroundColor: "#cae7ca" }}>
             <a class="navbar-brand fw-bold" href="#">
-<br/>
-<br/>
-<br/>
-                <h3>فروشگاه اینترنتی لوازم الکتریکی EjElectro</h3>
                 <br />
+                <h3>فروشگاه اینترنتی لوازم الکتریکی EjElectro</h3>
                 <br />
                 <h5> خرید آسان و سریع انواع تجهیزات و قطعات برقی</h5>
             </a>
             <App />
-            <footer className="footer bg-dark pt-2 pb-2">
-                <div>
-                    <ul>
-                        <li style={{ color: 'white' }}>تماس با ما</li>
-                        <li style={{ color: 'white' }}>درباره با ما</li>
-                        {/*<li class="mb-2"><a href="/docs/5.3/">Docs</a></li>*/}
-                        {/*<li class="mb-2"><a href="/docs/5.3/examples/">Examples</a></li>*/}
-                    </ul>
+            <footer className="bg-dark text-white pt-4 pb-3">
+                <div className="container">
+                    <div className="row">
+                        {/* لینک‌ها زیر هم */}
+                        <div className="col-md-6 mb-3 mb-md-0">
+                            <ul className="nav flex-column">
+                                <li className="nav-item mb-1">
+                                    <a className="nav-link text-white px-0" href="/contactUs">تماس با ما</a>
+                                </li>
+                                <li className="nav-item">
+                                    <a className="nav-link text-white px-0" href="/aboutUs">درباره ما</a>
+                                </li>
+                                <li className="nav-item">
+                                    {/* کپی‌رایت */}
+                                    <div className="col-md-6 text-md-end text-center text-white">
+                                        &copy; 2025 فروشگاه شما. تمام حقوق محفوظ است.
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </footer>
+
         </div>
     </>
     //</React.StrictMode>

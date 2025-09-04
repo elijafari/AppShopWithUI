@@ -1,4 +1,5 @@
 import React from "react";
+import '../../App.css';
 export class Checkbox extends React.Component {
   constructor(props) {
     super(props);
@@ -16,22 +17,18 @@ export class Checkbox extends React.Component {
   };
   render() {
     return (
-      <>
-        <div className={"form-check form-switch " + this.props.className} >
-          <label className="form-check-label">
-            {this.props.title}
-          </label>
-          <input
-            className="form-check-input"
-            type="checkbox"
-            id="flexSwitchCheckChecked"
-            checked={this.props.context.state[this.props.name]}
-            readOnly={false}
-            onChange={(e) => this.handleInputChange(e)}
-            key={this.props.name + this.props.updateKey}
-          />
-        </div>
-      </>
+<div className="custom-switch ">
+  <label htmlFor={this.props.name}>
+    {this.props.title}
+  </label>
+  <input
+    type="checkbox"
+    id={this.props.name}
+    checked={this.props.context.state[this.props.name]}
+    onChange={(e) => this.handleInputChange(e)}
+  />
+</div>
+
     );
   }
 }

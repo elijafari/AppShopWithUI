@@ -109,3 +109,46 @@
         transform: translateY(0);
     }
 }
+.custom-switch {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+}
+
+.custom-switch input {
+  position: relative;
+  width: 50px;
+  height: 24px;
+  -webkit-appearance: none;
+  background: #ccc;
+  outline: none;
+  border-radius: 50px;
+  transition: 0.4s;
+  cursor: pointer;
+}
+
+.custom-switch input:checked {
+  background: #4caf50;
+}
+
+.custom-switch input::before {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  top: 2px;
+  left: 2px;
+  background: white;
+  transition: 0.4s;
+}
+
+.custom-switch input:checked::before {
+  transform: translateX(26px);
+}
+
+.custom-switch label {
+  font-size: 1rem;
+  cursor: pointer;
+}

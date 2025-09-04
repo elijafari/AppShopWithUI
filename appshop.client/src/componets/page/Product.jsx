@@ -45,9 +45,9 @@ export class Product extends Component {
         });
         if (this.isEdit) {
             api.get("product/GetById?id=" + this.state.id).then((response) => {
-                var result = response.data;
+                var result = response.data.data;
                 this.setState({
-                    result,
+                    ...result,
                     file: "data:image/png;base64," + result.image,
                     updateKey: this.state.updateKey + 1,
                 });

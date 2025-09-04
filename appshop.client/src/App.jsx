@@ -10,6 +10,8 @@ import { Cart } from './componets/page/Cart';
 import { ProductList } from './componets/page/ProductList';
 import { ProductView } from './componets/page/ProductView';
 import { NoAccess } from './componets/page/NoAccess';
+import AboutUs from './componets/page/AboutUs';
+import ContactUs from './componets/page/ContactUs';
 
 export default class App extends Component {
   constructor(props) {
@@ -34,8 +36,9 @@ export default class App extends Component {
               <Route path="/product" element={<Product />} />
               <Route path="/product/:id" element={<Product isEdit={true} />} />
               <Route path="/productView/:id" element={<ProductView />} />
-
               <Route path="/productList" element={<ProductList />} />
+              <Route path="/aboutUs" element={<AboutUs />} />
+              <Route path="/contactUs" element={<ContactUs />} />
               {/*<Route path="/user" element={<User />} /> */}
             </Route>
           </Routes>
