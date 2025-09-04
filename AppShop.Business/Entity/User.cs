@@ -8,13 +8,12 @@ namespace AppShop.Business.Entity
         public string Name { get; set; }
         public string? Mobail { get; set; }
         public string? Phone { get; set; }
-        public string? Region { get; set; }
         public string? PostalCode { get; set; }        
         public DateTime CreatedDate { get; set; } = DateTime.Now;
         public DateTime? ModifiedDate { get; set; }
         public DateTime? LastLogin { get; set; } 
         public bool IsAdmin { get; set; }
-        public string? City { get; set; }
+        public int? CitiesId { get; set; }
         public string? Address { get; set; }
         public string? Email { get; set; }
         public string UserName { get;  set; }

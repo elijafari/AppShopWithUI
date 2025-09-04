@@ -13,8 +13,8 @@ namespace AppShop.Business.Mapping
             builder.HasKey(c => c.Id);
             builder.Property(p => p.Id).ValueGeneratedOnAdd();
             builder.Property(p => p.Name).IsRequired().HasColumnType("nvarchar(50)");
-            builder.Property(p => p.Address).HasColumnType("nvarchar(1000)");         
-            builder.Property(p => p.City).HasColumnType("nvarchar(50)");         
+            builder.Property(p => p.Address).HasColumnType("nvarchar(1000)");
+            builder.Property(p => p.CitiesId).IsRequired(false);
             builder.Property(p => p.Email).HasColumnType("nvarchar(50)");
             builder.Property(p => p.CreatedDate).HasColumnType("nvarchar(50)");         
             builder.Property(p => p.ModifiedDate).HasColumnType("nvarchar(50)");
@@ -25,7 +25,6 @@ namespace AppShop.Business.Mapping
             builder.Property(p => p.PostalCode).HasColumnType("nvarchar(50)");
             builder.Property(p => p.Mobail).HasColumnType("nvarchar(50)");
             builder.Property(p => p.Phone).HasColumnType("nvarchar(50)");
-            builder.Property(p => p.Region).HasColumnType("nvarchar(50)");
 
 
 

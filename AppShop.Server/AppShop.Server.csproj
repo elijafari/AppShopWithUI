@@ -53,6 +53,11 @@
 	<ItemGroup>
 	  <Folder Include="wwwroot\" />
 	</ItemGroup>
+	<ItemGroup>
+	  <Content Update="Data\Cities.json">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </Content>
+	</ItemGroup>
 
 	<!-- اجرای npm build و کپی خروجی به wwwroot در زمان پابلیش -->
 	<Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">

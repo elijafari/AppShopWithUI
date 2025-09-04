@@ -33,9 +33,6 @@ export class Product extends Component {
         });
     }
     componentDidMount() {
-        this.setState({
-            loading: false,
-        });
         api.get("/category/GetAll").then((response) => {
             var cat = [];
             response.data.data.forEach((element) => {

@@ -1,6 +1,7 @@
 import React from "react";
 import api from "../tools/axiosConfig";
 import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
+import DropdownApp from "../tools/DropdownApp";
 import {
   NotificationContainer,
   NotificationManager,
@@ -12,9 +13,20 @@ import { ErrorHanding } from "../Utility";
 export class User extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
-  }
+    this.state = {
 
+      cities: []
+    };
+  }
+  componentDidMount() {
+    api.get("/City/GetProvinceAll").then((response) => {
+      var array = [];
+      response.data.data.forEach((element) => {
+        array.push({ title: element.name, value: element.id });
+      });
+      this.setState({cities: array });
+    });
+  }
   AddData() {
     api.post("/user/Add", this.state)
       .then(res => {
@@ -39,59 +51,61 @@ export class User extends React.Component {
                 context={this}
                 title="نام"
                 name="name"
-                className="col-md-6 col-sm-12"
+                className="col-md-4 col-sm-12"
               />
               <TextBox
                 context={this}
                 title="نام کاربری"
                 name="userName"
-                className="col-md-6 col-sm-12"
+                className="col-md-4 col-sm-12"
               />
               <TextBox
                 context={this}
                 title="کلمه عبور"
                 name="password"
                 type="password"
-                className="col-md-6 col-sm-12"
+                className="col-md-4 col-sm-12"
               />
               <TextBox
                 context={this}
                 title="شماره تلفن"
                 name="phone"
                 type="number"
-                className="col-md-6 col-sm-12"
+                className="col-md-4 col-sm-12"
               />
               <TextBox
                 context={this}
                 title="شماره همراه"
                 name="phoneNumber"
                 type="number"
-                className="col-md-6 col-sm-12"
+                className="col-md-4 col-sm-12"
               />
-              <TextBox
+              <DropdownApp
                 context={this}
+                name="privace"
+                title="استان"
+                className="col-md-4 col-sm-12"
+                data={this.state.cities}
+              />
+              <DropdownApp
+                context={this}
+                name="cityId"
                 title="شهر"
-                name="city"
-                className="col-md-6 col-sm-12"
-              />
-              <TextBox
-                context={this}
-                title="منطقه"
-                name="region"
-                className="col-md-6 col-sm-12"
+                className="col-md-4 col-sm-12"
+                data={this.state.cities}
               />
               <TextBox
                 context={this}
                 title="کد پستی"
                 name="postalCode"
                 type="number"
-                className="col-md-6 col-sm-12"
+                className="col-md-4 col-sm-12"
               />
               <TextBox
                 context={this}
                 title="پست الکترونیکی"
                 name="email"
-                className="col-md-6 col-sm-12"
+                className="col-md-4 col-sm-12"
               />
               <TextBox
                 context={this}

@@ -122,6 +122,7 @@ builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IOrderBuyService, OrderBuyService>();
 builder.Services.AddScoped<ILogService, LogService>();
 builder.Services.AddScoped<IOrderBuyStatuesService, OrderBuyStatuesService>();
+builder.Services.AddScoped<ICityService,CityService>();
 
 var app = builder.Build();
 
