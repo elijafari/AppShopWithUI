@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import "../../../node_modules/bootstrap/dist/css/bootstrap.css";
 import "../../App.css";
-import { ChangeRoute } from "../tools/ChangeRoute";
 
 export class ProductItem extends Component {
   constructor(props) {
@@ -30,7 +29,7 @@ export class ProductItem extends Component {
     }
   }
   onView(e) {
-    ChangeRoute("/productView/" + e.id);
+      window.location.href ="/productView/" + e.id;
   }
 
   render() {

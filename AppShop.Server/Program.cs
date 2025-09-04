@@ -133,7 +133,8 @@ app.UseCors("AllowFrontend");
 app.UseAuthentication(); // مهم: قبل از Authorization
 app.UseAuthorization();
 
-
+app.UseDefaultFiles();
+app.MapStaticAssets();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -147,9 +148,15 @@ if (app.Environment.IsDevelopment())
 }
 else
 {
+    app.UseSwagger();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "فروشگاه v1");
+        c.DocumentTitle = "مستندات فروشگاه";
+    });
     app.UseExceptionHandler("/Error");
     app.UseHsts();
 }
 app.MapControllers();
-
+app.MapFallbackToFile("/index.html");
 app.Run();

@@ -1,8 +1,9 @@
 // src/api/axiosConfig.js
 import axios from "axios";
 
+console.log("url:" + import.meta.env.VITE_API_URL);
 const api = axios.create({
-  baseURL: "https://localhost:7107/api", // آدرس پایه API
+  baseURL: import.meta.env.VITE_API_URL,
   timeout: 10000
 });
 
@@ -28,13 +29,17 @@ api.interceptors.request.use(
   api.interceptors.response.use(
     (response) => response,
     (error) => {
-        if (error.response && error.response.status === 403) {
-        localStorage.setItem("403-ej",error.config.url);
-    window.location.href = "/noAccess"; // مسیر صفحه عدم دسترسی
-        }
-        return Promise.reject(error);
+      if (error.response && error.response.status === 401) {
+        localStorage.setItem("403-ej", error.config.url);
+        window.location.href = "/noAccess"; // مسیر صفحه عدم دسترسی
+      }
+      else if (error.response && error.response.status === 403) {
+        localStorage.setItem("401-ej", error.config.url);
+        window.location.href = "/noAccess"; // مسیر صفحه عدم دسترسی
+      }
+      return Promise.reject(error);
     }
-),
+  ),
   (error) => Promise.reject(error)
 );
 

@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import axios from "axios";
 import "../../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import {
   NotificationContainer,
@@ -9,7 +8,7 @@ import "react-notifications/lib/notifications.css";
 import "../App.css";
 import { TextBox } from "./TextBox";
 import DropdownApp from "./DropdownApp";
-import { ChangeRoute, GetLocalhostServer } from "./ChangeRoute";
+import  api  from "../tools/axiosConfig";
 import { Checkbox } from "./CheckBox";
 
 export class Product extends Component {
@@ -35,8 +34,7 @@ export class Product extends Component {
     this.setState({
       loading: false,
     });
-    var someUrl = GetLocalhostServer("api/category/GetAll");
-    axios.get(someUrl).then((response) => {
+    api.get("category/GetAll").then((response) => {
       var cat = [];
       response.data.data.forEach((element) => {
         cat.push({ title: element.name, value: element.id });
@@ -44,9 +42,7 @@ export class Product extends Component {
       this.setState({ cat });
     });
     if (this.state.id != null) {
-      someUrl = GetLocalhostServer("api/product/GetById?id=" + this.state.id);
-      axios.get(someUrl).then((response) => {
-        debugger;
+      api.get("/product/GetById?id=" + this.state.id).then((response) => {
         this.setState({
           code: response.data.data.code,
           name: response.data.data.name,
@@ -65,8 +61,6 @@ export class Product extends Component {
       NotificationManager.error("فایل انتخاب نشده است", "خطا");
       return;
     } 
-    
-    const  someUrl =this.isEdit? GetLocalhostServer("api/product/update"):GetLocalhostServer("api/product/add");
 
     const formData = new FormData();
     if (this.state.fileData != undefined) 
@@ -79,8 +73,8 @@ export class Product extends Component {
       formData.append("id", this.state.id);
       formData.append("categoryId", this.state.categoryId);
       formData.append("isActive", this.state.isActive);
-    axios
-      .post(someUrl,  formData, {
+    
+      api.post(this.isEdit?"/product/update":"/product/add",  formData, {
         headers: {
           "content-type": "multipart/form-data",
         },
@@ -89,7 +83,7 @@ export class Product extends Component {
         if (response.status === 200) {
           if (this.isEdit) {
             NotificationManager.success("اطلاعات با موفقیت ویرایش شد", "پیام");
-            ChangeRoute("/productList");
+             window.location.href ="/productList";
           } else {
             NotificationManager.success("اطلاعات با موفقیت ثبت شد", "پیام");
             this.setState({

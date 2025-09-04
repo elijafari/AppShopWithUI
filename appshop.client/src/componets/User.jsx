@@ -1,11 +1,10 @@
 import React from "react";
-import axios from "axios";
 import "../../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import {NotificationContainer, NotificationManager} from 'react-notifications';
 import "react-notifications/lib/notifications.css";
 import "../App.css";
 import { TextBox } from "./TextBox";
-import {GetLocalhostServer } from "./ChangeRoute";
+import  api  from "../tools/axiosConfig";
 export class User extends React.Component {
   constructor(props) {
     super(props);
@@ -13,11 +12,8 @@ export class User extends React.Component {
   }
 
   AddData() {
-    const someUrl = GetLocalhostServer("api/user/add");
-    axios
-      .post(someUrl, this.state)
+    api.post("user/add", this.state)
         .then((response) => {
-            debugger
             if (response.data.success) {
             NotificationManager.success(response.data.message, "پیام");
             localStorage.setItem("user", response.data.data);

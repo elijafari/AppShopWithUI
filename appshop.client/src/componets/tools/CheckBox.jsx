@@ -17,7 +17,7 @@ export class Checkbox extends React.Component {
   render() {
     return (
       <>
-        <div className={"form-check form-switch " + this.props.className} style={{ padding: "12px" }}>
+        <div className={"form-check form-switch " + this.props.className} >
           <label className="form-check-label">
             {this.props.title}
           </label>

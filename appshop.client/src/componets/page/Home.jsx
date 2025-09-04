@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import axios from "axios";
 import { ProductItem } from "../page/ProductItem";
 import { Pageing } from "../tools/Pageing";
 import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
@@ -7,7 +6,7 @@ import "../../App.css";
 import { Loading } from "../tools/Loading";
 import { TextBox } from "../tools/TextBox";
 import DropdownApp from "../tools/DropdownApp";
-import {GetLocalhostServer } from "../tools/ChangeRoute";
+import api from "../tools/axiosConfig";
 
 export class Home extends Component {
   constructor(props) {
@@ -34,15 +33,14 @@ export class Home extends Component {
     this.setState({
       loading: false,
     });
-    const someUrl = GetLocalhostServer("api/product/GetAll");
     var filter = {
       fromPrice:this.getNumber(this.state.fromPrice),
       toPrice:this.getNumber(this.state.toPrice),
       productName: this.state.productName==undefined ?"":this.state.productName,
       categoryId: this.state.categoryId,
     };
-    axios
-      .post(someUrl, { filter: filter, pageNumber: pageNumber })
+    api
+      .post("/product/GetAll", { filter: filter, pageNumber: pageNumber })
       .then((response) => {
         this.setState({
           data: response.data.data.data,
@@ -55,8 +53,7 @@ export class Home extends Component {
       });
   }
   loadCategory() {
-    var someUrl = GetLocalhostServer("api/category/GetAllForSearch");
-    axios.get(someUrl).then((response) => {
+    api.get("category/GetAllForSearch").then((response) => {
       var cat = [];
       response.data.data.forEach((element) => {
         cat.push({ title: element.name, value: element.id });

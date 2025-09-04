@@ -3,7 +3,6 @@ import { TextBox } from "../tools/TextBox";
 import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import "../../App.css";
 import DropdownApp from "../tools/DropdownApp";
-import { ChangeRoute } from "../tools/ChangeRoute";
 export class Cart extends Component {
   constructor(props) {
     super(props);
@@ -68,7 +67,7 @@ export class Cart extends Component {
     localStorage.setItem("selectedItem", JSON.stringify(data));
   }
   onView(e) {
-    ChangeRoute("/productView/" + e.id);
+       window.location.href ="/productView/" + e.id;
   }
   render() {
     return (

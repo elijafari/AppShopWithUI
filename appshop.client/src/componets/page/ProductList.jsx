@@ -1,8 +1,7 @@
 import React, { Component } from "react";
-import axios from "axios";
 import { Pageing } from "../tools/Pageing";
 import { ButtonRoute } from "../tools/ButtonRoute";
-import {ChangeRoute,GetLocalhostServer} from "../tools/ChangeRoute";
+import  api  from "../tools/axiosConfig";
 import { Loading } from "../tools/Loading";
 import { FiRefreshCcw } from "react-icons/fi";
 import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
@@ -16,7 +15,7 @@ export class ProductList extends Component {
       loading: false,
       pageCount: 0,
       currentPage: 1,
-      startRow: 1,
+    
     };
     this.header = [
       "ردیف",
@@ -34,15 +33,14 @@ export class ProductList extends Component {
     this.setState({
       loading: false,
     });
-    const someUrl = GetLocalhostServer("api/product/GetAllAdmin");
-    axios.post(someUrl, { pageNumber: pageNumber }).then((response) => {
+   api.post("/product/GetAllAdmin", { pageNumber: pageNumber }).then((response) => {
       this.setState({
         data: response.data.data.data,
         pageCount: response.data.data.pageCount,
         totalCount: response.data.data.totalCount,
         pageSize: response.data.data.pageSize,
         currentPage: pageNumber,
-        startRow: response.data.data.startRow,
+        startRow: response.data.data.startRow+1,
         loading: true,
         updateKey: this.state.updateKey + 1,
       });
@@ -50,7 +48,7 @@ export class ProductList extends Component {
   }
 onEdit(e)
 {
-  ChangeRoute('/product/'+e.id);
+     window.location.href ="/product/" + e.id;
 }
   render() {
     return (

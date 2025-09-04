@@ -5,16 +5,12 @@ import { Outlet } from "react-router-dom";
 import { FaShoppingCart } from "react-icons/fa";
 import { ModalApp } from "./ModalApp";
 import { ButtonRoute } from "./ButtonRoute";
-import axios from "axios";
 import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import {
   NotificationContainer,
-  NotificationManager,
 } from "react-notifications";
 import "react-notifications/lib/notifications.css";
-import { ChangeRoute, GetLocalhostServer } from "./ChangeRoute";
 import { parseJwt } from "../Utility";
-import { ErrorHanding } from "../Utility";
 
 
 export class Menu extends Component {

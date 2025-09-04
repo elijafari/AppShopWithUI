@@ -84,7 +84,7 @@ namespace AppShop.Server.Controllers
         [HttpPost]
         [Authorize(Roles = "Admin")]
 
-        public IActionResult GetAllAdmin(InputRequest inputRequest)
+        public IActionResult GetAllAdmin(InputRequestProduct inputRequest)
         {
             return Response(() =>
             {

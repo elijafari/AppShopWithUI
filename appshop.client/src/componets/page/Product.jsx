@@ -137,7 +137,7 @@ export class Product extends Component {
                                 context={this}
                                 title="فعال"
                                 name="isActive"
-                                className="col-md-1 col-sm-12"
+                                className="col-md-1 col-sm-1"
                                 updateKey={this.state.updateKey}
                             />
                             <TextBox

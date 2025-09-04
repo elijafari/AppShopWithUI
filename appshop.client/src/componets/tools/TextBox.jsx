@@ -4,7 +4,7 @@ export class TextBox extends React.Component {
     super(props);
   }
   componentDidMount() {
-    this.props.context.setState({ [this.props.name]: undefined });
+    this.props.context.setState({ [this.props.name]: "" });
   }
   handleInputChange = (e) => {
     this.props.context.setState({ [e.target.name]: e.target.value });

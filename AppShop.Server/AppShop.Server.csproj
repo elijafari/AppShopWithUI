@@ -39,4 +39,34 @@
     </ProjectReference>
   </ItemGroup>
 
+	<ItemGroup>
+		<None Update="web.config">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<CopyToPublishDirectory>Always</CopyToPublishDirectory>
+		</None>
+	</ItemGroup>
+	
+	<!-- برای اینکه فایل‌های داخل wwwroot در پابلیش لحاظ شوند -->
+	<ItemGroup>
+		<None Include="wwwroot\**\*" CopyToPublishDirectory="PreserveNewest" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="wwwroot\" />
+	</ItemGroup>
+
+	<!-- اجرای npm build و کپی خروجی به wwwroot در زمان پابلیش -->
+	<Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
+		<!-- اجرای npm install -->
+		<Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
+		<!-- اجرای npm run build -->
+		<Exec WorkingDirectory="$(SpaRoot)" Command="npm run build" />
+
+		<!-- کپی خروجی build به wwwroot -->
+		<ItemGroup>
+			<DistFiles Include="$(SpaRoot)\dist\**" />
+		</ItemGroup>
+
+		<Copy SourceFiles="@(DistFiles)" DestinationFiles="@(DistFiles->'wwwroot\%(RecursiveDir)%(Filename)%(Extension)')" />
+	</Target>
+
 </Project>
