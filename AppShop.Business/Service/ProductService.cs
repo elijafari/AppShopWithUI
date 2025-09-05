@@ -3,11 +3,7 @@ using AppShop.Business.Entity;
 using AppShop.Business.IService;
 using AppShop.Business.Mapping;
 using AutoMapper;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Microsoft.AspNetCore.Hosting;
 using System.Threading.Tasks;
 
 namespace AppShop.Business.Service
@@ -16,39 +12,60 @@ namespace AppShop.Business.Service
     {
         AppShopDBContext db;
         private readonly IMapper mapper;
-        public ProductService(AppShopDBContext _db,IMapper _mapper)
+        private readonly UploadPathProvider uploadPathProvider;
+        public ProductService(AppShopDBContext _db, IMapper _mapper, UploadPathProvider _uploadPathProvider)
         {
             db = _db;
             mapper = _mapper;
-
+            uploadPathProvider = _uploadPathProvider;
         }
         public bool Add(InProduct input)
         {
+            var id = db.Products.Max(x => x.Id) + 1;
             var entity = mapper.Map<Product>(input);
+            var fileName = $"product_{id}";
+            entity.PathImg = CopyImage(input, fileName).Result;
             ValidtionData(entity);
             db.Products.Add(entity);
             db.SaveChanges();
             return true;
         }
         public bool Update(InProduct input)
-        { 
-            var image=db.Products.AsNoTracking().FirstOrDefault(x=>x.Id==input.Id)?.image;
+        {
             var entity = mapper.Map<Product>(input);
-            if (entity.image.Length ==0)
-                entity.image = image;
+            var fileName = $"product_{input.Id}";
+            entity.PathImg = CopyImage(input, fileName).Result;
             ValidtionData(entity);
             db.Products.Update(entity);
             db.SaveChanges();
             return true;
-        }
 
+
+        }
+        private async Task<string> CopyImage(InProduct input, string fileName)
+        {
+            if (input.File != null)
+            {
+                var extension = Path.GetExtension(input.File.FileName);
+                fileName = fileName + extension;
+
+                var savePath = Path.Combine(uploadPathProvider.Path, fileName);
+
+                using (var stream = new FileStream(savePath, FileMode.Create))
+                {
+                   await input.File.CopyToAsync(stream);
+                    return $"/uploads/products/{fileName}";
+                }
+            }
+            return string.Empty;
+        }
         private void ValidtionData(Product entity)
         {
             if (entity.Code == 0)
             {
                 throw new PersianException(Utility.GetMsgRequired("کد"));
             }
-            else if (db.Products.Any(x => x.Code == entity.Code && x.Id!=entity.Id))
+            else if (db.Products.Any(x => x.Code == entity.Code && x.Id != entity.Id))
             {
                 throw new PersianException(Utility.GetMsgRepert("کد"));
             }
@@ -70,7 +87,7 @@ namespace AppShop.Business.Service
             {
                 throw new PersianException(Utility.GetMsgRequired("قیمت"));
             }
-            if (entity.image == null)
+            if (entity.PathImg == null)
             {
                 throw new PersianException(Utility.GetMsgRequired("عکس"));
             }
@@ -82,7 +99,7 @@ namespace AppShop.Business.Service
 
             var query = from p in db.Products
                         select p;
-                       
+
             if (param != null)
                 if (param.Filter != null)
                 {
@@ -95,9 +112,9 @@ namespace AppShop.Business.Service
                     if (param.Filter.ToPrice != 0)
                         query = query.Where(x => x.Price <= param.Filter.ToPrice);
                 }
- 
+
             result.Data = query.OrderBy(x => x.Code).Skip(result.StartRow).Take(param.Take).Cast<object>().ToList();
-            result.TotalCount =query.Count();
+            result.TotalCount = query.Count();
             return result;
         }
         public Product GetById(int id)
@@ -106,8 +123,25 @@ namespace AppShop.Business.Service
         }
         public bool DeleteAll()
         {
-             db.Products.RemoveRange(db.Products.ToList());
+            db.Products.RemoveRange(db.Products.ToList());
             return true;
+
+        }
+        public bool ConvertImage()
+        {
+            var products = db.Products.ToList();
+            foreach (var product in products)
+            {
+                var fileName = $"product_{product.Id}.jpg";
+                var filePath = Path.Combine(uploadPathProvider.Path, fileName);
+
+                File.WriteAllBytes(filePath, product.image); // ذخیره فایل از دیتابیس
+
+                product.PathImg = "/uploads/products/" + fileName; // ذخیره مسیر جدید
+                                                                   // product.image = null; // در صورت تمایل حذف ستون Blob
+            }
+            db.SaveChanges();
+            return false;
 
         }
     }

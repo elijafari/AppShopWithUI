@@ -49,7 +49,7 @@ export class Product extends Component {
                 this.setState({
                     ...result,
                     price:result.price.toLocaleString("fa-IR"),
-                    file: "data:image/png;base64," + result.image,
+                    file:import.meta.env.VITE_API_URL+result.pathImg,
                     updateKey: this.state.updateKey + 1,
                 });
             });
@@ -82,7 +82,6 @@ export class Product extends Component {
         if (this.state.fileData != undefined)
             formData.append("file", this.state.fileData);
 
-        debugger
         formData.append("code", this.state.code);
         formData.append("name", this.state.name);
         formData.append("price",normalizePrice( toEnglishDigits(this.state.price)));

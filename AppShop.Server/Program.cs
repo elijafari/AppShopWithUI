@@ -5,7 +5,6 @@ using AppShop.Business.Service;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.IdentityModel.Tokens.Jwt;
@@ -13,29 +12,27 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
 // 👉 تنظیمات EF Core برای SQL Server
 builder.Services.AddDbContext<AppShopDBContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("Connection")));
 
+// 👉 AutoMapper
 var mapperConfig = new MapperConfiguration(mc =>
 {
     mc.AddProfile(new MappingProfile());
 });
-
 IMapper mapper = mapperConfig.CreateMapper();
 builder.Services.AddSingleton(mapper);
 
-// 👉 افزودن کنترلرها
+// 👉 Controller ها
 builder.Services.AddControllers();
 
-// 👉 Swagger + JWT Support
+// 👉 Swagger + JWT
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "فروشگاه لوازم الکتریکی", Version = "v1" });
 
-    // افزودن تعریف امنیتی JWT
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Description = "توکن JWT را وارد کنید. مثال: Bearer {your token}",
@@ -69,7 +66,7 @@ builder.Services.AddAuthentication(options =>
 })
 .AddJwtBearer(options =>
 {
-    options.RequireHttpsMetadata = false; // فقط برای تست در لوکال
+    options.RequireHttpsMetadata = false; // فقط برای لوکال
     options.SaveToken = true;
     options.TokenValidationParameters = new TokenValidationParameters
     {
@@ -78,26 +75,19 @@ builder.Services.AddAuthentication(options =>
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
         ValidIssuer = jwtIssuer,
-        ValidAudience = jwtIssuer, 
+        ValidAudience = jwtIssuer,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
         RoleClaimType = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role",
     };
 });
 
-
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
 });
-// 👉 سرویس‌های دیگر
-// builder.Services.AddScoped<...>();
 
-builder.Services.AddScoped<TokenService>();
-
-
+// 👉 CORS
 var urlFront = builder.Configuration["AppSettings:UrlFront"];
-
-// اضافه کردن CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
@@ -106,37 +96,58 @@ builder.Services.AddCors(options =>
               .AllowAnyMethod()
               .AllowCredentials());
 });
-// فقط در محیط غیر Development UseUrls اعمال بشه
-if (!builder.Environment.IsDevelopment() && !string.IsNullOrEmpty(urlFront))
-{
-    builder.WebHost.UseUrls(urlFront);
-}
 
-// اضافه کردن سرویس کپچا
-
-
+// 👉 DI
+builder.Services.AddScoped<TokenService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IOrderBuyService, OrderBuyService>();
 builder.Services.AddScoped<ILogService, LogService>();
-builder.Services.AddScoped<ICityService,CityService>(); 
+builder.Services.AddScoped<ICityService, CityService>();
 builder.Services.AddScoped<IAddressService, AddressService>();
 
-var app = builder.Build();
 
-// 👉 Middleware ها
+// مسیر wwwroot درست بعد از Build قابل دسترسی است
+var uploadFolder = Path.Combine(builder.Environment.WebRootPath, "uploads", "products");
+
+if (!Directory.Exists(uploadFolder))
+{
+    Directory.CreateDirectory(uploadFolder);
+}
+builder.Services.AddSingleton(new UploadPathProvider(uploadFolder));
+var app = builder.Build();
+// ================== Middleware ==================
 
 app.UseHttpsRedirection();
-
 app.UseCors("AllowFrontend");
-app.UseAuthentication(); // مهم: قبل از Authorization
+
+app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseDefaultFiles();
-app.MapStaticAssets();
+// 👉 فایل‌های استاتیک (wwwroot)
+app.UseStaticFiles(new StaticFileOptions
+{
+    OnPrepareResponse = ctx =>
+    {
+        var path = ctx.File.PhysicalPath;
 
-// Configure the HTTP request pipeline.
+        if (path != null && path.EndsWith("index.html"))
+        {
+            // برای SPA: کش غیرفعال
+            ctx.Context.Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
+            ctx.Context.Response.Headers["Pragma"] = "no-cache";
+            ctx.Context.Response.Headers["Expires"] = "0";
+        }
+        else
+        {
+            // برای js, css, images: کش طولانی
+            ctx.Context.Response.Headers["Cache-Control"] = "public,max-age=31536000,immutable";
+        }
+    }
+});
+
+// 👉 Swagger
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -154,33 +165,15 @@ else
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "فروشگاه v1");
         c.DocumentTitle = "مستندات فروشگاه";
     });
+
     app.UseExceptionHandler("/Error");
     app.UseHsts();
 }
-app.UseStaticFiles(new StaticFileOptions
-{
-    OnPrepareResponse = ctx =>
-    {
-        var path = ctx.File.PhysicalPath;
 
-        if (path != null && path.EndsWith("index.html"))
-        {
-            // برای index.html کش رو غیر فعال کن
-            ctx.Context.Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
-            ctx.Context.Response.Headers["Pragma"] = "no-cache";
-            ctx.Context.Response.Headers["Expires"] = "0";
-        }
-        else
-        {
-            // برای فایل‌های استاتیک (js, css, images) کش طولانی بذار
-            ctx.Context.Response.Headers["Cache-Control"] = "public,max-age=31536000,immutable";
-        }
-    }
-});
-app.UseCookiePolicy(new CookiePolicyOptions
-{
-    MinimumSameSitePolicy = SameSiteMode.None
-});
+// 👉 API Controllers
 app.MapControllers();
+
+// 👉 SPA React (fallback)
 app.MapFallbackToFile("/index.html");
+
 app.Run();

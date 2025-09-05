@@ -5,10 +5,11 @@ namespace AppShop.Business.IService
 {
     public interface IProductService
     {
-        bool Add(InProduct input);
+        bool Add(InProduct input );
         bool Update(InProduct entity);
         DataView GetAll(DataRequest param);
         Product GetById(int id);
         bool DeleteAll();
+        bool ConvertImage();
     }
 }

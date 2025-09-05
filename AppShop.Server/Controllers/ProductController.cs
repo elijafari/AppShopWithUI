@@ -17,9 +17,10 @@ namespace AppShop.Server.Controllers
     {
 
         private readonly IProductService service;
-        public ProductController(IProductService _service, ILogService _logService):base(_logService)
+        public ProductController(IProductService _service, ILogService _logService) :base(_logService)
         {
             service = _service;
+      
         }
         [Authorize(Roles = "Admin")]
         [HttpPost]
@@ -57,14 +58,9 @@ namespace AppShop.Server.Controllers
 
             if (Request.Form.Files.Any())
             {
-                var file = Request.Form.Files[0];
-                string extension = Path.GetExtension(file.FileName);
-                //read the file
-                using (var memoryStream = new MemoryStream())
-                {
-                    file.CopyTo(memoryStream);
-                    input.image = memoryStream.ToArray();
-                }
+               input.File = Request.Form.Files[0];
+
+             
 
             }
             return input;
@@ -96,7 +92,8 @@ namespace AppShop.Server.Controllers
         public IActionResult GetById(InRecord input) => Response(() => service.GetById(int.Parse(input.Id)));
         [HttpGet]
         [Authorize(Roles = "Admin")]
-
         public IActionResult DeleteAll() => Response(() => service.DeleteAll());
+        [HttpGet]
+        public IActionResult ConvertImage() => Response(() => service.ConvertImage());
     }
 }

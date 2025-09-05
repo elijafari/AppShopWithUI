@@ -21,7 +21,7 @@ export class ProductView extends Component {
       this.setState({
         ...result,
         price: result.price.toLocaleString("fa-IR"),
-        file: "data:image/png;base64," + result.image,
+        file:import.meta.env.VITE_API_URL+result.pathImg,
         updateKey: this.state.updateKey + 1,
       });
     });

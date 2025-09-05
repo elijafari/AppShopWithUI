@@ -6,6 +6,7 @@ export class ProductItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
+        baseURL: import.meta.env.VITE_API_URL,
       count: 0,
       uploadKey: 1,
     };
@@ -33,26 +34,28 @@ export class ProductItem extends Component {
   }
 
   render() {
+    debugger
+    const product = this.props.data;
     return (
       <div className="col-md-3 col-lg-3 col-sm-6">
         <div className="text-center">
           <img
-            src={"data:image/png;base64," + this.props.data.image}
+            src={import.meta.env.VITE_API_URL+product.pathImg}
+            alt={`خرید ${product.name} با بهترین قیمت`}
             onClick={() => this.onView(this.props.data)}
             className="img-fluid img-thumbnail"
-            alt={this.props.data.name}
             style={{ cursor: "pointer", height: "350px", width: "350" }}
           />
           <br />
-          <span>{this.props.data.name}</span>
+          <span>{product.name}</span>
           <br />
-         {this.props.data.isActive ==true ?
-           <span>{this.props.data.price.toLocaleString()} تومان</span>
-           :
-           <span className="text-danger">ناموجود</span>
-         }
+          {product.isActive == true ?
+            <span>{product.price.toLocaleString()} تومان</span>
+            :
+            <span className="text-danger">ناموجود</span>
+          }
           <br />
-          {this.props.data.isActive && (
+          {product.isActive && (
             <>
 
               <button
@@ -78,7 +81,7 @@ export class ProductItem extends Component {
           <button
             type="button"
             className="btn btn-info"
-            onClick={() => this.onView(this.props.data)}
+            onClick={() => this.onView(product)}
           >
             اطلاعات بیشتر
           </button>
