@@ -20,6 +20,7 @@ export class ProductView extends Component {
       var result = response.data.data;
       this.setState({
         ...result,
+        price: result.price.toLocaleString("fa-IR"),
         file: "data:image/png;base64," + result.image,
         updateKey: this.state.updateKey + 1,
       });
@@ -49,7 +50,7 @@ export class ProductView extends Component {
               <div className="col-md-9">
                 <b>قیمت : </b>
                 <span>{this.state.price}</span>
-                <b>ریال</b>
+                <b>تومان</b>
                 <br />
                 <b>توضیحات کالا : </b>
                 <span>{this.state.description}</span>

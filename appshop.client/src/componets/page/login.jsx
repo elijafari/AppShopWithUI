@@ -95,7 +95,7 @@ export class Login extends React.Component {
                           style={{ cursor: "pointer" }}
                           onClick={this.togglePassword}
                         >
-                          {!this.state.showPassword ? <FaEyeSlash /> : <FaEye />}
+                          {this.state.showPassword ? <FaEyeSlash /> : <FaEye />}
                         </span>
                       </div>
                     </div>

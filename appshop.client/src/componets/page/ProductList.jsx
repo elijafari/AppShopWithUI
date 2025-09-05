@@ -79,7 +79,7 @@ onEdit(e)
       <td data-label="کد">{x.code}</td>
       <td data-label="نام">{x.name}</td>
       <td data-label="قیمت">{x.price.toLocaleString()}</td>
-      <td data-label="فعال">{x.isActive ? "*" : ""}</td>
+      <td data-label="وضعیت" className={x.isActive ? 'text-success':'text-danger'}>{x.isActive ? "موجود" : "ناموجود"}</td>
       <td data-label="عملیات">
         <button
           type="button"

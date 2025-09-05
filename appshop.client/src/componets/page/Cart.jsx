@@ -5,7 +5,7 @@ import { DropdownApp } from "../tools/DropdownApp";
 import { ButtonReturn } from "../tools/ButtonReturn";
 import { ButtonWaith } from "../tools/ButtonWaith";
 import Modal from "react-bootstrap/Modal";
-import { ErrorHanding } from "../Utility";
+import { ErrorHanding,toPersianDigits } from "../Utility";
 import { TrackingCode } from "../tools/TrackingCode";
 import { CartEmpty } from "../tools/CartEmpty";
 import { Address } from "./Address";
@@ -244,11 +244,11 @@ export class Cart extends Component {
                   <tbody key={this.state.updateKey}>
                     {this.state.data.map((x, i) => (
                       <tr key={i}>
-                        <th scope="row">{i + 1}</th>
-                        <td>{x.data.name}</td>
-                        <td>{x.data.price.toLocaleString()}</td>
-                        <td>{x.count}</td>
-                        <td>{(x.count * x.data.price).toLocaleString()}</td>
+                        <th data-label={this.header[0]+':'} scope="row">{i + 1}</th>
+                        <td data-label={this.header[1]+':'}>{x.data.name}</td>
+                        <td data-label={this.header[2]+':'}>{x.data.price.toLocaleString("fa-IR")}</td>
+                        <td data-label={this.header[3]+':'}>{toPersianDigits( x.count)}</td>
+                        <td data-label={this.header[4]+':'}>{(x.count * x.data.price).toLocaleString("fa-IR")}</td>
                         <td>
                           <button
                             type="button"
@@ -282,7 +282,7 @@ export class Cart extends Component {
                     <tr>
                       <td colSpan={3}>جمع</td>
                       <td className="fw-bold text-success">{this.state.data.reduce((acc, x) => acc + x.count, 0)}</td>
-                      <td className="fw-bold text-success">{this.state.data.reduce((acc, x) => acc + (x.count * x.data.price), 0).toLocaleString()}</td>
+                      <td className="fw-bold text-success">{this.state.data.reduce((acc, x) => acc + (x.count * x.data.price), 0).toLocaleString("fa-IR")+" تومان"}</td>
                       <td colSpan={2}></td>
                     </tr>
                   </tbody>

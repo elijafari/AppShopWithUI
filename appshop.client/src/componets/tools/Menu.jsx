@@ -103,7 +103,7 @@ export class Menu extends Component {
     <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
       <li className="nav-item active">
         <a className="nav-link custom-link" href="/home">
-          جستجوی کالا
+        صفحه اصلی
         </a>
       </li>
 

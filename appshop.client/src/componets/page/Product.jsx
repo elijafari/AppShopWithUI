@@ -13,6 +13,7 @@ import { Checkbox } from "../tools/CheckBox";
 import { ErrorHanding, toEnglishDigits,normalizePrice } from "../Utility";
 import { ButtonWaith } from "../tools/ButtonWaith";
 import { ButtonReturn } from "../tools/ButtonReturn";
+import { TextareaApp } from "../tools/TextareaApp";
 
 export class Product extends Component {
     constructor(props) {
@@ -176,7 +177,7 @@ export class Product extends Component {
                                 </div>
                             </div>
 
-                            <TextBox
+                            <TextareaApp
                                 context={this}
                                 title="توضیحات"
                                 name="description"

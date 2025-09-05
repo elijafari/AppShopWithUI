@@ -43,3 +43,12 @@ export function normalizePrice(str) {
     .replace(/[\u0660-\u0669]/g, d => d.charCodeAt(0) - 1632) // اعداد عربی
     .replace(/[^0-9]/g, ""); // حذف جداکننده‌ها و کاراکترهای غیرعددی
 }
+export function toPersianDigits(number) {
+
+  // تبدیل به فقط عدد
+  var str = number.toString().replace(/\D/g, "");
+
+  // تبدیل هر رقم لاتین یا عربی به فارسی
+  const persianMap = ["۰","۱","۲","۳","۴","۵","۶","۷","۸","۹"];
+  return str.replace(/\d/g, d => persianMap[d]);
+}
