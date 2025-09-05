@@ -229,17 +229,16 @@ namespace AppShop.Business.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Address")
-                        .HasColumnType("nvarchar(1000)");
-
-                    b.Property<int?>("CitiesId")
-                        .HasColumnType("int");
+                    b.Property<string>("Answer")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("CreatedDate")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("Email")
+                    b.Property<string>("FullName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<bool>("IsAdmin")
@@ -250,14 +249,7 @@ namespace AppShop.Business.Migrations
                     b.Property<string>("LastLogin")
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("Mobail")
-                        .HasColumnType("nvarchar(50)");
-
                     b.Property<string>("ModifiedDate")
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Password")
@@ -267,8 +259,8 @@ namespace AppShop.Business.Migrations
                     b.Property<string>("Phone")
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("PostalCode")
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<int>("Question")
+                        .HasColumnType("int");
 
                     b.Property<string>("UserName")
                         .IsRequired()

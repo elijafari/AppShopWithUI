@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppShop.Business.Migrations
 {
     [DbContext(typeof(AppShopDBContext))]
-    [Migration("20250827150021_shop-001")]
+    [Migration("20250905093237_shop-001")]
     partial class shop001
     {
         /// <inheritdoc />
@@ -51,6 +51,28 @@ namespace AppShop.Business.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Category", (string)null);
+                });
+
+            modelBuilder.Entity("AppShop.Business.Entity.City", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int?>("ParentId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParentId");
+
+                    b.ToTable("City", (string)null);
                 });
 
             modelBuilder.Entity("AppShop.Business.Entity.ItemBuy", b =>
@@ -213,8 +235,12 @@ namespace AppShop.Business.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(1000)");
 
-                    b.Property<string>("City")
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<string>("Answer")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int?>("CityId")
+                        .HasColumnType("int");
 
                     b.Property<string>("CreatedDate")
                         .IsRequired()
@@ -251,8 +277,8 @@ namespace AppShop.Business.Migrations
                     b.Property<string>("PostalCode")
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("Region")
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<int>("Question")
+                        .HasColumnType("int");
 
                     b.Property<string>("UserName")
                         .IsRequired()
@@ -261,6 +287,15 @@ namespace AppShop.Business.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users", (string)null);
+                });
+
+            modelBuilder.Entity("AppShop.Business.Entity.City", b =>
+                {
+                    b.HasOne("AppShop.Business.Entity.City", "Parent")
+                        .WithMany("Cities")
+                        .HasForeignKey("ParentId");
+
+                    b.Navigation("Parent");
                 });
 
             modelBuilder.Entity("AppShop.Business.Entity.ItemBuy", b =>
@@ -310,6 +345,11 @@ namespace AppShop.Business.Migrations
             modelBuilder.Entity("AppShop.Business.Entity.Category", b =>
                 {
                     b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("AppShop.Business.Entity.City", b =>
+                {
+                    b.Navigation("Cities");
                 });
 
             modelBuilder.Entity("AppShop.Business.Entity.OrderBuy", b =>

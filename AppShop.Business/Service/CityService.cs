@@ -34,9 +34,9 @@ namespace AppShop.Business.Service
             db.SaveChanges();
             return true;
         }
-        public List<CitiVM> GetProvinceAll()
+        public List<CitiVM> GetAll()
         {
-            var data = db.Cities.Where(x => x.ParentId == null).OrderBy(c => c.Name).ToList();
+            var data = db.Cities.OrderBy(c => c.Name).ToList();
             return mapper.Map<List<City>, List<CitiVM>>(data);
             
         }

@@ -11,7 +11,7 @@ namespace AppShop.Business.IService
    public interface ICityService
     {
        bool Add(List<InCity> models);
-        List<CitiVM> GetProvinceAll();
+        List<CitiVM> GetAll();
 
     }
 }

@@ -22,7 +22,7 @@ namespace AppShop.Business.Service
             var claims = new[]
             {
                 new Claim(nameof(entity.Id).ToLower(), entity.Id.ToString()),
-                new Claim(nameof(entity.Name).ToLower(), entity.Name),
+                new Claim("name", entity.FullName),
                 new Claim(ClaimTypes.Role, entity.IsAdmin?"Admin":"User")
             };
 

@@ -94,7 +94,7 @@ export class Menu extends Component {
                 </a>
               </li>
               <li className="nav-item active">
-                <a className="nav-link" href="\profile">
+                <a className="nav-link" href="\user">
                   ویرایش پروفایل کاربری<span className="sr-only"></span>
                 </a>
               </li>
@@ -102,7 +102,7 @@ export class Menu extends Component {
           </div>
           {this.state.isLoging == false ? (
             <ButtonRoute
-              title=" ورود به سامانه"
+              title="ورود / ثبت نام"
               link="/login"
               className="btn btn-light"
             />

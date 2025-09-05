@@ -8,5 +8,10 @@ namespace AppShop.Business.IService
         string Add(User entity);
         string  Login(InUser entity);
         bool AddAdmin();
+        User? GetById(Guid id);
+        string Edit(User entity);
+        User GetForForget(InUserForget input);
+        bool CheckAnswer(InUserAnswer input);
+        string ResetPassword(InUserNewPassword input);
     }
 }

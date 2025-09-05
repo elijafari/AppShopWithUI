@@ -10,7 +10,7 @@ root.render(
     // <React.StrictMode>
     <>
         <div dir="rtl" className='pageMain pt-4 pb-3' style={{ backgroundColor: "#cae7ca" }}>
-            <a class="navbar-brand fw-bold" href="#">
+            <a className="navbar-brand fw-bold" href="#">
                 <br />
                 <h3>فروشگاه اینترنتی لوازم الکتریکی EjElectro</h3>
                 <br />

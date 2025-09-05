@@ -30,7 +30,7 @@ namespace AppShop.Server.Controllers
             return Ok(service.Add(cities));
         }
         [HttpGet]
-        public IActionResult GetProvinceAll() => Response(() => service.GetProvinceAll());
+        public IActionResult GetAll() => Response(() => service.GetAll());
     
     }
 }

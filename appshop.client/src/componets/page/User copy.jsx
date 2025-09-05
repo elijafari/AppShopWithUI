@@ -12,17 +12,22 @@ import { TextBox } from "../tools/TextBox";
 import { ButtonWaith } from "../tools/ButtonWaith";
 import { ErrorHanding } from "../Utility";
 import { parseJwt } from "../Utility";
-import {QuestionsList} from "../tools/QuestionsList";
-export class User extends React.Component {
+export class User1 extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       isEdit:false,
       loading: false,
+      cityAll: [],
+      province: [],
+      city: [],
       questions: [],
+      updateKeyCity: 1
     };
   }
   componentDidMount() {
+
+    this.getCity();
     this.getUser();
     this.getQuestions();
 
@@ -38,14 +43,48 @@ export class User extends React.Component {
         });
       }
   }
+  getCity() {
+    api.get("/City/GetAll").then((response) => {
+      var cityAll = response.data.data;
+      var array = [];
+      cityAll.filter(x => x.parentId == null).forEach((element) => {
+        array.push({ title: element.name, value: element.id });
+      });
+      this.setState({
+        cityAll
+        , province: array
+      });
+    });
+  }
   getQuestions() {
+    var array = ["نام اولین معلمی که داشتی چه بود؟",
+       "اسم اولین مدرسه‌ای که رفتی چی بود؟", 
+        "اولین شهری که به سفر رفتی کجا بود؟",
+         "اسم بهترین دوستت در دوران کودکی چی بود؟", 
+         "نام خیابانی که در آن بزرگ شدی چیست؟", 
+         "اسم اولین فیلمی که در سینما دیدی چی بود؟",
+        "رنگ مورد علاقه‌ات در دوران کودکی چی بود؟"
+    ]
     var questions = [];
-    QuestionsList().forEach((element,index) => {
-      questions.push({ title: element, value:index+1 });
+    array.forEach((element) => {
+      questions.push({ title: element, value:array.findIndex(x=>x==element)+1 });
     });
     this.setState(
       {
         questions
+      }
+    )
+  }
+  onChangeProvice(e) {
+    var city = this.state.cityAll.filter(x => x.parentId == e.value);
+    var array = [];
+    city.forEach((element) => {
+      array.push({ title: element.name, value: element.id });
+    });
+    this.setState(
+      {
+        city: array,
+        updateKeyCity: this.state.updateKeyCity + 1,
       }
     )
   }
@@ -81,7 +120,7 @@ export class User extends React.Component {
               <TextBox
                 context={this}
                 title="نام و نام خانوادگی"
-                name="fullName"
+                name="name"
                 className="col-md-4 col-sm-12"
               />
               <TextBox
@@ -99,10 +138,52 @@ export class User extends React.Component {
               />
               <TextBox
                 context={this}
-                title="شماره همراه"
+                title="شماره تلفن"
                 name="phone"
                 type="number"
                 className="col-md-4 col-sm-12"
+              />
+              <TextBox
+                context={this}
+                title="شماره همراه"
+                name="phoneNumber"
+                type="number"
+                className="col-md-4 col-sm-12"
+              />
+              <DropdownApp
+                context={this}
+                name="provinceId"
+                title="استان"
+                className="col-md-4 col-sm-12"
+                data={this.state.province}
+                onChange={(e) => this.onChangeProvice(e)}
+              />
+              <DropdownApp
+                context={this}
+                name="cityId"
+                title="شهر"
+                className="col-md-4 col-sm-12"
+                data={this.state.city}
+                updateKey={this.state.updateKeyCity}
+              />
+              <TextBox
+                context={this}
+                title="کد پستی"
+                name="postalCode"
+                type="number"
+                className="col-md-4 col-sm-12"
+              />
+              <TextBox
+                context={this}
+                title="پست الکترونیکی"
+                name="email"
+                className="col-md-4 col-sm-12"
+              />
+              <TextBox
+                context={this}
+                title="آدرس"
+                name="address"
+                className="col-md-12 col-sm-12"
               />
               <DropdownApp
                 context={this}

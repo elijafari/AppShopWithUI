@@ -28,6 +28,25 @@ namespace AppShop.Business.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "City",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(50)", nullable: false),
+                    ParentId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_City", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_City_City_ParentId",
+                        column: x => x.ParentId,
+                        principalTable: "City",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Log",
                 columns: table => new
                 {
@@ -50,17 +69,18 @@ namespace AppShop.Business.Migrations
                     Name = table.Column<string>(type: "nvarchar(50)", nullable: false),
                     Mobail = table.Column<string>(type: "nvarchar(50)", nullable: true),
                     Phone = table.Column<string>(type: "nvarchar(50)", nullable: true),
-                    Region = table.Column<string>(type: "nvarchar(50)", nullable: true),
                     PostalCode = table.Column<string>(type: "nvarchar(50)", nullable: true),
                     CreatedDate = table.Column<string>(type: "nvarchar(50)", nullable: false),
                     ModifiedDate = table.Column<string>(type: "nvarchar(50)", nullable: true),
                     LastLogin = table.Column<string>(type: "nvarchar(50)", nullable: true),
                     IsAdmin = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-                    City = table.Column<string>(type: "nvarchar(50)", nullable: true),
+                    CityId = table.Column<int>(type: "int", nullable: true),
                     Address = table.Column<string>(type: "nvarchar(1000)", nullable: true),
                     Email = table.Column<string>(type: "nvarchar(50)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(100)", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(100)", nullable: false)
+                    Password = table.Column<string>(type: "nvarchar(100)", nullable: false),
+                    Question = table.Column<int>(type: "int", nullable: false),
+                    Answer = table.Column<string>(type: "nvarchar(100)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -161,6 +181,11 @@ namespace AppShop.Business.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_City_ParentId",
+                table: "City",
+                column: "ParentId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_OrderBuy_UserId",
                 table: "OrderBuy",
                 column: "UserId");
@@ -184,6 +209,9 @@ namespace AppShop.Business.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "City");
+
             migrationBuilder.DropTable(
                 name: "Log");
 

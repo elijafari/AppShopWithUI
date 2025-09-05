@@ -7,94 +7,109 @@ import {
 import "react-notifications/lib/notifications.css";
 import "../../App.css";
 import { TextBox } from "../tools/TextBox";
-import  api  from "../tools/axiosConfig";
+import api from "../tools/axiosConfig";
 import { FaLock } from "react-icons/fa";
-import { ButtonRoute } from "../tools/ButtonRoute";
 import { ErrorHanding } from "../Utility";
 
 export class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {};
-  } 
+  }
 
-    login = () => {
-        api.post("/user/login", {
-            userName: this.state.userName,
-            password: this.state.password
-        })
-        .then(res => {
-            localStorage.setItem("token", res.data.data);
-            window.location.href = "/"; 
-        })
-        .catch((error) =>ErrorHanding(NotificationManager,error));
-    };
+  login = () => {
+    api.post("/user/login", {
+      userName: this.state.userName,
+      password: this.state.password
+    })
+      .then(res => {
+        localStorage.setItem("token", res.data.data);
+        window.location.href = "/";
+      })
+      .catch((error) => ErrorHanding(NotificationManager, error));
+  };
+  createUser() {
+    window.location.href = "/user";
+  }
+  forgtoPassword() {
+    window.location.href = "/forgtoPassword";
+  }
   render() {
     return (
       <>
-        <section
-          className="vh-100"
-          style={{ backgroundColor: "rgb(198 233 186)" }}
+<section
+  className="vh-100 d-flex align-items-center"
+  style={{
+    background: "linear-gradient(135deg, #c6e9ba, #a8dadc)",
+    direction: "rtl", // راست چین
+  }}
+>
+  <div className="container">
+    <div className="row justify-content-center">
+      <div className="col-12 col-md-8 col-lg-6 col-xl-5">
+        <div
+          className="card shadow-lg border-0 text-end"
+          style={{ borderRadius: "1.2rem" }}
         >
-          <div className="container py-5 h-100">
-            <div className="row d-flex justify-content-center align-items-center h-100">
-              <div className="col-12 col-md-8 col-lg-6 col-xl-5">
-                <div
-                  className="card shadow-2-strong"
-                  style={{ borderRadius: "1rem" }}
-                >
-                  <div className="card-body p-5 text-center">
-                    <h3 className="mb-5">
-                      ورود به سیستم <FaLock />
-                    </h3>
-                    <TextBox
-                      context={this}
-                      title="نام کاربری"
-                      name="userName"
-                      className="col-md-12 col-sm-12"
-                    />
-                    <TextBox
-                      context={this}
-                      title="رمز عبور"
-                      name="password"
-                      type="password"
-                      className="col-md-12 col-sm-12"
-                      isLeft={true}
-                      />
-                    <div className="form-check d-flex justify-content-start mb-4">
-                      <input
-                        className="form-check-input"
-                        type="checkbox"
-                        value=""
-                        id="form1Example3"
-                        isLeft={true}
-                      />
-                      <label className="form-check-label" for="form1Example3">
-                        {" "}
-                        فراموشی رمز عبور{" "}
-                      </label>
-                    </div>
+          <div className="card-body p-5">
+            <h3 className="mb-4 text-center fw-bold text-primary">
+              ورود به سیستم <FaLock className="mb-1" />
+            </h3>
 
-                    <button
-                      data-mdb-button-init
-                      data-mdb-ripple-init
-                      className="btn btn-primary btn-lg btn-block marginApp"
-                      type="submit"
-                      onClick={() => this.login()}
-                    >
-                      ورود
-                    </button>
-                    <ButtonRoute
-                      title="ایجاد کاربری جدید"
-                      link="/user"
-                      className="btn btn-primary btn-lg btn-block marginApp"
-                    />
-                  </div>
-                </div>
-              </div>
+            {/* نام کاربری */}
+            <div className="form-outline mb-4">
+              <TextBox
+                context={this}
+                title="نام کاربری"
+                name="userName"
+                className="form-control text-end"
+              />
             </div>
+
+            {/* رمز عبور */}
+            <div className="form-outline mb-3">
+              <TextBox
+                context={this}
+                title="رمز عبور"
+                name="password"
+                type="password"
+                className="form-control text-end"
+              />
+            </div>
+
+            {/* فراموشی رمز */}
+            <div className="d-flex justify-content-between align-items-center mb-4 flex-row-reverse">
+              <a
+                href="#"
+                className="text-decoration-none text-primary fw-semibold"
+                onClick={() => this.forgtoPassword()}
+              >
+                فراموشی رمز عبور؟
+              </a>
+            </div>
+
+            {/* دکمه ورود */}
+            <button
+              className="btn btn-primary btn-lg w-100 mb-3"
+              type="submit"
+              onClick={() => this.login()}
+            >
+              ورود
+            </button>
+
+            {/* دکمه ایجاد کاربر جدید */}
+            <button
+              className="btn btn-outline-primary btn-lg w-100"
+              onClick={() => this.createUser()}
+            >
+              ایجاد حساب کاربری جدید
+            </button>
           </div>
-        </section>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
         <NotificationContainer />
       </>
