@@ -20,13 +20,36 @@ namespace AppShop.Business.Service
         }
         public string  Add(User entity)
         {
-            if(db.Users.Where(x=>x.UserName==entity.UserName).Any()) {
-             throw new PersianException("نام کاربری تکراری است");
-            }
+            ValidtionData(entity);
             db.Users.Add(entity);
             db.SaveChanges();
             var token=tokenService.CreateToken(entity);
             return token;
+        }
+
+        private void ValidtionData(User entity)
+        {
+            if (string.IsNullOrEmpty(entity.FullName))
+            {
+                throw new PersianException(Utility.GetMsgRequired("نام و نام خانوادگی"));
+            }
+            if (string.IsNullOrEmpty(entity.UserName))
+            {
+                throw new PersianException(Utility.GetMsgRequired("نام کاربری"));
+            }
+            if (string.IsNullOrEmpty(entity.Password))
+            {
+                throw new PersianException(Utility.GetMsgRequired("رمز عبور"));
+            }
+            if (string.IsNullOrEmpty(entity.Phone))
+            {
+                throw new PersianException(Utility.GetMsgRequired("شماره همراه"));
+            }
+
+            if (db.Users.Where(x => x.Id != entity.Id && x.UserName == entity.UserName).Any())
+            {
+                throw new PersianException("نام کاربری تکراری است");
+            }
         }
         public string Login(InUser input)
         {
@@ -64,10 +87,8 @@ namespace AppShop.Business.Service
         }
         public string Edit(User entity)
         {
-            if (db.Users.Where(x =>x.Id!=entity.Id&& x.UserName == entity.UserName).Any())
-            {
-                throw new PersianException("نام کاربری تکراری است");
-            }
+            ValidtionData(entity);
+
             db.Users.Update(entity);
             db.SaveChanges();
             var token = tokenService.CreateToken(entity);
