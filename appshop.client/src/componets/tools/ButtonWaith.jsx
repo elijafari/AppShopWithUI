@@ -3,7 +3,7 @@ export  function ButtonWaith(props) {
   return (
   <button
               onClick={()=>props.onClick()}
-              className="btn btn-primary"
+          className="btn btn-success"
               disabled={props.loading}
             >
               {props.loading ? (

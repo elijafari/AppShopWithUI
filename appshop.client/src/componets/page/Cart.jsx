@@ -270,7 +270,7 @@ export class Cart extends Component {
                         <td>
                           <button
                             type="button"
-                            className="btn btn-info btn-sm"
+                            className="btn btn-warning btn-sm"
                             onClick={() => this.onView(x)}
                           >
                             اطلاعات بیشتر
@@ -293,7 +293,7 @@ export class Cart extends Component {
             <div className="card mb-1">
               <p className="card-header">ثبت آدرس</p>
               <div className="g-3 p-3">
-                <button className="col-md-1 col-sm-12 btn btn-primary" onClick={() => this.showModal()}>تاریخچه آدرس</button>
+                            <button className="col-md-1 col-sm-12 btn btn-success" onClick={() => this.showModal()}>تاریخچه آدرس</button>
                 <div className="row">
                   <DropdownApp
                     context={this}

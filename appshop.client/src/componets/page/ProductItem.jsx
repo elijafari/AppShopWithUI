@@ -61,7 +61,6 @@ export class ProductItem extends Component {
               <button
                 type="button"
                 className="btn btn-success"
-                on
                 onClick={() => this.add()}
               >
                 +
@@ -80,7 +79,7 @@ export class ProductItem extends Component {
               )}  </>)}
           <button
             type="button"
-            className="btn btn-info"
+            className="btn btn-warning"
             onClick={() => this.onView(product)}
           >
             اطلاعات بیشتر

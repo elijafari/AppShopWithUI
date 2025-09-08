@@ -28,7 +28,7 @@ export default class ContactUs extends Component {
             <div className="card shadow-sm border-0 h-100">
               <div className="card-body">
                 <h5 className="card-title mb-3">راه‌های ارتباطی</h5>
-                <p className="mb-2"><FaEnvelope className="me-2 text-primary" /> email@example.com</p>
+                <p className="mb-2"><FaEnvelope className="me-2 text-primary" />info@electroej.ir</p>
                 <p className="mb-2"><FaPhone className="me-2 text-success" /> 09124462355 </p>
                 <p className="mb-2"><FaMapMarkerAlt className="me-2 text-danger" /> تهران، ایران</p>
               </div>
