@@ -127,22 +127,23 @@ namespace AppShop.Business.Service
             return true;
 
         }
-        public bool ConvertImage()
-        {
-            var products = db.Products.ToList();
-            foreach (var product in products)
-            {
-                var fileName = $"product_{product.Id}.jpg";
-                var filePath = Path.Combine(uploadPathProvider.Path, fileName);
+        //public bool ConvertImage()
+        //{
+        //    var products = db.Products.ToList();
+        //    foreach (var product in products)
+        //    {
+        //        var fileName = $"product_{product.Id}.jpg";
+        //        var filePath = Path.Combine(uploadPathProvider.Path, fileName);
 
-                File.WriteAllBytes(filePath, product.image); // ذخیره فایل از دیتابیس
+        //        File.WriteAllBytes(filePath, product.image); // ذخیره فایل از دیتابیس
 
-                product.PathImg = "/uploads/products/" + fileName; // ذخیره مسیر جدید
-                                                                   // product.image = null; // در صورت تمایل حذف ستون Blob
-            }
-            db.SaveChanges();
-            return false;
+        //        product.PathImg = "/uploads/products/" + fileName; // ذخیره مسیر جدید
+        //                                                           // product.image = null; // در صورت تمایل حذف ستون Blob
+        //    }
+        //    db.SaveChanges();
+        //    return false;
 
-        }
+
+        //}
     }
 }

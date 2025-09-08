@@ -17,7 +17,6 @@ namespace AppShop.Business.Mapping
             builder.Property(p => p.CategoryId).IsRequired();         
             builder.Property(p => p.IsActive).HasDefaultValue(true);
             builder.Property(p => p.Price).IsRequired();
-            builder.Property(p => p.image).IsRequired(false);
             builder.Property(p => p.Description).HasColumnType("nvarchar(1000)");
             builder.Property(p => p.PathImg).HasColumnType("nvarchar(500)");
 

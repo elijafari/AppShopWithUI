@@ -21,7 +21,7 @@ export class ProductView extends Component {
       this.setState({
         ...result,
         price: result.price.toLocaleString("fa-IR"),
-        file:import.meta.env.VITE_API_URL+result.pathImg,
+        file: import.meta.env.VITE_API_URL + result.pathImg,
         updateKey: this.state.updateKey + 1,
       });
     });
@@ -48,28 +48,35 @@ export class ProductView extends Component {
           <div className="card-body">
             <div className="row">
               <div className="col-md-9">
-                <b>قیمت : </b>
-                <span>{this.state.price}</span>
-                <b>تومان</b>
-                <br />
-                <b>توضیحات کالا : </b>
-                <span>{this.state.description}</span>
+                <div className="row mb-3">
+                  <span className="fw-bold text-success fs-2">
+                    {this.state.price} <small>تومان</small>
+                  </span>
+                </div>
+                <div className="row mb-3">
+
+                  <b>توضیحات کالا : </b>
+                  <span>{this.state.description}</span>
+                </div>
               </div>
-              <div className="col-md-3">
+              <div className="col-md-3 d-flex justify-content-center align-items-center">
                 <img
                   src={this.state.file}
-                  width={200}
-                  height={200}
-                  className="img-fluid img-thumbnail"
+                  className="img-fluid img-thumbnail w-400"
                 />
               </div>
             </div>
-            <button onClick={() => this.shopItem()} className="btn btn-success">
-              افزودن به سبد خرید
-            </button>
+            {this.state.isActive == true ?
+              <button onClick={() => this.shopItem()} className="btn btn-success">
+                افزودن به سبد خرید
+              </button>
+              :
+              <span className="text-danger">ناموجود</span>
+            }
             <ButtonReturn />
-          </div>
+   </div>
         </div>
+       
       </>
     );
   }

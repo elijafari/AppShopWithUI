@@ -6,6 +6,7 @@ import "../../App.css";
 import { Loading } from "../tools/Loading";
 import { TextBox } from "../tools/TextBox";
 import { DropdownApp } from "../tools/DropdownApp";
+import { FaSearch,FaSearchDollar,FaSearchPlus } from "react-icons/fa";
 import api from "../tools/axiosConfig";
 
 export class Home extends Component {
@@ -90,7 +91,7 @@ export class Home extends Component {
       <>
 
 
-        <div className="card">
+        <div className="card mb-3">
           <p className="card-header">
             فیلتر ها
           </p>
@@ -127,9 +128,15 @@ export class Home extends Component {
                 separator={true}
               />
             </div>
-            <button onClick={() => this.loadDate(this.state.currentPage)} className="btn btn-success">
-              جستجو
-            </button>
+           <div className="d-flex justify-content mt-3">
+      <button
+        onClick={() => this.loadDate(this.state.currentPage)}
+        className="btn btn-success d-flex align-items-center gap-2"
+      >
+        <FaSearch />
+        جستجو
+      </button>
+            </div>
           </div>
         </div>
         {!this.state.loading ? (

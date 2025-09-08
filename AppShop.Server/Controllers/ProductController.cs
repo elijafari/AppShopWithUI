@@ -93,7 +93,7 @@ namespace AppShop.Server.Controllers
         [HttpGet]
         [Authorize(Roles = "Admin")]
         public IActionResult DeleteAll() => Response(() => service.DeleteAll());
-        [HttpGet]
-        public IActionResult ConvertImage() => Response(() => service.ConvertImage());
+      //  [HttpGet]
+    //    public IActionResult ConvertImage() => Response(() => service.ConvertImage());
     }
 }

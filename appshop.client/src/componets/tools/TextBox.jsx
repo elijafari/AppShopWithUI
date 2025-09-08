@@ -36,7 +36,7 @@ export class TextBox extends React.Component {
     return (
       <>
         <div className={this.props.className}>
-          <label>{this.props.title}</label>
+          <label className="form-label mt-2">{this.props.title}</label>
           <input
             name={this.props.name}
             value={this.props.context.state[this.props.name]}

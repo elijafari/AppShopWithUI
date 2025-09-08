@@ -52,3 +52,12 @@ export function toPersianDigits(number) {
   const persianMap = ["۰","۱","۲","۳","۴","۵","۶","۷","۸","۹"];
   return str.replace(/\d/g, d => persianMap[d]);
 }
+
+export function     validInput(NotificationManager,input, title) {
+
+        if (input == "" || input == undefined || input == null) {
+            NotificationManager.error(title + " وارد نشده است ", "خطا");
+            return false;
+        }
+        return true;
+    }

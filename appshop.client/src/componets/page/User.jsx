@@ -9,8 +9,7 @@ import "react-notifications/lib/notifications.css";
 import "../../App.css";
 import { TextBox } from "../tools/TextBox";
 import { ButtonWaith } from "../tools/ButtonWaith";
-import { ErrorHanding } from "../Utility";
-import { parseJwt } from "../Utility";
+import { ErrorHanding ,parseJwt,validInput } from "../Utility";
 import { QuestionsList } from "../tools/QuestionsList";
 import { DropdownApp } from "../tools/DropdownApp";
 import { Address } from "./Address";
@@ -63,6 +62,16 @@ export class User extends React.Component {
       });
   }
   AddData() {
+     if (!validInput(NotificationManager,this.state.fullName, "نام و نام خانوادگی"))
+            return;
+        if (!validInput(NotificationManager,this.state.userName, "نام کاربری"))
+            return;
+        if (!validInput(NotificationManager,this.state.password, "رمز عبور"))
+            return;
+        if (!validInput(NotificationManager,this.state.phone, "شماره همراه"))
+            return;
+
+
     this.setState({ loading: true });
     api.post(this.state.isEdit ? "/user/Edit/" : "/user/Add", this.state)
       .then(res => {

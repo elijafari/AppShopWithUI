@@ -10,7 +10,7 @@ import "../../App.css";
 import { TextBox } from "../tools/TextBox";
 import { DropdownApp } from "../tools/DropdownApp";
 import { Checkbox } from "../tools/CheckBox";
-import { ErrorHanding, toEnglishDigits,normalizePrice } from "../Utility";
+import { ErrorHanding, toEnglishDigits, normalizePrice, validInput } from "../Utility";
 import { ButtonWaith } from "../tools/ButtonWaith";
 import { ButtonReturn } from "../tools/ButtonReturn";
 import { TextareaApp } from "../tools/TextareaApp";
@@ -20,7 +20,7 @@ export class Product extends Component {
         super(props);
         this.isEdit = props.isEdit,
             this.state = {
-                id: props.isEdit ? window.location.href.split("/")[4] : 0,
+                id: props.isEdit ? window.location.href.split("/")[6] : 0,
                 cat: [],
                 file: null,
                 isActive: true,
@@ -48,34 +48,27 @@ export class Product extends Component {
                 var result = response.data.data;
                 this.setState({
                     ...result,
-                    price:result.price.toLocaleString("fa-IR"),
-                    file:import.meta.env.VITE_API_URL+result.pathImg,
+                    price: result.price.toLocaleString("fa-IR"),
+                    file: import.meta.env.VITE_API_URL + result.pathImg,
                     updateKey: this.state.updateKey + 1,
                 });
             });
         }
     }
-    validInput(input, title) {
 
-        if (input == "" || input == undefined || input == null) {
-            NotificationManager.error(title + " وارد نشده است ", "خطا");
-            return false;
-        }
-        return true;
-    }
 
     AddData() {
         if (this.isEdit == false && this.state.fileData == undefined) {
             NotificationManager.error("فایل انتخاب نشده است", "خطا");
             return;
         }
-        if (!this.validInput(this.state.code, "کد"))
+        if (!validInput(NotificationManager, this.state.code, "کد"))
             return;
-        if (!this.validInput(this.state.name, "نام"))
+        if (!validInput(NotificationManager, this.state.name, "نام"))
             return;
-        if (!this.validInput(this.state.price, "قیمت"))
+        if (!validInput(NotificationManager, this.state.price, "قیمت"))
             return;
-        if (!this.validInput(this.state.description, "توضیحات"))
+        if (!validInput(NotificationManager, this.state.description, "توضیحات"))
             return;
 
         const formData = new FormData();
@@ -84,7 +77,7 @@ export class Product extends Component {
 
         formData.append("code", this.state.code);
         formData.append("name", this.state.name);
-        formData.append("price",normalizePrice( toEnglishDigits(this.state.price)));
+        formData.append("price", normalizePrice(toEnglishDigits(this.state.price)));
         formData.append("description", this.state.description);
         formData.append("id", this.state.id);
         formData.append("categoryId", this.state.categoryId);
@@ -132,50 +125,34 @@ export class Product extends Component {
                                 title="کد کالا"
                                 name="code"
                                 type="number"
-                                className="col-md-4 col-sm-12"
+                                className="col-md-6 col-sm-12"
                                 updateKey={this.state.updateKey}
                             />
                             <TextBox
                                 context={this}
                                 title="نام کالا"
                                 name="name"
-                                className="col-md-4 col-sm-12"
+                                className="col-md-6 col-sm-12"
                                 updateKey={this.state.updateKey}
                             />
                             <DropdownApp
                                 context={this}
                                 name="categoryId"
                                 title="گروه کالا"
-                                className="col-md-4 col-sm-12"
+                                className="col-md-6 col-sm-12"
                                 data={this.state.cat}
                             />
-                            <div className="form-outline mb-3">
-                                <div className="row align-items-center">
-                                    <div className="col-md-4 col-sm-12 d-flex align-items-center">
-                                        <TextBox
-                                            context={this}
-                                            title="قیمت"
-                                            name="price"
-                                            className="col-md-11 col-sm-12"
-                                            type="number"
-                                            updateKey={this.state.updateKey}
-                                            separator={true}
-                                            maxLength={13}
-                                        />
-                                        <span className="ms-2">تومان</span>
-                                    </div>
-
-                                    <div className="col-md-2 col-sm-12 d-flex align-items-center">
-                                        <Checkbox
-                                            context={this}
-                                            title="موجود"
-                                            name="isActive"
-                                            updateKey={this.state.updateKey}
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-
+                            <TextBox
+                                context={this}
+                                title="قیمت (تومان)"
+                                name="price"
+                                className="col-md-6 col-sm-12"
+                                type="number"
+                                updateKey={this.state.updateKey}
+                                separator={true}
+                                maxLength={13}
+                            />
+                          
                             <TextareaApp
                                 context={this}
                                 title="توضیحات"
@@ -183,8 +160,15 @@ export class Product extends Component {
                                 className="col-md-12 col-sm-12"
                                 updateKey={this.state.updateKey}
                             />
-
-                            <div className="input-group mb-3">
+                            <div className="col-md-6 col-sm-12 d-flex align-items-center">
+                                <Checkbox
+                                    context={this}
+                                    title="موجود"
+                                    name="isActive"
+                                    updateKey={this.state.updateKey}
+                                />
+                            </div>
+                            <div className="mt-2 col-md-6 col-sm-12">
                                 <div className="custom-file">
                                     <label >عکس مربوطه</label>
                                     <img

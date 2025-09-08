@@ -3,9 +3,11 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import Header from './componets/tools/Header';
+import { MdMargin } from 'react-icons/md';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
+  <div style={{margin:"5px"}}>
 <div dir="rtl" className="d-flex flex-column min-vh-100 bg-light">
   {/* هدر */}
  <Header />
@@ -44,5 +46,5 @@ root.render(
     </div>
   </footer>
 </div>
-
+</div>
 );

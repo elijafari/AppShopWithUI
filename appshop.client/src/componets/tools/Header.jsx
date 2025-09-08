@@ -18,7 +18,6 @@ export default class Header extends React.Component {
   }}
 >
   <div className="container d-flex justify-content-between align-items-center">
-    {/* عنوان فروشگاه */}
     <div className="text-center flex-grow-1 d-flex flex-column align-items-center">
       <h4 className="mb-1 fw-bold d-flex align-items-center gap-2 animate__animated animate__fadeInDown">
         <FaLightbulb   style={{ 
