@@ -5,6 +5,7 @@ using AppShop.Business.IService;
 using AppShop.Server.Helper;
 using AppShop.Business.DataModel;
 using Microsoft.AspNetCore.Authorization;
+using AppShop.Business.Service;
 
 namespace AppShop.Server.Controllers
 {
@@ -13,10 +14,11 @@ namespace AppShop.Server.Controllers
     public class UserController : BaseController
     {
         private readonly IUserService service;
-
-        public UserController(IUserService _service, ILogService _logService) : base(_logService)
+        private readonly IEmailService emailService;
+        public UserController(IUserService _service,IEmailService _emailService, ILogService _logService) : base(_logService)
         {
             service = _service;
+            emailService = _emailService;
         }
 
         [HttpPost]
@@ -45,5 +47,7 @@ namespace AppShop.Server.Controllers
         public IActionResult CheckAnswer(InUserAnswer input) => Response(() => service.CheckAnswer(input));
         [HttpPost]
         public IActionResult ResetPassword(InUserNewPassword input) => Response(() => service.ResetPassword(input));
+        [HttpGet]
+        public Task<IActionResult> SendEmailAsync() => ResponseAsync(async () => await emailService.SendEmailAsync("e.jafari64@gmail.com", "test app", "elo elo elo"));
     }
 }

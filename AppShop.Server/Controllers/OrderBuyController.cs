@@ -19,7 +19,8 @@ namespace AppShop.Server.Controllers
     {
 
         private readonly IOrderBuyService service;
-        public OrderBuyController(IOrderBuyService _service, ILogService _logService):base(_logService)
+       
+        public OrderBuyController(IOrderBuyService _service,ILogService _logService):base(_logService)
         {
             service = _service;
         }
@@ -50,7 +51,7 @@ namespace AppShop.Server.Controllers
         }
         [HttpPost]
         public IActionResult GetById(InId input) =>Response(()=>service.GetById(input.Id));
-        [HttpGet]        
+        [HttpGet]
         public IActionResult GetDays() => Response(() => service.GetDays());
-    }
+       }
 }

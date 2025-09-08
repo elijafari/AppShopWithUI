@@ -106,6 +106,7 @@ builder.Services.AddScoped<IOrderBuyService, OrderBuyService>();
 builder.Services.AddScoped<ILogService, LogService>();
 builder.Services.AddScoped<ICityService, CityService>();
 builder.Services.AddScoped<IAddressService, AddressService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 
 // مسیر wwwroot درست بعد از Build قابل دسترسی است

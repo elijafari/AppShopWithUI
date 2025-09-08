@@ -99,6 +99,8 @@ body {
 }
 .nav-link {
     color: black !important;
+     font-size: larger !important;
+    font-weight: bold !important;
 }
 .leftBtn {
     left: 22px;
@@ -244,6 +246,5 @@ header p {
     display: inline-block;
     min-width: 70px;
   }
-
 }
 
