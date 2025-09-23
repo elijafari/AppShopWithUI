@@ -18,8 +18,7 @@ namespace AppShop.Business.Mapping
             builder.Property(p => p.LastLogin).HasColumnType("nvarchar(50)");
             builder.Property(p => p.Password).IsRequired().HasColumnType("nvarchar(100)"); 
             builder.Property(p => p.UserName).IsRequired().HasColumnType("nvarchar(100)"); 
-            builder.Property(p => p.Question).IsRequired(); 
-            builder.Property(p => p.Answer).IsRequired().HasColumnType("nvarchar(100)");
+            builder.Property(p => p.Email).IsRequired(false).HasColumnType("nvarchar(100)");
             builder.Property(p => p.IsAdmin).HasDefaultValue(false);
             builder.Property(p => p.Phone).HasColumnType("nvarchar(50)");
 

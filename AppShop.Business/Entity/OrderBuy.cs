@@ -18,6 +18,7 @@ namespace AppShop.Business.Entity
         public ShopStatues Statues { get; set; }
         public long TrackingCode { get; set; }
         public int PayType { get; set; }
+        public int? SendType { get; set; }
         public int AddressId { get; set; }
 
         public virtual List<ItemBuy> ItemBuys { get; set; } = new List<ItemBuy>();

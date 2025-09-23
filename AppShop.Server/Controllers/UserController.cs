@@ -44,7 +44,7 @@ namespace AppShop.Server.Controllers
         [HttpPost]
         public IActionResult GetForForget(InUserForget input) => Response(() => service.GetForForget(input));
         [HttpPost]
-        public IActionResult CheckAnswer(InUserAnswer input) => Response(() => service.CheckAnswer(input));
+        public IActionResult CheckCode(InUserForgetCode input) => Response(() => service.CheckCode(input));
         [HttpPost]
         public IActionResult ResetPassword(InUserNewPassword input) => Response(() => service.ResetPassword(input));
         [HttpGet]

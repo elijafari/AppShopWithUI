@@ -26,10 +26,10 @@ namespace AppShop.Business.DataModel
     {
         public string UserName { get; set; }
     }
-    public class InUserAnswer
+    public class InUserForgetCode
     {
-        public string UserName { get; set; }
-        public string Answer { get; set; }
+        public string Code { get; set; }
+        public string TokenCode { get; set; }
     }
     public class InUserNewPassword
     {

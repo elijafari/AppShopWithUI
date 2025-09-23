@@ -1,4 +1,5 @@
 ﻿using AppShop.Business.DataModel;
+using AppShop.Business.Email;
 using AppShop.Business.Entity;
 using AppShop.Business.IService;
 using AppShop.Business.Mapping;
@@ -19,11 +20,12 @@ namespace AppShop.Business.Service
     {
         AppShopDBContext db;
         private readonly IMapper mapper;
-        public OrderBuyService(AppShopDBContext _db, IMapper _mapper)
+        private readonly IEmailService emailService;
+        public OrderBuyService(AppShopDBContext _db, IMapper _mapper, IEmailService _emailService)
         {
             db = _db;
             mapper = _mapper;
-
+            emailService = _emailService;
         }
         public decimal Add(InOrderBuy input, Guid userId)
         {
@@ -59,9 +61,33 @@ namespace AppShop.Business.Service
             db.OrderBuys.Add(entity);
             db.SaveChanges();
 
+            SendEmailToMe(entity.TrackingCode);
+
+            SendEmailToUser(entity);
 
             return entity.TrackingCode;
         }
+
+        private void SendEmailToUser(OrderBuy entity)
+        {
+            var user = db.Users.FirstOrDefault(x => x.Id == entity.UserId);
+            if (user != null)
+
+                if (!string.IsNullOrEmpty(user.Email))
+                {
+                    var products = db.Products.Where(y => entity.ItemBuys.Select(x => x.ProductId).Contains(y.Id)).ToList();
+                    emailService.SendEmailAsync(user.Email, "تاییدیه سفارش", EmailMessege.OrderMessage(entity, user, products));
+
+                }
+        }
+
+        private void SendEmailToMe(long trackingCode)
+        {
+            var listTo = new List<string>();
+            listTo.Add("e.jafari64@gmail.com");
+            emailService.SendEmailAsync(listTo, "ثبت سفارش", EmailMessege.OrderMessage(trackingCode));
+        }
+
         private void Validtion(InOrderBuy input)
         {
             if (input.Items == null)

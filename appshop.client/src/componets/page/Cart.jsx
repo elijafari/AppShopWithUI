@@ -293,7 +293,7 @@ export class Cart extends Component {
             <div className="card mb-1">
               <p className="card-header">ثبت آدرس</p>
               <div className="g-3 p-3">
-                            <button className="col-md-1 col-sm-12 btn btn-success" onClick={() => this.showModal()}>تاریخچه آدرس</button>
+                            <button className="col-md-3 col-sm-12 btn btn-success" onClick={() => this.showModal()}>تاریخچه آدرس</button>
                 <div className="row">
                   <DropdownApp
                     context={this}
@@ -350,7 +350,7 @@ export class Cart extends Component {
                 </div>
                 <div className="d-flex justify-content-start p-3">
                   <ButtonWaith onClick={() => this.AddData()}
-                    className="btn btn-success"
+                    className="btn btn-success col-md-3 col-sm-12 "
                     loading={this.state.loading}
                     title="ثبت سفارش" />
                   <ButtonReturn />

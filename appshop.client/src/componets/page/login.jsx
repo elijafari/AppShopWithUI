@@ -7,7 +7,6 @@ import {
 import "react-notifications/lib/notifications.css";
 import "../../App.css";
 import { TextBox } from "../tools/TextBox";
-import { Capcha } from "../tools/Capcha";
 import api from "../tools/axiosConfig";
 import { FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 import { ErrorHanding } from "../Utility";

@@ -15,8 +15,8 @@ namespace AppShop.Business.Entity
         public bool IsAdmin { get; set; }
         public string UserName { get;  set; }
         public string Password { get;  set; }
-        public int Question { get;  set; }
-        public string Answer { get;  set; }
+        public string? Email { get; set; }
+             
 
         public virtual ICollection<Address> Addresses { get; set; } = new List<Address>();
         public virtual ICollection<OrderBuy> OrderBuys { get; set; } = new List<OrderBuy>();

@@ -17,6 +17,7 @@ namespace AppShop.Business.Mapping
         public DbSet<OrderBuyStatues> OrderBuyStatues { get; set; }
         public DbSet<City> Cities { get; set; }
         public DbSet<Address> Addresss { get; set; }
+        public DbSet<Contact> Contacts { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder); 
@@ -30,6 +31,7 @@ namespace AppShop.Business.Mapping
             modelBuilder.ApplyConfiguration(new UserMapping());
             modelBuilder.ApplyConfiguration(new CityMapping());
             modelBuilder.ApplyConfiguration(new AddressMapping());
+            modelBuilder.ApplyConfiguration(new ContactMapping());
 
             modelBuilder.HasSequence<int>("TrackingCodeSeq", schema: "shared")
            .StartsAt(1001)  // شروع از 1000

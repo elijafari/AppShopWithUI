@@ -19,8 +19,13 @@ namespace AppShop.Business.Service
         {
             _config = config;
         }
-
         public async Task<bool> SendEmailAsync(string to, string subject, string body)
+        {
+            var listTo= new List<string>();
+            listTo.Add(to);
+            return await SendEmailAsync(listTo, subject, body);
+        }
+        public async Task<bool> SendEmailAsync(List<string> to, string subject, string body)
         {
             var SenderName = _config["SmtpSettings:SenderName"];
             var SenderEmail = _config["SmtpSettings:SenderEmail"];
@@ -31,7 +36,10 @@ namespace AppShop.Business.Service
             var message = new MimeMessage();
             message.From.Add(new MailboxAddress(SenderName,SenderEmail));
 
-            message.To.Add(MailboxAddress.Parse(to));
+            foreach (var item in to)
+            {
+                message.To.Add(MailboxAddress.Parse(item));
+            }
             message.Subject = subject;
             message.Body = new TextPart("html") { Text = body };
 

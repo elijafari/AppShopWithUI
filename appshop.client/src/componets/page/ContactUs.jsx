@@ -1,10 +1,18 @@
-import React, { Component } from "react";
+import React from "react";
 import { FaEnvelope, FaPhone, FaMapMarkerAlt } from "react-icons/fa";
-
-export default class ContactUs extends Component {
+import api from "../tools/axiosConfig";
+import {
+  NotificationContainer,
+  NotificationManager,
+} from "react-notifications";
+import "react-notifications/lib/notifications.css";
+import { ErrorHanding, validInput } from "../Utility";
+import { ButtonWaith } from "../tools/ButtonWaith";
+export default class ContactUs extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { name: "", email: "", message: "" };
+      this.state={ name: "", email: "", message: "" ,loading:false};
+  
   }
 
   handleChange = (e) => {
@@ -12,13 +20,33 @@ export default class ContactUs extends Component {
   };
 
   handleSubmit = (e) => {
-    e.preventDefault();
-    alert("پیام شما ارسال شد!");
-    this.setState({ name: "", email: "", message: "" });
+    if (!validInput(NotificationManager, this.state.name, "نام"))
+      return;
+    if (!validInput(NotificationManager, this.state.email, "پست الکترونیکی"))
+      return;
+    if (!validInput(NotificationManager, this.state.message, "متن پیام"))
+      return;
+
+    this.setState({ loading: true });
+    api.post("/Contact/Add", this.state)
+      .then(res => {
+        this.setState({ loading: false });
+        if (res.status === 200) {
+          NotificationManager.success("پیام با موفقیت ارسال شد", "پیام");
+          this.setState({ name: "", email: "", message: "" });
+        } else {
+          ErrorHanding(NotificationManager, res.data.message);
+        }
+      })
+      .catch((error) => {
+        ErrorHanding(NotificationManager, error);
+        this.setState({ loading: false });
+      })
   };
 
   render() {
     return (
+      <>      
       <div className="container py-5">
         <h1 className="text-center mb-5">تماس با ما</h1>
 
@@ -39,7 +67,6 @@ export default class ContactUs extends Component {
           <div className="col-md-8">
             <div className="card shadow-sm border-0">
               <div className="card-body">
-                <form onSubmit={this.handleSubmit}>
                   <div className="mb-3">
                     <label htmlFor="name" className="form-label">نام شما</label>
                     <input
@@ -53,7 +80,7 @@ export default class ContactUs extends Component {
                     />
                   </div>
                   <div className="mb-3">
-                    <label htmlFor="email" className="form-label">ایمیل شما</label>
+                    <label htmlFor="email" className="form-label">پست الکترونیکی شما</label>
                     <input
                       type="email"
                       className="form-control"
@@ -76,13 +103,21 @@ export default class ContactUs extends Component {
                       required
                     ></textarea>
                   </div>
-                  <button type="submit" className="btn btn-primary w-100">ارسال پیام</button>
-                </form>
+
+                    <ButtonWaith
+                                  title="ارسال پیام"
+                                  className="btn btn-warning col-md-4 col-sm-12"
+                                  onClick={() => this.handleSubmit()}
+                                  loading={this.state.loading}
+                                />
+                 
               </div>
             </div>
           </div>
         </div>
       </div>
+        <NotificationContainer />
+      </>
     );
   }
 }

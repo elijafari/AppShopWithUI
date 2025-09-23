@@ -9,15 +9,13 @@ import "react-notifications/lib/notifications.css";
 import "../../App.css";
 import { TextBox } from "../tools/TextBox";
 import { ButtonWaith } from "../tools/ButtonWaith";
-import { ErrorHanding ,parseJwt,validInput } from "../Utility";
-import { QuestionsList } from "../tools/QuestionsList";
-import { DropdownApp } from "../tools/DropdownApp";
+import { ErrorHanding, parseJwt, validInput } from "../Utility";
 import { Address } from "./Address";
 export class User extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      address:[],
+      address: [],
       isEdit: false,
       loading: false,
       questions: [],
@@ -25,7 +23,6 @@ export class User extends React.Component {
   }
   componentDidMount() {
     this.getUser();
-    this.getQuestions();
 
   }
   getUser() {
@@ -36,40 +33,30 @@ export class User extends React.Component {
         api.post("/User/GetById/", { id: user.id }).then((response) => {
           var result = response.data.data;
           this.setState({ ...result, isEdit: true });
-         this.getAddress();
+          this.getAddress();
         });
       }
   }
-  getQuestions() {
-    var questions = [];
-    QuestionsList().forEach((element, index) => {
-      questions.push({ title: element, value: index + 1 });
-    });
-    this.setState(
-      {
-        questions
-      }
-    )
-  }
   getAddress() {
     api.get("/Address/GetByUserId").then((response) => {
-      this.setState({ address: response.data.data,
+      this.setState({
+        address: response.data.data,
 
-       });
+      });
     })
       .catch((error) => {
         ErrorHanding(NotificationManager, error);
       });
   }
   AddData() {
-     if (!validInput(NotificationManager,this.state.fullName, "نام و نام خانوادگی"))
-            return;
-        if (!validInput(NotificationManager,this.state.userName, "نام کاربری"))
-            return;
-        if (!validInput(NotificationManager,this.state.password, "رمز عبور"))
-            return;
-        if (!validInput(NotificationManager,this.state.phone, "شماره همراه"))
-            return;
+    if (!validInput(NotificationManager, this.state.fullName, "نام و نام خانوادگی"))
+      return;
+    if (!validInput(NotificationManager, this.state.userName, "نام کاربری"))
+      return;
+    if (!validInput(NotificationManager, this.state.password, "رمز عبور"))
+      return;
+    if (!validInput(NotificationManager, this.state.phone, "شماره همراه"))
+      return;
 
 
     this.setState({ loading: true });
@@ -128,32 +115,28 @@ export class User extends React.Component {
                 type="number"
                 className="col-md-4 col-sm-12"
               />
-              <DropdownApp
-                context={this}
-                name="question"
-                title="سوال امنیتی"
-                className="col-md-4 col-sm-12"
-                data={this.state.questions}
-              />
               <TextBox
                 context={this}
-                title="پاسخ"
-                name="answer"
+                title="پست الکترونیکی"
+                name="email"
                 className="col-md-4 col-sm-12"
               />
+              <div class="alert alert-warning mt-3 mr-20" role="alert">
+                برای فراموشی رمز عبور وصدور فاکتور وارد کردن پست الکترونیکی الزامی است
+              </div>
             </div>
             <ButtonWaith onClick={() => this.AddData()}
               loading={this.state.loading}
               title="ثبت" />
           </div>
         </div>
-{this.state.isEdit &&(        <div className="card">
+        {this.state.isEdit && (<div className="card">
           <p className="card-header">تاریخچه آدرس</p>
           <div className="card-body">
-            <Address data={this.state.address}/>
+            <Address data={this.state.address} />
           </div>
         </div>
-)}
+        )}
         <NotificationContainer />
       </>
     );
