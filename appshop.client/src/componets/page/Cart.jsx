@@ -5,7 +5,7 @@ import { DropdownApp } from "../tools/DropdownApp";
 import { ButtonReturn } from "../tools/ButtonReturn";
 import { ButtonWaith } from "../tools/ButtonWaith";
 import Modal from "react-bootstrap/Modal";
-import { ErrorHanding,toPersianDigits } from "../Utility";
+import { ErrorHanding, toPersianDigits } from "../Utility";
 import { TrackingCode } from "../tools/TrackingCode";
 import { CartEmpty } from "../tools/CartEmpty";
 import { Address } from "./Address";
@@ -31,9 +31,14 @@ export class Cart extends Component {
       trackingCode: 10001,
       show: false,
       payTypies: [{
-        title: "پرداخت در محل", value: 1,
-        // title:"آنلاین",value:2
-      }],
+        title: "خرید حضوری", value: 1},
+        {title: "پرداخت در محل", value: 2},
+        {title:"پرداخت آنلاین",value:3}
+      ],
+     sendTypies: [{
+        title: "تیپاکس", value: 1},
+        {title: "باربری", value: 2},
+        {title: "پیک", value: 3}],
       loading: false,
       address: []
     };
@@ -244,11 +249,11 @@ export class Cart extends Component {
                   <tbody key={this.state.updateKey}>
                     {this.state.data.map((x, i) => (
                       <tr key={i}>
-                        <th data-label={this.header[0]+':'} scope="row">{i + 1}</th>
-                        <td data-label={this.header[1]+':'}>{x.data.name}</td>
-                        <td data-label={this.header[2]+':'}>{x.data.price.toLocaleString("fa-IR")}</td>
-                        <td data-label={this.header[3]+':'}>{toPersianDigits( x.count)}</td>
-                        <td data-label={this.header[4]+':'}>{(x.count * x.data.price).toLocaleString("fa-IR")}</td>
+                        <th data-label={this.header[0] + ':'} scope="row">{i + 1}</th>
+                        <td data-label={this.header[1] + ':'}>{x.data.name}</td>
+                        <td data-label={this.header[2] + ':'}>{x.data.price.toLocaleString("fa-IR")}</td>
+                        <td data-label={this.header[3] + ':'}>{toPersianDigits(x.count)}</td>
+                        <td data-label={this.header[4] + ':'}>{(x.count * x.data.price).toLocaleString("fa-IR")}</td>
                         <td>
                           <button
                             type="button"
@@ -282,7 +287,7 @@ export class Cart extends Component {
                     <tr>
                       <td colSpan={3}>جمع</td>
                       <td className="fw-bold text-success">{this.state.data.reduce((acc, x) => acc + x.count, 0)}</td>
-                      <td className="fw-bold text-success">{this.state.data.reduce((acc, x) => acc + (x.count * x.data.price), 0).toLocaleString("fa-IR")+" تومان"}</td>
+                      <td className="fw-bold text-success">{this.state.data.reduce((acc, x) => acc + (x.count * x.data.price), 0).toLocaleString("fa-IR") + " تومان"}</td>
                       <td colSpan={2}></td>
                     </tr>
                   </tbody>
@@ -293,7 +298,7 @@ export class Cart extends Component {
             <div className="card mb-1">
               <p className="card-header">ثبت آدرس</p>
               <div className="g-3 p-3">
-                            <button className="col-md-3 col-sm-12 btn btn-success" onClick={() => this.showModal()}>تاریخچه آدرس</button>
+                <button className="col-md-3 col-sm-12 btn btn-success" onClick={() => this.showModal()}>تاریخچه آدرس</button>
                 <div className="row">
                   <DropdownApp
                     context={this}
@@ -347,6 +352,22 @@ export class Cart extends Component {
                     name="payType"
                     data={this.state.payTypies}
                   />
+                  <DropdownApp
+                    title="نوع ارسال"
+                    className="col-md-4 col-sm-12"
+                    context={this}
+                    name="sendType"
+                    data={this.state.sendTypies}
+                  />
+
+
+                  <div className="alert alert-secondary py-2 px-3 d-flex align-items-start" role="alert" >
+                    <div className="flex-grow-1 text-end">
+                      <strong>هزینه ارسال</strong>
+                      <div>بر اساس روش انتخابی (تیپاکس، باربری یا پیک) محاسبه می شود و بر عهده مشتری است.</div>
+                    </div>
+                  </div>
+
                 </div>
                 <div className="d-flex justify-content-start p-3">
                   <ButtonWaith onClick={() => this.AddData()}
