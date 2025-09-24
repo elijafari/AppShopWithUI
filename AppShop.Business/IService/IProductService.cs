@@ -10,6 +10,7 @@ namespace AppShop.Business.IService
         DataView GetAll(DataRequest param);
         Product GetById(int id);
         bool DeleteAll();
-   //     bool ConvertImage();
+        //     bool ConvertImage();
+        List<Product> GetAll();
     }
 }

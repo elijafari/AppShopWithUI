@@ -117,6 +117,10 @@ namespace AppShop.Business.Service
             result.TotalCount = query.Count();
             return result;
         }
+        public List<Product> GetAll()
+        {
+            return db.Products.ToList();
+        }
         public Product GetById(int id)
         {
             return db.Products.Where(x => x.Id == id).SingleOrDefault();

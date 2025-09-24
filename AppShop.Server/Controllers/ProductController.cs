@@ -84,7 +84,7 @@ namespace AppShop.Server.Controllers
         {
             return Response(() =>
             {
-                var param = new DataRequest(inputRequest.PageNumber, 100);
+                var param = new DataRequest(inputRequest.PageNumber, 1000);
                 return service.GetAll(param);
             });
         }
