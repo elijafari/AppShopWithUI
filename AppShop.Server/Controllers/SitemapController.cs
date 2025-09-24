@@ -25,7 +25,7 @@ namespace AppShop.Server.Controllers
             var urls = new List<(string loc, DateTime lastmod, string changefreq, double priority)>
             {
                 ($"{baseUrl}/", DateTime.UtcNow, "daily", 1.0),
-                ($"{baseUrl}/products", DateTime.UtcNow, "daily", 0.9),
+                ($"{baseUrl}/home", DateTime.UtcNow, "daily", 0.9),
                 ($"{baseUrl}/cart", DateTime.UtcNow, "weekly", 0.5),
                 ($"{baseUrl}/login", DateTime.UtcNow, "monthly", 0.3),
             };
