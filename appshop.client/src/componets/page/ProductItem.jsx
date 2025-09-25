@@ -31,7 +31,7 @@ export class ProductItem extends Component {
     }
   }
   onView(e) {
-    window.location.href = "/productView/" + e.id;
+    window.location.href = "/productView/" + e.slug;
   }
 
   render() {

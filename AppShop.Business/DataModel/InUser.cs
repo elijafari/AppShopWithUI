@@ -36,4 +36,9 @@ namespace AppShop.Business.DataModel
         public string UserName { get; set; }
         public string NewPassword { get; set; }
     }
+
+public class InSlug
+{
+    public string Slug { get; set; }
+}
 }

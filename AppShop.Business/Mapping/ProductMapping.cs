@@ -14,6 +14,7 @@ namespace AppShop.Business.Mapping
             builder.Property(p => p.Id).UseIdentityColumn();
             builder.Property(p => p.Code).IsRequired();
             builder.Property(p => p.Name).IsRequired().HasColumnType("nvarchar(50)");
+            builder.Property(p => p.Slug).IsRequired().HasColumnType("nvarchar(80)");
             builder.Property(p => p.CategoryId).IsRequired();         
             builder.Property(p => p.IsActive).HasDefaultValue(true);
             builder.Property(p => p.Price).IsRequired();

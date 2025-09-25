@@ -4,19 +4,18 @@ import "react-notifications/lib/notifications.css";
 import "../../App.css";
 import api from "../tools/axiosConfig";
 import { ButtonReturn } from "../tools/ButtonReturn";
-import { ErrorHanding } from "../Utility";
 export class ProductView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      id: window.location.href.split("/")[4],
+      slug: window.location.href.split("/")[4],
       file: null,
       updateKeyImage: 1,
       updateKey: 1,
     };
   }
   componentDidMount() {
-    api.post("/product/GetById", { id: this.state.id }).then((response) => {
+    api.post("/product/GetBySlug", { slug: this.state.slug }).then((response) => {
       var result = response.data.data;
       this.setState({
         ...result,

@@ -32,7 +32,7 @@ namespace AppShop.Server.Controllers
             var products = service.GetAll();
             foreach (var product in products)
             {
-                urls.Add(($"{baseUrl}/productView/{product.Id}", DateTime.UtcNow, "weekly", 0.7));
+                urls.Add(($"{baseUrl}/productView/{product.Slug}", DateTime.UtcNow, "weekly", 0.7));
             }
 
             // ساخت XML

@@ -90,10 +90,12 @@ namespace AppShop.Server.Controllers
         }
         [HttpPost]
         public IActionResult GetById(InRecord input) => Response(() => service.GetById(int.Parse(input.Id)));
+        [HttpPost]
+        public IActionResult GetBySlug(InSlug input) => Response(() => service.GetBySlug(input.Slug));
         [HttpGet]
         [Authorize(Roles = "Admin")]
         public IActionResult DeleteAll() => Response(() => service.DeleteAll());
-      //  [HttpGet]
-    //    public IActionResult ConvertImage() => Response(() => service.ConvertImage());
+        [HttpGet]
+        public IActionResult ConvertSlug() => Response(() => service.ConvertSlug());
     }
 }

@@ -26,6 +26,7 @@ namespace AppShop.Business.Service
             var fileName = $"product_{id}";
             entity.PathImg = CopyImage(input, fileName).Result;
             ValidtionData(entity);
+            entity.Slug=SlugHelper.GenerateSlug(entity.Name);
             db.Products.Add(entity);
             db.SaveChanges();
             return true;
@@ -36,6 +37,7 @@ namespace AppShop.Business.Service
             var fileName = $"product_{input.Id}";
             entity.PathImg = CopyImage(input, fileName).Result;
             ValidtionData(entity);
+            entity.Slug = SlugHelper.GenerateSlug(entity.Name);
             db.Products.Update(entity);
             db.SaveChanges();
             return true;
@@ -125,29 +127,26 @@ namespace AppShop.Business.Service
         {
             return db.Products.Where(x => x.Id == id).SingleOrDefault();
         }
+        public Product GetBySlug(string slug)
+        {
+            return db.Products.Where(x => x.Slug == slug).SingleOrDefault();
+        }
         public bool DeleteAll()
         {
             db.Products.RemoveRange(db.Products.ToList());
             return true;
 
         }
-        //public bool ConvertImage()
-        //{
-        //    var products = db.Products.ToList();
-        //    foreach (var product in products)
-        //    {
-        //        var fileName = $"product_{product.Id}.jpg";
-        //        var filePath = Path.Combine(uploadPathProvider.Path, fileName);
+        public bool ConvertSlug()
+        {
+            var products = db.Products.ToList();
+            foreach (var entity in products)
+            {
+                entity.Slug = SlugHelper.GenerateSlug(entity.Name);
 
-        //        File.WriteAllBytes(filePath, product.image); // ذخیره فایل از دیتابیس
-
-        //        product.PathImg = "/uploads/products/" + fileName; // ذخیره مسیر جدید
-        //                                                           // product.image = null; // در صورت تمایل حذف ستون Blob
-        //    }
-        //    db.SaveChanges();
-        //    return false;
-
-
-        //}
+            }
+            db.SaveChanges();
+            return true;
+        }
     }
 }

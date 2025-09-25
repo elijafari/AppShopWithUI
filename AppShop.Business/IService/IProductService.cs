@@ -9,8 +9,10 @@ namespace AppShop.Business.IService
         bool Update(InProduct entity);
         DataView GetAll(DataRequest param);
         Product GetById(int id);
+        Product GetBySlug(string slug);
         bool DeleteAll();
         //     bool ConvertImage();
         List<Product> GetAll();
+        bool ConvertSlug();
     }
 }
