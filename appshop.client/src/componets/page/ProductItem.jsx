@@ -35,7 +35,6 @@ export class ProductItem extends Component {
   }
 
   render() {
-    debugger
     const product = this.props.data;
     return (
 <div className="col-md-3 col-lg-3 col-sm-6 mb-4">

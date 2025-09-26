@@ -18,9 +18,9 @@ import { TextareaApp } from "../tools/TextareaApp";
 export class Product extends Component {
     constructor(props) {
         super(props);
-        this.isEdit = props.isEdit,
+        this.isEdit = props.isEdit;
             this.state = {
-                id: props.isEdit ? window.location.href.split("/")[6] : 0,
+                id: props.isEdit ? window.location.href.split("/")[4] : 0,
                 cat: [],
                 file: null,
                 isActive: true,

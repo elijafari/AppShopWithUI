@@ -1,7 +1,6 @@
 import "bootstrap/dist/css/bootstrap.rtl.min.css";
 export function DropdownApp(props) {
   const handleChange = (e) => {
-    debugger
     props.context.setState({ [props.name]: parseInt(e.target.value) });
 
     if (props.onChange != undefined)

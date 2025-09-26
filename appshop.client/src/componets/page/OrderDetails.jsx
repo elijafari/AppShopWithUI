@@ -23,7 +23,6 @@ import { ErrorHanding } from "../Utility";
     this.getOrder();
   }
   getOrder() {
-    debugger
         const id = this.props.params?.id || "";
     api.post("/orderBuy/GetById/",{id:id})
       .then(res => {

@@ -25,7 +25,7 @@ export default class Header extends React.Component {
     fontSize: "1.8rem", 
     filter: "drop-shadow(0 0 6px #eeff00ff)" 
   }}  />
-        فروشگاه اینترنتی الکترو ایجی
+        فروشگاه اینترنتی الکتروایجی
       </h4>
       <p className="mb-0 fs-6 animate__animated animate__fadeInUp">
         خرید آسان و سریع انواع تجهیزات و قطعات برقی و روشنایی
