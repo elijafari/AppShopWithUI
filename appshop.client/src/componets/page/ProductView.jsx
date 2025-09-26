@@ -61,6 +61,11 @@ export class ProductView extends Component {
         "url": "${import.meta.env.VITE_API_URL}/productView/${this.state.slug}",
         "priceCurrency": "IRR",
         "price": "${this.state.price}",
+          "offers": {
+    "@type": "Offer",
+     "priceCurrency": "IRR",
+        "price": "${this.state.price}",
+  }
         "availability": "https://schema.org/InStock",
         "sku": "electroej",
         "brand": {
