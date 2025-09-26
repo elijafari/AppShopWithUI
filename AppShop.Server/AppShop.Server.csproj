@@ -55,9 +55,6 @@
 		<None Include="wwwroot\**\*" CopyToPublishDirectory="PreserveNewest" />
 	</ItemGroup>
 	<ItemGroup>
-	  <Content Remove="wwwroot\googlefab7d4e506c94fae.html" />
-	</ItemGroup>
-	<ItemGroup>
 	</ItemGroup>
 
 	<!-- اجرای npm build و کپی خروجی به wwwroot در زمان پابلیش -->
