@@ -55,7 +55,7 @@
 		<None Include="wwwroot\**\*" CopyToPublishDirectory="PreserveNewest" />
 	</ItemGroup>
 	<ItemGroup>
-	  <Folder Include="wwwroot\" />
+	  <Content Remove="wwwroot\googlefab7d4e506c94fae.html" />
 	</ItemGroup>
 	<ItemGroup>
 	</ItemGroup>

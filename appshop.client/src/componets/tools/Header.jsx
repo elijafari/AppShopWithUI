@@ -26,9 +26,9 @@ export default class Header extends React.Component {
     filter: "drop-shadow(0 0 6px #eeff00ff)" 
   }}  />
         فروشگاه اینترنتی الکتروایجی
-      </h4>
+          </h4>
       <p className="mb-0 fs-6 animate__animated animate__fadeInUp">
-        خرید آسان و سریع انواع تجهیزات و قطعات برقی و روشنایی
+        خرید آنلاین لوازم الکتریکی| خرید آسان و سریع انواع تجهیزات و قطعات برقی و روشنایی
       </p>
     </div>
   </div>
