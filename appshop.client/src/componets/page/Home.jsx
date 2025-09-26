@@ -9,6 +9,7 @@ import { DropdownApp } from "../tools/DropdownApp";
 import { FaSearch,FaSearchDollar,FaSearchPlus } from "react-icons/fa";
 import api from "../tools/axiosConfig";
 
+import { Helmet } from "react-helmet";
 export class Home extends Component {
   constructor(props) {
     super(props);
@@ -89,7 +90,16 @@ export class Home extends Component {
   render() {
     return (
       <>
+  <Helmet>
+          <meta
+            name="description"
+            content="فروشگاه آنلاین لوازم الکتریکی با بهترین قیمت‌ها و ارسال سریع به سراسر کشور."
+          />
+          <meta name="keywords" content="فروشگاه لوازم الکتریکی, خرید لوازم, قیمت لوازم, خرید آنلاین" />
+          <title>فروشگاه آنلاین لوازم الکتریکی</title>
+        </Helmet>
 
+        <h1 className="text-center mt-4">محصولات فروشگاه</h1>
 
         <div className="card mb-3">
           <p className="card-header">
