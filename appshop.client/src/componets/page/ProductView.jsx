@@ -99,7 +99,7 @@ export class ProductView extends Component {
                           <div className="col-md-9">
                               <div className="row mb-3">
                                   <span className="fw-bold text-success fs-2">
-                                      {this.state.price.toLocaleString("fa-IR")} <small>تومان</small>
+                                      {this.state.price} <small>تومان</small>
                                   </span>
                               </div>
                               <div className="row mb-3">

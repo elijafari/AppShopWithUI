@@ -99,8 +99,6 @@ export class Home extends Component {
           <title>فروشگاه آنلاین لوازم الکتریکی</title>
         </Helmet>
 
-        <h1 className="text-center mt-4">محصولات فروشگاه</h1>
-
         <div className="card mb-3">
           <p className="card-header">
             فیلتر ها

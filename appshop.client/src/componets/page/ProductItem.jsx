@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "../../../node_modules/bootstrap/dist/css/bootstrap.css";
 import "../../App.css";
-
+import { Helmet } from "react-helmet";
 export class ProductItem extends Component {
   constructor(props) {
     super(props);
@@ -62,6 +62,57 @@ export class ProductItem extends Component {
     `}
                 </style>
 
+
+                <Helmet>
+                    <meta name="description" content={`خرید ${product.name} با بهترین قیمت و کیفیت در فروشگاه آنلاین. ارسال سریع به سراسر کشور.`} />
+                    <meta name="keywords" content={`خرید ${product.name}, قیمت ${product.name}, فروشگاه آنلاین , electroej, الکتروایجی, الکترو ایجی`} />
+                    <meta name="title" content={`خرید ${product.name}, قیمت ${product.name}, فروشگاه آنلاین , electroej, الکتروایجی, الکترو ایجی`} />
+
+                    {/* Schema Markup */}
+                    <script type="application/ld+json">
+                        {`
+          {
+            "@context": "https://schema.org",
+            "@type": "Product",
+            "name": "${product.name}",
+            "image": "${import.meta.env.VITE_API_URL + product.pathImg}",
+            "description": "${product.description}",
+            "url": "${import.meta.env.VITE_API_URL}/productView/${product.slug}",
+            "priceCurrency": "IRR",
+            "price": "${product.price}",
+            "offers": {
+              "@type": "Offer",
+              "priceCurrency": "IRR",
+              "price": "${product.price}",
+              "availability": "https://schema.org/InStock"
+            },
+            "review": {
+              "@type": "Review",
+              "reviewRating": {
+                "@type": "Rating",
+                "ratingValue": 4,
+                "bestRating": 5
+              },
+              "author": {
+                "@type": "Person",
+                "name": "ehsan jafari"
+              }
+            },
+            "aggregateRating": {
+              "@type": "AggregateRating",
+              "ratingValue": 4.4,
+              "reviewCount": 89
+            },
+            "sku": "electroej",
+            "brand": {
+              "@type": "Brand",
+              "name": "electroej"
+            }
+          }
+          `}
+                    </script>
+                </Helmet>
+
                 <div className="col-md-3 col-lg-3 col-sm-6 mb-4">
                     <div
                         className="card product-card h-100 d-flex flex-column justify-content-between text-center"
@@ -89,15 +140,6 @@ export class ProductItem extends Component {
                             <h6 className="card-title fw-bold product-title" itemProp="name">
                                 {product.name}
                             </h6>
-
-                            {/* قیمت و offers */}
-                            <div itemprop="offers" itemscope itemtype="https://schema.org/Offer">
-                                <meta itemprop="priceCurrency" content="IRR" />
-                                <span itemprop="price" content={product.price}>
-                                    {product.price.toLocaleString()} تومان
-                                </span>
-                                <link itemprop="availability" href="https://schema.org/InStock" />
-                            </div>
 
                             {/* نمایش وضعیت محصول (قیمت یا ناموجود) */}
                             {product.isActive ? (
