@@ -6,13 +6,14 @@ import "../../App.css";
 import { Loading } from "../tools/Loading";
 import { TextBox } from "../tools/TextBox";
 import { DropdownApp } from "../tools/DropdownApp";
-import { FaSearch,FaSearchDollar,FaSearchPlus } from "react-icons/fa";
+import { FaSearch } from "react-icons/fa";
 import api from "../tools/axiosConfig";
-
 import { Helmet } from "react-helmet";
+
 export class Home extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       data: [],
       cat: [],
@@ -20,25 +21,36 @@ export class Home extends Component {
       loading: false,
       pageCount: 0,
       currentPage: 1,
+      totalCount: 0,
       fromPrice: "",
       toPrice: "",
       productName: "",
-      categoryId: 0
+      categoryId: 0,
     };
   }
 
   componentDidMount() {
+    const params = new URLSearchParams(window.location.search);
+    const page = parseInt(params.get("page")) || 1;
     this.loadCategory();
-    this.loadDate(this.state.currentPage);
+    this.loadDate(page);
   }
+
   loadDate(pageNumber) {
+    // ✅ تغییر آدرس مرورگر
+    const url = new URL(window.location);
+    url.searchParams.set("page", pageNumber);
+    window.history.pushState({}, "", url);
+
+
     this.setState({
       loading: false,
     });
     var filter = {
       fromPrice: this.getNumber(this.state.fromPrice),
       toPrice: this.getNumber(this.state.toPrice),
-      productName: this.state.productName == undefined ? "" : this.state.productName,
+      productName:
+        this.state.productName == undefined ? "" : this.state.productName,
       categoryId: this.state.categoryId,
     };
     api
@@ -54,6 +66,7 @@ export class Home extends Component {
         });
       });
   }
+
   loadCategory() {
     api.get("category/GetAllForSearch").then((response) => {
       var cat = [];
@@ -63,6 +76,7 @@ export class Home extends Component {
       this.setState({ cat });
     });
   }
+
   shopItem(e, count) {
     let array = JSON.parse(localStorage.getItem("selectedItem"));
     if (array === null) array = [];
@@ -77,34 +91,58 @@ export class Home extends Component {
     });
     localStorage.setItem("selectedItem", JSON.stringify(array));
   }
-  getNumber(text) {
-    if (text == undefined)
-      return 0;
-    if (text == null)
-      return 0;
-    if (text == "")
-      return 0;
 
+  getNumber(text) {
+    if (!text) return 0;
     return parseInt(text.replaceAll(",", ""));
   }
+
   render() {
+    const { currentPage, pageCount, totalCount, data } = this.state;
+
+    // 🟢 لینک‌های SEO
+    const baseUrl = import.meta.env.VITE_API_URL + "/products"; // آدرس دامنه خودت
+    const canonicalUrl =
+      currentPage > 1 ? `${baseUrl}?page=${currentPage}` : baseUrl;
+    const prevUrl =
+      currentPage > 1 ? `${baseUrl}?page=${currentPage - 1}` : null;
+    const nextUrl =
+      currentPage < pageCount ? `${baseUrl}?page=${currentPage + 1}` : null;
+
     return (
       <>
-  <Helmet>
+        {/* 🟢 Helmet برای SEO */}
+        <Helmet>
+          <title>
+            {currentPage > 1
+              ? `محصولات صفحه ${currentPage} ************************************| فروشگاه آنلاین لوازم الکتریکی`
+              : "فروشگاه آنلاین لوازم الکتریکی"}
+          </title>
           <meta
             name="description"
-            content="فروشگاه آنلاین لوازم الکتریکی با بهترین قیمت‌ها و ارسال سریع به سراسر کشور."
+            content={
+              currentPage > 1
+                ? `لیست محصولات فروشگاه آنلاین لوازم الکتریکی - صفحه *****************************${currentPage}`
+                : "فروشگاه آنلاین لوازم الکتریکی با بهترین قیمت‌ها و ارسال سریع به سراسر کشور."
+            }
           />
-          <meta name="keywords" content="فروشگاه لوازم الکتریکی, خرید لوازم, قیمت لوازم, خرید آنلاین" />
-          <title>فروشگاه آنلاین لوازم الکتریکی</title>
+          <meta
+            name="keywords"
+            content="فروشگاه لوازم الکتریکی, خرید لوازم, قیمت لوازم, خرید آنلاین"
+          />
+
+          {/* Canonical */}
+          <link rel="canonical" href={canonicalUrl} />
+
+          {/* Prev / Next */}
+          {prevUrl && <link rel="prev" href={prevUrl} />}
+          {nextUrl && <link rel="next" href={nextUrl} />}
         </Helmet>
 
+        {/* 🟢 فیلترها */}
         <div className="card mb-3">
-          <p className="card-header">
-            فیلتر ها
-          </p>
+          <p className="card-header">فیلتر ها</p>
           <div className="card-body">
-
             <div className="row">
               <TextBox
                 context={this}
@@ -136,39 +174,39 @@ export class Home extends Component {
                 separator={true}
               />
             </div>
-           <div className="d-flex justify-content mt-3">
-      <button
-        onClick={() => this.loadDate(this.state.currentPage)}
-        className="btn btn-success d-flex align-items-center gap-2"
-      >
-        <FaSearch />
-        جستجو
-      </button>
+            <div className="d-flex justify-content mt-3">
+              <button
+                onClick={() => this.loadDate(this.state.currentPage)}
+                className="btn btn-success d-flex align-items-center gap-2"
+              >
+                <FaSearch />
+                جستجو
+              </button>
             </div>
           </div>
         </div>
         {!this.state.loading ? (
           <Loading />
-        ) : (<>
-          <div className="row" key={this.state.updateKey}>
-            {this.state.data.map((x) => (
-              <ProductItem
-                data={x}
-                key={x.id}
-                shopItem={(e1, e2) => this.shopItem(e1, e2)}
-              />
-            ))}
-          </div>
-          <br />
-
-          <Pageing
-            updateKey={this.state.updateKey}
-            currentPage={this.state.currentPage}
-            pageCount={this.state.pageCount}
-            totalCount={this.state.totalCount}
-            onChangePage={(e) => this.loadDate(e)}
-          />
-        </>
+        ) : (
+          <>
+            <div className="row" key={this.state.updateKey}>
+              {data.map((x) => (
+                <ProductItem
+                  data={x}
+                  key={x.id}
+                  shopItem={(e1, e2) => this.shopItem(e1, e2)}
+                />
+              ))}
+            </div>
+            <br />
+            <Pageing
+              updateKey={this.state.updateKey}
+              currentPage={currentPage}
+              pageCount={pageCount}
+              totalCount={totalCount}
+              onChangePage={(e) => this.loadDate(e)}
+            />
+          </>
         )}
       </>
     );
