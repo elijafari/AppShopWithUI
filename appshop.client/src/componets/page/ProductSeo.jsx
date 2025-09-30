@@ -1,5 +1,6 @@
 import { Helmet } from "react-helmet";
 export function ProductSeo(props) {
+  const description =`${props.name}.${props.description}.با بهترین قیمت و کیفیت . ارسال سریع به سراسر کشور. electroej. الکتروایجی. الکترو ایجی`;
   return (
 
     <Helmet>
@@ -15,7 +16,7 @@ export function ProductSeo(props) {
             "@type": "Product",
             "name": "${props.name}",
             "image": "${import.meta.env.VITE_API_URL + props.pathImg}",
-            "description":"${props.description}",
+            "description":"${description}",
             "url": "${import.meta.env.VITE_API_URL}/productView/${props.slug}",
             "priceCurrency": "IRR",
             "price": "${props.price}",
