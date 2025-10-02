@@ -97,5 +97,9 @@ namespace AppShop.Server.Controllers
         public IActionResult DeleteAll() => Response(() => service.DeleteAll());
         [HttpGet]
         public IActionResult ConvertSlug() => Response(() => service.ConvertSlug());
+        [HttpGet]
+        public IActionResult GetJson() => Response(() => service.GetJson());
+        [HttpGet]
+        public IActionResult Addall() => Response(() => service.AddAll());
     }
 }

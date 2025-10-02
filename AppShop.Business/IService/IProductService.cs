@@ -14,5 +14,7 @@ namespace AppShop.Business.IService
         //     bool ConvertImage();
         List<Product> GetAll();
         bool ConvertSlug();
+        string GetJson();
+        bool AddAll();
     }
 }

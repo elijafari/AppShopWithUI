@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppShop.Business.Migrations
 {
     [DbContext(typeof(AppShopDBContext))]
-    [Migration("20250925074101_shop-005")]
-    partial class shop005
+    [Migration("20251002081251_shop-001")]
+    partial class shop001
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

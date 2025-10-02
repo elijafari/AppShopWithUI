@@ -28,12 +28,22 @@ namespace AppShop.Business.Service
                 new Category()
                 {
                     Code = 1,
-                    Name = "خانگی",
+                    Name = "ساختمانی",
                 },
                 new Category()
                 {
                     Code = 2,
                     Name = "صنعتی",
+                },
+                new Category()
+                {
+                    Code = 3,
+                    Name = "روشنایی",
+                },
+                new Category()
+                {
+                    Code =4,
+                    Name = "ابزار",
                 }
             };
             db.Categories.AddRange(list);

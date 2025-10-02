@@ -55,6 +55,20 @@ namespace AppShop.Business.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Contact",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(50)", nullable: false),
+                    Message = table.Column<string>(type: "nvarchar(1000)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(500)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Contact", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Log",
                 columns: table => new
                 {
@@ -82,8 +96,7 @@ namespace AppShop.Business.Migrations
                     IsAdmin = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     UserName = table.Column<string>(type: "nvarchar(100)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(100)", nullable: false),
-                    Question = table.Column<int>(type: "int", nullable: false),
-                    Answer = table.Column<string>(type: "nvarchar(100)", nullable: false)
+                    Email = table.Column<string>(type: "nvarchar(100)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -101,8 +114,9 @@ namespace AppShop.Business.Migrations
                     Name = table.Column<string>(type: "nvarchar(50)", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
                     Description = table.Column<string>(type: "nvarchar(1000)", nullable: true),
-                    image = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
-                    Price = table.Column<int>(type: "int", nullable: false)
+                    Price = table.Column<int>(type: "int", nullable: false),
+                    PathImg = table.Column<string>(type: "nvarchar(500)", nullable: true),
+                    Slug = table.Column<string>(type: "nvarchar(80)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -155,6 +169,7 @@ namespace AppShop.Business.Migrations
                     Statues = table.Column<int>(type: "int", nullable: false),
                     TrackingCode = table.Column<long>(type: "bigint", nullable: false, defaultValueSql: "NEXT VALUE FOR shared.TrackingCodeSeq"),
                     PayType = table.Column<int>(type: "int", nullable: false),
+                    SendType = table.Column<int>(type: "int", nullable: true),
                     AddressId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -271,6 +286,9 @@ namespace AppShop.Business.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Contact");
+
             migrationBuilder.DropTable(
                 name: "Log");
 
