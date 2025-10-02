@@ -16,13 +16,7 @@ namespace AppShop.Server.Controllers
         public CategoryController(ICategoryService _service, ILogService _logService) : base(_logService)
         {
             service = _service;
-        }
-        [Authorize(Roles = "Admin")]
-        [HttpPost]
-        public IActionResult Add(Category input) => Response(() => service.Add(input));
-       
-        [HttpPost]
-        public IActionResult AddRange() => Response(() => service.AddRange());
+        }      
         [HttpGet]
         [Authorize(Roles = "Admin")]
         public IActionResult GetAll() => Response(() => service.GetAll(false));

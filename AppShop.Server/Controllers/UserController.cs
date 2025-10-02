@@ -36,8 +36,7 @@ namespace AppShop.Server.Controllers
                     //}
                     return token;
                 });
-        [HttpPost]
-        public IActionResult AddAdmin() => Response(() => service.AddAdmin());
+      
         [HttpPost]
         [Authorize]
         public IActionResult GetById(InRecord input) => Response(() => service.GetById(new Guid(input.Id)));
