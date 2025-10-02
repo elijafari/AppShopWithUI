@@ -77,7 +77,7 @@ slug={product.slug} />
             {/* تصویر */}
             <img
               src={import.meta.env.VITE_API_URL + product.pathImg}
-              alt={`خرید ${product.name} با بهترین قیمت`}
+              alt={product.name}
               onClick={() => this.onView(this.props.data)}
               className="card-img-top img-fluid mx-auto"
               style={{

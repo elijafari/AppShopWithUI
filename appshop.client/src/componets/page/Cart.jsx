@@ -107,12 +107,6 @@ export class Cart extends Component {
     if (data[i].count === 0) data.splice(i, 1);
     this.refreshTable(data);
   }
-  /*************  ✨ Windsurf Command ⭐  *************/
-  /**
-   * Refresh the table with new data and store it in local storage
-   * @param {array} data - The new data to refresh the table with
-   */
-  /*******  9214bf84-9c21-4e2a-906d-1f5cb8e1429d  *******/
   refreshTable(data) {
     this.setState({
       data: data,

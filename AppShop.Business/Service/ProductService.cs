@@ -4,6 +4,8 @@ using AppShop.Business.IService;
 using AppShop.Business.Mapping;
 using AutoMapper;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace AppShop.Business.Service
@@ -33,10 +35,15 @@ namespace AppShop.Business.Service
         }
         public bool Update(InProduct input)
         {
+            var old = db.Products.AsNoTracking().FirstOrDefault(x => x.Id == input.Id);
             var entity = mapper.Map<Product>(input);
             var fileName = $"product_{input.Id}";
-            entity.PathImg = CopyImage(input, fileName).Result;
-            ValidtionData(entity);
+            var pathImg = CopyImage(input, fileName).Result;
+            if (!string.IsNullOrEmpty(pathImg))
+                entity.PathImg = pathImg;
+            else
+                entity.PathImg = old.PathImg;
+                ValidtionData(entity);
             entity.Slug = SlugHelper.GenerateSlug(entity.Name);
             db.Products.Update(entity);
             db.SaveChanges();
@@ -52,14 +59,16 @@ namespace AppShop.Business.Service
                 fileName = fileName + extension;
 
                 var savePath = Path.Combine(uploadPathProvider.Path, fileName);
-
+                var file = new FileInfo(savePath);
+                if (file.Exists)
+                    file.Delete();
                 using (var stream = new FileStream(savePath, FileMode.Create))
                 {
-                   await input.File.CopyToAsync(stream);
+                  await  input.File.CopyToAsync(stream);
                     return $"/uploads/products/{fileName}";
                 }
             }
-            return string.Empty;
+                return string.Empty;
         }
         private void ValidtionData(Product entity)
         {
@@ -129,7 +138,9 @@ namespace AppShop.Business.Service
         }
         public Product GetBySlug(string slug)
         {
-            return db.Products.Where(x => x.Slug == slug).SingleOrDefault();
+          var data= db.Products.Where(x => x.Slug == slug).AsNoTracking().SingleOrDefault();
+           data.CategoryName = db.Categories.FirstOrDefault(x=>x.Id==data.CategoryId)?.Name;
+            return data;
         }
         public bool DeleteAll()
         {

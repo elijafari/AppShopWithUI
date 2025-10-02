@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,5 +19,8 @@ namespace AppShop.Business.Entity
         public string? Slug { get; set; }
         public virtual Category CategoryEntity { get; set; }
         public virtual List<ItemBuy> ItemBuys { get; set; } = new List<ItemBuy>();
+        [NotMapped]
+        public string CategoryName{ get; set; }
+
     }
 }

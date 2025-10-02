@@ -75,16 +75,7 @@ export class Menu extends Component {
          {this.state.user.name}
         </span>
       )}
-
-      {this.state.isLoging === false ? (
-        <ButtonRoute
-          title="ورود / ثبت نام"
-          link="/login"
-          className="btn btn-light btn-sm"
-        />
-      ) : (
-        <div className="d-flex align-items-center gap-2">
-          {/* آیکون سبد خرید */}
+  {/* آیکون سبد خرید */}
           <a className="nav-link position-relative" href="/cart">
             <FaShoppingCart className="shopIcon fs-4" />
             {this.state.sum > 0 && (
@@ -101,6 +92,15 @@ export class Menu extends Component {
             )}
           </a>
 
+      {this.state.isLoging === false ? (
+        <ButtonRoute
+          title="ورود / ثبت نام"
+          link="/login"
+          className="btn btn-light btn-sm"
+        />
+      ) : (
+        <div className="d-flex align-items-center gap-2">
+        
           {/* دکمه خروج */}
           <ModalApp
             className="btn btn-danger btn-sm"

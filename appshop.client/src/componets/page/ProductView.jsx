@@ -4,7 +4,7 @@ import "react-notifications/lib/notifications.css";
 import "../../App.css";
 import api from "../tools/axiosConfig";
 import { ButtonReturn } from "../tools/ButtonReturn";
-import {ProductSeo} from "./ProductSeo";
+import { ProductSeo } from "./ProductSeo";
 export class ProductView extends React.Component {
   constructor(props) {
     super(props);
@@ -13,6 +13,7 @@ export class ProductView extends React.Component {
       file: null,
       updateKeyImage: 1,
       updateKey: 1,
+      keywords: "خرید/لوازم الکتریکی/فروشگاه آنلاین/electroej/ الکتروایجی/الکترو ایجی",
     };
   }
   componentDidMount() {
@@ -20,7 +21,8 @@ export class ProductView extends React.Component {
       var result = response.data.data;
       this.setState({
         ...result,
-        persionPrice:result.price.toLocaleString("fa-IR"),
+        keywords: this.state.keywords + "/" +result.categoryName + "/" + result.name.split(" ")[0]+"/" + result.name,
+        persionPrice: result.price.toLocaleString("fa-IR"),
         file: import.meta.env.VITE_API_URL + result.pathImg,
         updateKey: this.state.updateKey + 1,
       });
@@ -53,37 +55,47 @@ export class ProductView extends React.Component {
 
 
         <div className="card">
-          <p className="card-header">{this.state.name}</p>
-          <div className="card-body">
-            <div className="row">
-              <div className="col-md-9">
-                <div className="row mb-3">
-                  <span className="fw-bold text-success fs-2">
-                    {this.state.persionPrice} <small>تومان</small>
-                  </span>
-                </div>
-                <div className="row mb-3">
-                  <b>توضیحات کالا : </b>
-                  <span>{this.state.description}</span>
-                </div>
+          <h1 className="card-header title-header">{this.state.name}</h1>
+         
+
+        <div className="card-body">
+          <div className="row">
+            <div className="col-md-9">
+              <div className="row mb-3">
+                <span className="fw-bold text-success fs-2">
+                  {this.state.persionPrice} <small>تومان</small>
+                </span>
               </div>
-              <div className="col-md-3 d-flex justify-content-center align-items-center">
-                <img
-                  src={this.state.file}
-                  className="img-fluid img-thumbnail w-400"
-                  alt={this.state.name}
-                />
+              <div className="row mb-3">
+                <b>توضیحات کالا : </b>
+                <span>{this.state.description}</span>
               </div>
             </div>
-            {this.state.isActive ? (
-              <button onClick={() => this.shopItem()} className="btn btn-success">
-                افزودن به سبد خرید
-              </button>
-            ) : (
-              <span className="text-danger">ناموجود</span>
-            )}
-            <ButtonReturn />
+            <div className="col-md-3 d-flex justify-content-center align-items-center">
+              <img
+                src={this.state.file}
+                className="img-fluid img-thumbnail w-400"
+                alt={this.state.name}
+              />
+            </div>
           </div>
+          {this.state.isActive ? (
+            <button onClick={() => this.shopItem()} className="btn btn-success">
+              افزودن به سبد خرید
+            </button>
+          ) : (
+            <span className="text-danger">ناموجود</span>
+          )}
+          <ButtonReturn />
+        </div>
+      </div >
+
+         <div className="mt-3">
+          {this.state.keywords?.split("/").map((kw, i) => (
+            <h2 key={i} className="keyword-tag">
+              {kw.trim()}
+            </h2>
+          ))}
         </div>
       </>
     );
