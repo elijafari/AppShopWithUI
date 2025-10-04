@@ -1,91 +1,77 @@
 import { Helmet } from "react-helmet";
+
 export function ProductSeo(props) {
-  const description =`${props.name}.${props.description}.با بهترین قیمت و کیفیت . ارسال سریع به سراسر کشور. electroej. الکتروایجی. الکترو ایجی`;
-  return (
+    const description = `${props.description}. خرید ${props.name} با بهترین قیمت و کیفیت. ارسال سریع به سراسر کشور از Electroej`;
 
-    <Helmet>
-      <meta name="description" content={`خرید ${props.name} با بهترین قیمت و کیفیت در فروشگاه آنلاین. ارسال سریع به سراسر کشور.`} />
-      <meta name="keywords" content={`خرید ${props.name}, قیمت ${props.name}, فروشگاه آنلاین , electroej, الکتروایجی, الکترو ایجی`} />
-      <meta name="title" content={`خرید ${props.name}, قیمت ${props.name}, فروشگاه آنلاین , electroej, الکتروایجی, الکترو ایجی`} />
+    return (
+        <Helmet>
+            <title>خرید {props.name} | بهترین قیمت در Electroej</title>
+            <meta
+                name="description"
+                content={`خرید ${props.name} | ${props.description}. ارسال سریع به سراسر کشور با بهترین قیمت از Electroej`}
+            />
 
-      {/* Schema Markup */}
-      <script type="application/ld+json">
-        {`
-          {
-            "@context": "https://schema.org",
-            "@type": "Product",
-            "name": "${props.name}",
-            "image": "${import.meta.env.VITE_API_URL + props.pathImg}",
-            "description":"${description}",
-            "url": "${import.meta.env.VITE_API_URL}/productView/${props.slug}",
+            <script type="application/ld+json">
+                {`
+        {
+          "@context": "https://schema.org",
+          "@type": "Product",
+          "name": "${props.name}",
+          "image": "https://electroej.ir/${props.pathImg}",
+          "description": "${description}",
+          "url": "https://electroej.ir/productView/${props.slug}",
+          "sku": "${props.sku || props.id || "electroej"}",
+          "brand": {
+            "@type": "Brand",
+            "name": "Electroej"
+          },
+          "offers": {
+            "@type": "Offer",
+            "url": "https://electroej.ir/productView/${props.slug}",
             "priceCurrency": "IRR",
             "price": "${props.price}",
-            "offers": {
-              "@type": "Offer",
-              "priceCurrency": "IRR",
-              "price": "${props.price}",
-              "availability": "https://schema.org/InStock",
-                "priceValidUntil": "2030-12-31",
-                "hasMerchantReturnPolicy": {
-    "@type": "MerchantReturnPolicy",
-    "returnPolicyCategory": "http://schema.org/ReturnByMerchant",
-    "returnMethod": "http://schema.org/MailReturn",
-    "returnFees": "http://schema.org/FreeReturn",
-    "inStoreReturnFees": "http://schema.org/FreeReturn",
-    "returnPolicySeasonalOverride": null
-  },
-  
-  "shippingDetails": {
-    "@type": "OfferShippingDetails",
-    "shippingRate": {
-      "@type": "MonetaryAmount",
-      "value": "0",
-      "currency": "IRR"
-    },
-    "shippingDestination": {
-      "@type": "DefinedRegion",
-      "addressCountry": "IR"
-    },
-    "deliveryTime": {
-      "@type": "ShippingDeliveryTime",
-      "handlingTime": {
-        "@type": "QuantitativeValue",
-        "value": 1,
-        "unitCode": "d"
-      },
-      "transitTime": {
-        "@type": "QuantitativeValue",
-        "value": 3,
-        "unitCode": "d"
-      }
-    }
-        }
+            "availability": "https://schema.org/InStock",
+            "priceValidUntil": "2030-12-31",
+            "hasMerchantReturnPolicy": {
+              "@type": "MerchantReturnPolicy",
+              "returnPolicyCategory": "http://schema.org/ReturnByMerchant",
+              "returnMethod": "http://schema.org/MailReturn",
+              "returnFees": "http://schema.org/FreeReturn"
             },
-            "review": {
-              "@type": "Review",
-              "reviewRating": {
-                "@type": "Rating",
-                "ratingValue": 4,
-                "bestRating": 5
+            "shippingDetails": {
+              "@type": "OfferShippingDetails",
+              "shippingRate": {
+                "@type": "MonetaryAmount",
+                "value": "0",
+                "currency": "IRR"
               },
-              "author": {
-                "@type": "Person",
-                "name": "ehsan jafari"
+              "shippingDestination": {
+                "@type": "DefinedRegion",
+                "addressCountry": "IR"
+              },
+              "deliveryTime": {
+                "@type": "ShippingDeliveryTime",
+                "handlingTime": {
+                  "@type": "QuantitativeValue",
+                  "value": 1,
+                  "unitCode": "d"
+                },
+                "transitTime": {
+                  "@type": "QuantitativeValue",
+                  "value": 3,
+                  "unitCode": "d"
+                }
               }
-            },
-            "aggregateRating": {
-              "@type": "AggregateRating",
-              "ratingValue": 4.4,
-              "reviewCount": 89
-            },
-            "sku": "electroej",
-            "brand": {
-              "@type": "Brand",
-              "name": "electroej"
             }
+          },
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.4",
+            "reviewCount": 89
           }
-          `}
-      </script>
-    </Helmet>
-  )
+        }
+        `}
+            </script>
+        </Helmet>
+    );
 }
