@@ -5,10 +5,9 @@ export function ProductSeo(props) {
 
     return (
         <Helmet>
-            <title>خرید {props.name} | بهترین قیمت در Electroej</title>
-            <meta
-                name="description"
-                content={`خرید ${props.name} | ${props.description}. ارسال سریع به سراسر کشور با بهترین قیمت از Electroej`}
+            <meta name="description" content={`خرید ${props.name} با بهترین قیمت و کیفیت در فروشگاه آنلاین. ارسال سریع به سراسر کشور.`} />
+            <meta name="title" content={`خرید ${props.name}, قیمت ${props.price} از Electroej`} />
+            <meta name="description" content={`خرید ${props.name} | ${props.description}. ارسال سریع به سراسر کشور با بهترین قیمت از Electroej`}
             />
 
             <script type="application/ld+json">
