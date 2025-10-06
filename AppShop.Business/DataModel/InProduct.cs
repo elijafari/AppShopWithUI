@@ -11,6 +11,8 @@ namespace AppShop.Business.DataModel
         public string? Description { get; set; }
         public int Price { get; set; }
         public int Id { get; set; }
-        public IFormFile? File { get; set; }
+        public string OldFiles { get; set; }
+        public List<IFormFile> Files { get; set; }
+        public List<string> ListOldFile { get; set; }=new List<string>();
     }
 }

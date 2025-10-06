@@ -39,6 +39,11 @@ namespace AppShop.Server.Controllers
         public IActionResult AddProduct() => Response(() => productService.AddAll());
 
         [HttpGet]
+        public IActionResult AddImage() => Response(() => productService.AddImage());
+        [HttpGet]
+        public IActionResult UpdatePath() => Response(() => productService.UpdatePath());
+
+        [HttpGet]
         public ActionResult AddCity()
         {
             string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "Cities.json");

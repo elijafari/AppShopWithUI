@@ -16,5 +16,7 @@ namespace AppShop.Business.IService
         bool ConvertSlug();
         string GetJson();
         bool AddAll();
+        bool AddImage();
+        bool UpdatePath();
     }
 }

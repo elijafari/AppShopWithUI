@@ -294,6 +294,27 @@ namespace AppShop.Business.Migrations
                     b.ToTable("Product", (string)null);
                 });
 
+            modelBuilder.Entity("AppShop.Business.Entity.ProductImage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("PathImg")
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductImage", (string)null);
+                });
+
             modelBuilder.Entity("AppShop.Business.Entity.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -426,6 +447,17 @@ namespace AppShop.Business.Migrations
                     b.Navigation("CategoryEntity");
                 });
 
+            modelBuilder.Entity("AppShop.Business.Entity.ProductImage", b =>
+                {
+                    b.HasOne("AppShop.Business.Entity.Product", "ProductEntity")
+                        .WithMany("ProductImages")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ProductEntity");
+                });
+
             modelBuilder.Entity("AppShop.Business.Entity.Address", b =>
                 {
                     b.Navigation("OrderBuys");
@@ -453,6 +485,8 @@ namespace AppShop.Business.Migrations
             modelBuilder.Entity("AppShop.Business.Entity.Product", b =>
                 {
                     b.Navigation("ItemBuys");
+
+                    b.Navigation("ProductImages");
                 });
 
             modelBuilder.Entity("AppShop.Business.Entity.User", b =>

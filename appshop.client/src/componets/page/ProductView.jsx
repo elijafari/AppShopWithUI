@@ -11,8 +11,10 @@ export class ProductView extends React.Component {
     this.state = {
       slug: window.location.href.split("/")[4],
       file: null,
+      filePreviews:[],
       updateKeyImage: 1,
       updateKey: 1,
+      currentIndex:0,
       keywords: "خرید/لوازم الکتریکی/فروشگاه آنلاین/electroej/ الکتروایجی/الکترو ایجی",
     };
   }
@@ -24,6 +26,7 @@ export class ProductView extends React.Component {
         keywords: this.state.keywords + "/" +result.categoryName + "/" + result.name.split(" ")[0]+"/" + result.name,
         persionPrice: result.price.toLocaleString("fa-IR"),
         file: import.meta.env.VITE_API_URL + result.pathImg,
+        filePreviews: result.pathImags.map((x) => import.meta.env.VITE_API_URL + x),
         updateKey: this.state.updateKey + 1,
       });
     });
@@ -71,13 +74,60 @@ export class ProductView extends React.Component {
                 <span>{this.state.description}</span>
               </div>
             </div>
-            <div className="col-md-3 d-flex justify-content-center align-items-center">
-              <img
-                src={this.state.file}
-                className="img-fluid img-thumbnail w-400"
-                alt={this.state.name}
-              />
-            </div>
+         <div className="col-md-3 d-flex flex-column align-items-center justify-content-center position-relative p-3">
+{this.state.filePreviews.length > 1 && (
+  <button
+    className="btn btn-outline-secondary position-absolute shadow-sm rounded-circle"
+    style={{ left: "22px", top: "50%", transform: "translateY(-50%)" }}
+    onClick={() =>
+      this.setState((prev) => ({
+        currentIndex:
+          prev.currentIndex > 0
+            ? prev.currentIndex - 1
+            : this.state.filePreviews.length - 1
+      
+    }))
+  }>
+    <i className="bi bi-chevron-right fs-4"></i>
+  </button>  
+
+)}
+  {/* عکس فعلی */}
+  <img
+    src={this.state.filePreviews[this.state.currentIndex]}
+    className="img-fluid img-thumbnail shadow-lg rounded-3"
+    style={{
+      width: "350px",
+      height: "350px",
+      objectFit: "cover",
+      border: "3px solid #eee",
+    }}
+    alt={this.state.name}
+  />
+{this.state.filePreviews.length > 1&& (
+  <button
+    className="btn btn-outline-secondary position-absolute shadow-sm rounded-circle"
+    style={{ right: "22px", top: "50%", transform: "translateY(-50%)" }}
+    onClick={() =>
+      this.setState((prev) => ({
+        currentIndex:
+          prev.currentIndex < this.state.filePreviews.length - 1
+            ? prev.currentIndex + 1
+            : 0,
+      }))
+    }  >
+    <i className="bi bi-chevron-left fs-4"></i>
+  </button>
+)}
+
+  {/* اندیـکاتور پایین عکس */}
+  <div className="mt-3">
+    <span className="badge bg-secondary">
+      {this.state.currentIndex + 1} از {this.state.filePreviews.length}
+    </span>
+  </div>
+</div>
+
           </div>
           {this.state.isActive ? (
             <button onClick={() => this.shopItem()} className="btn btn-success">

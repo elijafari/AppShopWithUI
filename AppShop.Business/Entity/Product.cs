@@ -15,12 +15,15 @@ namespace AppShop.Business.Entity
         public bool IsActive { get; set; }     
         public string? Description { get; set; }
         public int Price { get; set; }
-        public string? PathImg { get;  set; }
+        public string? PathImg { get; set; }
+
         public string? Slug { get; set; }
         public virtual Category CategoryEntity { get; set; }
         public virtual List<ItemBuy> ItemBuys { get; set; } = new List<ItemBuy>();
         [NotMapped]
         public string CategoryName{ get; set; }
-
+        public List<ProductImage> ProductImages { get; set; } = new List<ProductImage>();
+        [NotMapped ]
+        public List<string> PathImags { get; set; }= new List<string>();
     }
 }

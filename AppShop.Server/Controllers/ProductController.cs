@@ -7,6 +7,7 @@ using AppShop.Server.Helper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Mvc;
+using Org.BouncyCastle.X509;
 using System.Net;
 
 namespace AppShop.Server.Controllers
@@ -17,10 +18,10 @@ namespace AppShop.Server.Controllers
     {
 
         private readonly IProductService service;
-        public ProductController(IProductService _service, ILogService _logService) :base(_logService)
+        public ProductController(IProductService _service, ILogService _logService) : base(_logService)
         {
             service = _service;
-      
+
         }
         [Authorize(Roles = "Admin")]
         [HttpPost]
@@ -56,13 +57,18 @@ namespace AppShop.Server.Controllers
             input.CategoryId = int.Parse(form[nameof(input.CategoryId).ToCamelCose()]);
             input.IsActive = bool.Parse(form[nameof(input.IsActive).ToCamelCose()]);
 
-            if (Request.Form.Files.Any())
+            input.OldFiles = form[nameof(input.OldFiles).ToCamelCose()];
+            if (!string.IsNullOrEmpty(input.OldFiles))
             {
-               input.File = Request.Form.Files[0];
-
-             
-
+                foreach (var old in input.OldFiles.Split(","))
+                {
+                    var index =old.IndexOf("upload") - 1;
+                    if (index > 0)
+                        input.ListOldFile.Add( old.Substring(index));
+                }
             }
+            if (Request.Form.Files.Any())
+                input.Files = Request.Form.Files.ToList();
             return input;
         }
 
@@ -75,7 +81,7 @@ namespace AppShop.Server.Controllers
                 var param = new DataRequest(inputRequest.PageNumber, 100);
                 param.Filter = inputRequest.Filter;
                 return service.GetAll(param);
-            }); 
+            });
         }
         [HttpPost]
         [Authorize(Roles = "Admin")]
@@ -99,6 +105,6 @@ namespace AppShop.Server.Controllers
         public IActionResult ConvertSlug() => Response(() => service.ConvertSlug());
         [HttpGet]
         public IActionResult GetJson() => Response(() => service.GetJson());
-      
+
     }
 }

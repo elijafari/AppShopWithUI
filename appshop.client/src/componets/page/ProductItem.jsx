@@ -5,7 +5,9 @@ import {ProductSeo} from "./ProductSeo";
 export class ProductItem extends React.Component {
   constructor(props) {
     super(props);
+    debugger
     this.state = {
+      
       baseURL: import.meta.env.VITE_API_URL,
       count: 0,
       uploadKey: 1,
@@ -77,7 +79,7 @@ slug={product.slug} />
             {/* تصویر */}
             <img
               src={import.meta.env.VITE_API_URL + product.pathImg}
-              alt={product.name}
+              alt={product.name+ " کد  "+product.code}
               onClick={() => this.onView(this.props.data)}
               className="card-img-top img-fluid mx-auto"
               style={{
