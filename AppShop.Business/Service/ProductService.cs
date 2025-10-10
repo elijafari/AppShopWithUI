@@ -181,14 +181,14 @@ namespace AppShop.Business.Service
                 var extension = Path.GetExtension(item.PathImg);
                 var fileName = $"product_1{extension}";
 
-                var sourceFileName = uploadPathProvider.Path + "\\" + item.PathImg.Replace(@"/uploads/products", "");
+                //var sourceFileName = uploadPathProvider.Path + "\\" + item.PathImg.Replace(@"/uploads/products", "");
 
-                var destFolder = uploadPathProvider.Path + "\\" + item.Code;
-                if (!Directory.Exists(destFolder))
-                    Directory.CreateDirectory(destFolder);
+                //var destFolder = uploadPathProvider.Path + "\\" + item.Code;
+                //if (!Directory.Exists(destFolder))
+                //    Directory.CreateDirectory(destFolder);
 
-                var destFileName = Path.Combine(destFolder, fileName);
-                File.Copy(sourceFileName, destFileName, true);
+                //var destFileName = Path.Combine(destFolder, fileName);
+                //File.Copy(sourceFileName, destFileName, true);
                 list.Add(new ProductImage()
                 {
                     ProductId = item.Id,

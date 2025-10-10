@@ -16,7 +16,7 @@ export function ProductSeo(props) {
           "@context": "https://schema.org",
           "@type": "Product",
           "name": "${props.name}",
-          "image": "https://electroej.ir/${props.pathImg}",
+          "image": "https://electroej.ir${props.pathImg.replace(/\\/g, "/")}",
           "description": "${description}",
           "url": "https://electroej.ir/productView/${props.slug}",
           "sku": "${props.sku || props.id || "electroej"}",
