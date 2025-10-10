@@ -15,6 +15,7 @@ export class ProductView extends React.Component {
       updateKeyImage: 1,
       updateKey: 1,
       currentIndex:0,
+      isload:false,
       keywords: "خرید/لوازم الکتریکی/فروشگاه آنلاین/electroej/ الکتروایجی/الکترو ایجی",
     };
   }
@@ -28,6 +29,7 @@ export class ProductView extends React.Component {
         file: import.meta.env.VITE_API_URL + result.pathImg,
         filePreviews: result.pathImags.map((x) => import.meta.env.VITE_API_URL + x),
         updateKey: this.state.updateKey + 1,
+        isload:true
       });
     });
   }
@@ -46,10 +48,8 @@ export class ProductView extends React.Component {
     localStorage.setItem("selectedItem", JSON.stringify(array));
   }
   render() {
-    return (
-      <>
-
-
+    return (this.state.isload && (
+    <>
         <ProductSeo name={this.state.name}
           description={this.state.description}
           price={this.state.price}
@@ -148,6 +148,7 @@ export class ProductView extends React.Component {
           ))}
         </div>
       </>
+) 
     );
   }
 }
