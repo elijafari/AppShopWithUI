@@ -167,6 +167,15 @@ namespace AppShop.Business.Service
             return query.ProjectTo<OrderBuyVm>(mapper.ConfigurationProvider).SingleOrDefault();
 
         }
+        public long GetTrackingCode(Guid id)
+        {
+            return db.OrderBuys.Where(x => x.Id == id).SingleOrDefault().TrackingCode;
+        }
+        public OrderBuyPaymentVm GetByForPaymentId(Guid id)
+        {
+            var query = db.OrderBuys.Where(x => x.Id == id);
+            return query.ProjectTo<OrderBuyPaymentVm>(mapper.ConfigurationProvider).SingleOrDefault();
+        }
         public List<KeyValue> GetDays()
         {
             var result = new List<KeyValue>();

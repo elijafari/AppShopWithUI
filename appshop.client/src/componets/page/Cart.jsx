@@ -9,6 +9,7 @@ import { ErrorHanding, toPersianDigits } from "../Utility";
 import { TrackingCode } from "../tools/TrackingCode";
 import { CartEmpty } from "../tools/CartEmpty";
 import { Address } from "./Address";
+import { SentDataToZarinpal } from "../tools/Zarinpal";
 import {
   NotificationContainer,
   NotificationManager,
@@ -31,14 +32,16 @@ export class Cart extends Component {
       trackingCode: 10001,
       show: false,
       payTypies: [{
-        title: "خرید حضوری", value: 1},
-        {title: "پرداخت در محل", value: 2},
-        {title:"پرداخت آنلاین",value:3}
+        title: "خرید حضوری", value: 1
+      },
+      { title: "پرداخت در محل", value: 2 },
+      { title: "پرداخت آنلاین", value: 3 }
       ],
-     sendTypies: [{
-        title: "تیپاکس", value: 1},
-        {title: "باربری", value: 2},
-        {title: "پیک", value: 3}],
+      sendTypies: [{
+        title: "تیپاکس", value: 1
+      },
+      { title: "باربری", value: 2 },
+      { title: "پیک", value: 3 }],
       loading: false,
       address: []
     };
@@ -118,7 +121,7 @@ export class Cart extends Component {
   onView(e) {
     window.location.href = "/productView/" + e.id;
   }
-  AddData() {
+  validtionData() {
     if (this.state.data == null) {
       NotificationManager.error("ایتمی برای ثبت سفارش وجود ندارد", "خطا");
       return;
@@ -156,43 +159,59 @@ export class Cart extends Component {
       NotificationManager.error("نوع پرداخت انتخاب نشده است", "خطا");
       return;
     }
+    return true;
+  }
+  AddData() {
+/*تست */
+  // اگر پرداخت آنلاین انتخاب شده
+      if (this.state.payType === 3) {
+        var amount = this.state.data.reduce((acc, x) => acc + (x.count * x.data.price), 0);
+        SentDataToZarinpal(NotificationManager, amount);
+      }
+/*
+    if (this.validtionData()) {
+      var data = {
+        items: [],
+        address: {
+          addressStr: this.state.addressStr,
+          postalCode: this.state.postalCode,
+          cityId: this.state.cityId
+        },
+        dateDelivery: this.state.dateDelivery,
+        payType: this.state.payType,
+      };
 
+      this.state.data.map((x, i) =>
+        data.items.push({
+          productId: x.data.id,
+          price: x.data.price,
+          count: x.count
+        }))
 
-    var data = {
-      items: [],
-      address: {
-        addressStr: this.state.addressStr,
-        postalCode: this.state.postalCode,
-        cityId: this.state.cityId
-      },
-      dateDelivery: this.state.dateDelivery,
-      payType: this.state.payType,
-    };
-
-    this.state.data.map((x, i) =>
-      data.items.push({
-        productId: x.data.id,
-        price: x.data.price,
-        count: x.count
-      }))
-
-
-
-    this.setState({ loading: true });
-    api.post("/orderBuy/add", data)
-      .then((res) => {
-        this.setState({ loading: false });
-        if (res.status === 200) {
-          this.setState({ trackingCode: res.data.data, step: 2 });
-          localStorage.removeItem("selectedItem");
-
-        } else
-          ErrorHanding(NotificationManager, res.data.message);
-      })
-      .catch((error) => {
-        ErrorHanding(NotificationManager, error);
-        this.setState({ loading: false });
-      });
+    
+      this.setState({ loading: true });
+      api.post("/orderBuy/add", data)
+        .then((res) => {
+          this.setState({ loading: false });
+          if (res.status === 200) {
+            // اگر پرداخت آنلاین انتخاب شده
+            if (this.state.payType === 3) {
+              var amount = this.state.data.reduce((acc, x) => acc + (x.count * x.data.price), 0);
+              SentDataToZarinpal(NotificationManager, amount);
+            }
+            else {
+              this.setState({ trackingCode: res.data.data, step: 2 });
+              localStorage.removeItem("selectedItem");
+            }
+          } else
+            ErrorHanding(NotificationManager, res.data.message);
+        })
+        .catch((error) => {
+          ErrorHanding(NotificationManager, error);
+          this.setState({ loading: false });
+        });
+    }
+    */
   }
   showModal() {
 

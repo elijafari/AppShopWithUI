@@ -5,6 +5,7 @@ using AppShop.Business.Service;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.IdentityModel.Tokens.Jwt;
@@ -23,6 +24,8 @@ var mapperConfig = new MapperConfiguration(mc =>
 });
 IMapper mapper = mapperConfig.CreateMapper();
 builder.Services.AddSingleton(mapper);
+
+builder.Services.AddHttpClient();
 
 // 👉 Controller ها
 builder.Services.AddControllers();
@@ -53,7 +56,7 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 });
-
+builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 // 👉 JWT Authentication
 var jwtKey = builder.Configuration["Jwt:Key"];
 var jwtIssuer = builder.Configuration["Jwt:Issuer"];

@@ -19,6 +19,10 @@ namespace AppShop.Business
             .ForMember(dest => dest.AddressStr, opt => opt.MapFrom(src => src.AddressEntity.AddressStr))
             .ForMember(dest => dest.Items, opt => opt.MapFrom(src => src.ItemBuys));
 
+            CreateMap<OrderBuy, OrderBuyPaymentVm>()
+                      .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.UserEntity.Phone))
+                      .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.UserEntity.Email));
+
             CreateMap<ItemBuy, ItemBuyVM>()
         .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.ProductEntity.Name));
 
