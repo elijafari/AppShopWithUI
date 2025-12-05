@@ -20,6 +20,7 @@ namespace AppShop.Business.Entity
         public int PayType { get; set; }
         public int? SendType { get; set; }
         public int AddressId { get; set; }
+        public string? PaymentCode { get; set; }
 
         public virtual List<ItemBuy> ItemBuys { get; set; } = new List<ItemBuy>();
         public virtual ICollection<OrderBuyStatues> OrderBuyStatues { get; set; } = new List<OrderBuyStatues>();

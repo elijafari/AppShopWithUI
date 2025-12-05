@@ -10,7 +10,7 @@ namespace AppShop.Business.DataModel
     public class OrderBuyPaymentVm
     {
         public Guid Id { get; set; }
-        public long TrackingCode { get; set; }
+        public int TotalPrice { get; set; }
         public string Phone { get;  set; }
         public string Email { get;  set; }
     }

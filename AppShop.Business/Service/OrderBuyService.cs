@@ -27,7 +27,7 @@ namespace AppShop.Business.Service
             mapper = _mapper;
             emailService = _emailService;
         }
-        public decimal Add(InOrderBuy input, Guid userId)
+        public KeyValue Add(InOrderBuy input, Guid userId)
         {
             Validtion(input);
             var entity = new OrderBuy();
@@ -61,11 +61,11 @@ namespace AppShop.Business.Service
             db.OrderBuys.Add(entity);
             db.SaveChanges();
 
-            SendEmailToMe(entity.TrackingCode);
+            //SendEmailToMe(entity.TrackingCode);
 
-            SendEmailToUser(entity);
+            //SendEmailToUser(entity);
 
-            return entity.TrackingCode;
+            return new KeyValue(entity.Id,  entity.TrackingCode.ToString());
         }
 
         private void SendEmailToUser(OrderBuy entity)
@@ -122,7 +122,21 @@ namespace AppShop.Business.Service
         }
         public bool ChangeShopStatues(Guid id, ShopStatues shopStatues)
         {
+            if (ChangeShopStatuesAndGet(id, shopStatues) != 0)
+                return true;
+            return false;
+        }
+        public long UpdatePaymentCode(Guid id, string paymentCode)
+        {
+            return ChangeShopStatuesAndGet(id, ShopStatues.Paid, paymentCode);
+        }
+
+        private long ChangeShopStatuesAndGet(Guid id, ShopStatues shopStatues,string paymentCode="")
+        {
             var entity = db.OrderBuys.AsNoTracking().FirstOrDefault(x => x.Id == id);
+
+            if (shopStatues == ShopStatues.Cancel && entity.Statues != ShopStatues.Paid)
+                throw new PersianException("با نوجه به وضعیت جاری سفارش امکان لغو سفارش وجود ندارد");
 
             if (shopStatues == ShopStatues.Cancel && entity.Statues != ShopStatues.Register)
                 throw new PersianException("با نوجه به وضعیت جاری سفارش امکان لغو سفارش وجود ندارد");
@@ -145,9 +159,11 @@ namespace AppShop.Business.Service
             entity.OrderBuyStatues.Add(statues);
 
             entity.Statues = shopStatues;
+            if (shopStatues == ShopStatues.Paid)
+                entity.PaymentCode = paymentCode;
             db.OrderBuys.Update(entity);
             db.SaveChanges();
-            return true;
+            return entity.TrackingCode;
         }
         public List<OrderBuyVm> GetAll(Guid userId, bool isAdmin)
         {

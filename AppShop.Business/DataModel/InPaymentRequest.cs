@@ -8,7 +8,6 @@ namespace AppShop.Business.DataModel
 {
     public class InPaymentRequest
     {
-        public int Amount { get; set; }
         public Guid OrderId { get; set; }
         
     }

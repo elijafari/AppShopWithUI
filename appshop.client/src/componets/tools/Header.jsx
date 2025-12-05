@@ -1,12 +1,8 @@
 import React from "react";
    import { FaLightbulb } from "react-icons/fa";
 import "../../App.css";
-export default class Header extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
+export function Header(props){
+  
 
     return (
 
@@ -36,4 +32,3 @@ export default class Header extends React.Component {
 
     );
   }
-}

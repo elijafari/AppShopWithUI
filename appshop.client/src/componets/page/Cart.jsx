@@ -6,7 +6,6 @@ import { ButtonReturn } from "../tools/ButtonReturn";
 import { ButtonWaith } from "../tools/ButtonWaith";
 import Modal from "react-bootstrap/Modal";
 import { ErrorHanding, toPersianDigits } from "../Utility";
-import { TrackingCode } from "../tools/TrackingCode";
 import { CartEmpty } from "../tools/CartEmpty";
 import { Address } from "./Address";
 import { SentDataToZarinpal } from "../tools/Zarinpal";
@@ -162,13 +161,13 @@ export class Cart extends Component {
     return true;
   }
   AddData() {
-/*تست */
-  // اگر پرداخت آنلاین انتخاب شده
-      if (this.state.payType === 3) {
-        var amount = this.state.data.reduce((acc, x) => acc + (x.count * x.data.price), 0);
-        SentDataToZarinpal(NotificationManager, amount);
-      }
-/*
+    // /*تست */
+    //   // اگر پرداخت آنلاین انتخاب شده
+    //       if (this.state.payType === 3) {
+    //         var amount = this.state.data.reduce((acc, x) => acc + (x.count * x.data.price), 0);
+    //         SentDataToZarinpal(NotificationManager, amount);
+    //       }
+
     if (this.validtionData()) {
       var data = {
         items: [],
@@ -188,7 +187,7 @@ export class Cart extends Component {
           count: x.count
         }))
 
-    
+
       this.setState({ loading: true });
       api.post("/orderBuy/add", data)
         .then((res) => {
@@ -196,13 +195,12 @@ export class Cart extends Component {
           if (res.status === 200) {
             // اگر پرداخت آنلاین انتخاب شده
             if (this.state.payType === 3) {
-              var amount = this.state.data.reduce((acc, x) => acc + (x.count * x.data.price), 0);
-              SentDataToZarinpal(NotificationManager, amount);
+              SentDataToZarinpal(NotificationManager, res.data.data.key);
             }
             else {
-              this.setState({ trackingCode: res.data.data, step: 2 });
-              localStorage.removeItem("selectedItem");
+              window.location.href = "/successOrder/" + res.data.data.title;
             }
+            localStorage.removeItem("selectedItem");
           } else
             ErrorHanding(NotificationManager, res.data.message);
         })
@@ -211,7 +209,7 @@ export class Cart extends Component {
           this.setState({ loading: false });
         });
     }
-    */
+
   }
   showModal() {
 
@@ -415,9 +413,6 @@ export class Cart extends Component {
 
             <NotificationContainer />
           </>
-        )}
-        {this.state.step == 2 && (
-          <TrackingCode trackingCode={this.state.trackingCode} />
         )}
       </div>
     )

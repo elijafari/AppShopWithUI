@@ -15,8 +15,7 @@ import { Orders } from './componets/page/Orders';
 import  OrderDetails  from './componets/page/OrderDetails';
 import AboutUs from './componets/page/AboutUs';
 import ContactUs from './componets/page/ContactUs';
-import Payment from './componets/page/Payment';
-import  PaymentWrapper  from './componets/tools/PaymentWrapper';
+import { TrackingCode } from './componets/tools/TrackingCode';
 
 export default class App extends Component {
   constructor(props) {
@@ -43,8 +42,9 @@ export default class App extends Component {
               <Route path="/forgtoPassword" element={<ForgtoPassword />}/>
               <Route path="/orders" element={<Orders />}/>
               <Route path="/OrderDetails/:id" element={<OrderDetails/>}/>
-              <Route path="/payment/success/:refId" element={<PaymentWrapper isSuccess={true}/>}/>
-              <Route path="/payment/failed" element={<Payment isSuccess={false}/>}/>
+              <Route path="/payment/success/:trackingCode/:refId" element={<TrackingCode type={2}/>}/>
+              <Route path="/payment/failed/:trackingCode" element={<TrackingCode type={3}/>}/>
+              <Route path="/successOrder/:trackingCode" element={<TrackingCode type={1}/>}/>
             </Route>
           </Routes>
 

@@ -15,6 +15,8 @@ namespace AppShop.Business
         [Description("مرجوعی")]
         Reject = 5,
         [Description("لغو شده")]
-        Cancel = 6
+        Cancel = 6,
+   [Description("پرداخت شده")]
+        Paid = 7
     }
 }
