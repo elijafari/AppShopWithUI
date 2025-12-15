@@ -34,7 +34,7 @@ export class Cart extends Component {
         title: "خرید حضوری", value: 1
       },
       { title: "پرداخت در محل", value: 2 },
-      { title: "پرداخت آنلاین", value: 3 }
+     // { title: "پرداخت آنلاین", value: 3 }
       ],
       sendTypies: [{
         title: "تیپاکس", value: 1
