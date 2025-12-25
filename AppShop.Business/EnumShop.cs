@@ -16,7 +16,17 @@ namespace AppShop.Business
         Reject = 5,
         [Description("لغو شده")]
         Cancel = 6,
-   [Description("پرداخت شده")]
+        [Description("پرداخت شده")]
         Paid = 7
+    }
+
+    public enum SendType
+    {
+        [Description("تیباکس")]
+        Register = 1,
+        [Description("باریری")]
+        Confirm = 2,
+        [Description("پیک")]
+        Send = 3,
     }
 }
