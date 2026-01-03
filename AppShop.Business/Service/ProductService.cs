@@ -155,7 +155,7 @@ namespace AppShop.Business.Service
                         query = query.Where(x => x.Price <= param.Filter.ToPrice);
                 }
 
-            result.Data = query.OrderBy(x => x.Code).Skip(result.StartRow).Take(param.Take).Cast<object>().ToList();
+            result.Data = query.OrderByDescending(x=>x.IsActive).ThenBy(x => x.Code).Skip(result.StartRow).Take(param.Take).Cast<object>().ToList();
             result.TotalCount = query.Count();
 
           

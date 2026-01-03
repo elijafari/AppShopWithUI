@@ -135,7 +135,7 @@ namespace AppShop.Business.Service
         {
             var entity = db.OrderBuys.AsNoTracking().FirstOrDefault(x => x.Id == id);
 
-            if (shopStatues == ShopStatues.Cancel && entity.Statues != ShopStatues.Paid)
+            if (shopStatues == ShopStatues.Cancel && entity.Statues == ShopStatues.Paid)
                 throw new PersianException("با نوجه به وضعیت جاری سفارش امکان لغو سفارش وجود ندارد");
 
             if (shopStatues == ShopStatues.Cancel && entity.Statues != ShopStatues.Register)

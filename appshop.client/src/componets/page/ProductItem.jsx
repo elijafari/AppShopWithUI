@@ -5,7 +5,6 @@ import {ProductSeo} from "./ProductSeo";
 export class ProductItem extends React.Component {
   constructor(props) {
     super(props);
-    debugger
     this.state = {
       
       baseURL: import.meta.env.VITE_API_URL,

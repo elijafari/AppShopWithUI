@@ -24,23 +24,21 @@ export class Cart extends Component {
       data: [],
       updateKey: 1,
       updateKeyCity: 1,
+      updateKeySendType: 1,
       days: [],
       cityAll: [],
       province: [],
       city: [],
+      sendTypies: [],
       trackingCode: 10001,
       show: false,
       payTypies: [{
         title: "خرید حضوری", value: 1
       },
       { title: "پرداخت در محل", value: 2 },
-     // { title: "پرداخت آنلاین", value: 3 }
+      { title: "پرداخت آنلاین", value: 3 }
       ],
-      sendTypies: [{
-        title: "تیپاکس", value: 1
-      },
-      { title: "باربری", value: 2 },
-      { title: "پیک", value: 3 }],
+
       loading: false,
       address: []
     };
@@ -73,6 +71,20 @@ export class Cart extends Component {
         updateKeyCity: this.state.updateKeyCity + 1,
       }
     )
+    this.onChangeCity({ value:null});
+  }
+  onChangeCity(e) {
+    var arr = [{ title: "تیپاکس", value: 1 },
+    { title: "باربری", value: 2 },
+    ];
+    if (e.value == "334")
+      arr.push({ title: "پیک", value: 3 });
+
+    this.setState({
+      sendTypies: arr,
+      updateKeySendType: this.state.updateKeySendType + 1,
+      sendType: null
+    });
   }
   getCity() {
     api.get("/City/GetAll").then((response) => {
@@ -315,7 +327,7 @@ export class Cart extends Component {
                     context={this}
                     name="provinceId"
                     title="استان"
-                    className="col-md-4 col-sm-12"
+                    className="col-md-3 col-sm-12"
                     data={this.state.province}
                     onChange={(e) => this.onChangeProvice(e)}
                   />
@@ -323,9 +335,10 @@ export class Cart extends Component {
                     context={this}
                     name="cityId"
                     title="شهر"
-                    className="col-md-4 col-sm-12"
+                    className="col-md-3 col-sm-12"
                     data={this.state.city}
                     updateKey={this.state.updateKeyCity}
+                    onChange={(e) => this.onChangeCity(e)}
                   />
 
                   <TextBox
@@ -333,9 +346,25 @@ export class Cart extends Component {
                     title="کد پستی"
                     name="postalCode"
                     type="number"
-                    className="col-md-4 col-sm-12"
+                    className="col-md-3 col-sm-12"
                   />
 
+                  <DropdownApp
+                    title="نوع ارسال"
+                    className="col-md-3 col-sm-12"
+                    context={this}
+                    name="sendType"
+                    updateKey={this.state.updateKeySendType}
+                    data={this.state.sendTypies}
+                  />
+
+
+                  <div className="alert alert-secondary py-3 px-3 d-flex align-items-start mt-2" role="alert" >
+                    <div className="flex-grow-1 text-end">
+                      <strong>هزینه ارسال</strong>
+                      <div>بر اساس روش انتخابی (تیپاکس، باربری یا پیک) محاسبه می شود و بر عهده مشتری است.</div>
+                    </div>
+                  </div>
                   <TextBox
                     context={this}
                     title="آدرس"
@@ -363,21 +392,6 @@ export class Cart extends Component {
                     name="payType"
                     data={this.state.payTypies}
                   />
-                  <DropdownApp
-                    title="نوع ارسال"
-                    className="col-md-4 col-sm-12"
-                    context={this}
-                    name="sendType"
-                    data={this.state.sendTypies}
-                  />
-
-
-                  <div className="alert alert-secondary py-2 px-3 d-flex align-items-start" role="alert" >
-                    <div className="flex-grow-1 text-end">
-                      <strong>هزینه ارسال</strong>
-                      <div>بر اساس روش انتخابی (تیپاکس، باربری یا پیک) محاسبه می شود و بر عهده مشتری است.</div>
-                    </div>
-                  </div>
 
                 </div>
                 <div className="d-flex justify-content-start p-3">

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System.Text;
+using static System.Net.WebRequestMethods;
 
 namespace AppShop.Server.Controllers
 {
@@ -15,14 +16,20 @@ namespace AppShop.Server.Controllers
     public class PaymentController : ControllerBase
     {
         private readonly HttpClient _httpClient;
-        private readonly AppSettings _appSetting;
         private readonly IOrderBuyService _orderBuyService;
-        private readonly string merchantId = "60cd6860-87fb-487a-a571-0394ea2c5576"; // MerchantID از زرین‌پال
-        private readonly string baseUrl = "https://sandbox.zarinpal.com/";//https://api.zarinpal.com/
+        private readonly string merchantId = "54e3d792-c3a8-4c39-9419-6b0e6cb9ed78"; // MerchantID از زرین‌پال
+                                                                                    
+        private readonly string baseUrl = "https://payment.zarinpal.com/";
+        private string urlFront = "https://electroej.ir/";
+        private string urlBack = "https://electroej.ir/";
+
+        //  private readonly string baseUrl = "https://sandbox.zarinpal.com/";
         public PaymentController(HttpClient httpClient, IOptions<AppSettings> appSetting, IOrderBuyService orderBuyService)
         {
             _httpClient = httpClient;
-            _appSetting = appSetting.Value;
+            ////urlFront = appSetting.Value.UrlFront;
+            ////urlBack = appSetting.Value.UrlBack;
+
             _orderBuyService = orderBuyService;
         }
 
@@ -34,22 +41,22 @@ namespace AppShop.Server.Controllers
             {
                 merchant_id = merchantId,
                 amount = dataOrder.TotalPrice * 10, // مبلغ به ریال
-                callback_url = $"{_appSetting.UrlBack}/api/payment/VerifyPayment?Amount={dataOrder.TotalPrice * 10}&oid={model.OrderId}",
+                callback_url = $"{urlBack}/api/payment/VerifyPayment?Amount={dataOrder.TotalPrice * 10}&oid={model.OrderId}",
                 description = "خرید از فروشگاه الکتروایجی",
                 metadata = new { email = dataOrder.Email, mobile = dataOrder.Phone },
                 order_id = model.OrderId.ToString(),
             };
             //  Console.WriteLine("REQUEST SEND => " + JsonConvert.SerializeObject(data));
-          var content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
+            var content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
 
             var url = baseUrl + "pg/v4/payment/request.json";
             var response = await _httpClient.PostAsync(url, content);
             var result = await response.Content.ReadAsStringAsync();
-           // Console.WriteLine("REQUEST RESULT => " + result);
+            // Console.WriteLine("REQUEST RESULT => " + result);
             return Content(result, "application/json");
         }
         [HttpGet]
-        public async Task<IActionResult> VerifyPayment([FromQuery] long Amount, [FromQuery] string Authority, [FromQuery] string Status, [FromQuery]Guid oId)
+        public async Task<IActionResult> VerifyPayment([FromQuery] long Amount, [FromQuery] string Authority, [FromQuery] string Status, [FromQuery] Guid oId)
         {
 
             if (Status == "OK")
@@ -74,11 +81,11 @@ namespace AppShop.Server.Controllers
                 {
                     // پرداخت موفق            
                     var trackingCode = _orderBuyService.UpdatePaymentCode(oId, result.ref_id.ToString());
-                    return Redirect(Path.Combine(_appSetting.UrlFront, $"payment/success/:{trackingCode}/:{result.ref_id}"));
+                    return Redirect(Path.Combine(urlFront, $"payment/success/:{trackingCode}/:{result.ref_id}"));
                 }
             }
             var trackingCodeOnly = _orderBuyService.GetById(oId).TrackingCode;
-            return Redirect(Path.Combine(_appSetting.UrlFront, $"payment/failed/:{trackingCodeOnly}"));
+            return Redirect(Path.Combine(urlFront, $"payment/failed/:{trackingCodeOnly}"));
         }
     }
 }

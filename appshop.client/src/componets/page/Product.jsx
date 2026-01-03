@@ -31,7 +31,6 @@ export class Product extends React.Component {
     }
 
     onChangeFile(e) {
-        debugger
         const files = Array.from(e.target.files);
         const previews = this.state.filePreviews;
         files.map(file => previews.push(URL.createObjectURL(file)));
@@ -55,7 +54,6 @@ export class Product extends React.Component {
             api.post("product/GetById", { id: this.state.id }).then((response) => {
                 var result = response.data.data;
                 var filePreviews = [];
-                debugger
                 for (let index = 0; index < result.pathImags.length; index++)
                     filePreviews.push(import.meta.env.VITE_API_URL + result.pathImags[index]);
 
@@ -106,8 +104,6 @@ export class Product extends React.Component {
         formData.append("id", this.state.id);
         formData.append("categoryId", this.state.categoryId);
         formData.append("isActive", this.state.isActive);
-
-        debugger
         this.setState({ loading: true });
         api.post(this.isEdit ? "/product/update" : "/product/add", formData, { isMultipart: true })
             .then((res) => {
