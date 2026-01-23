@@ -85,6 +85,7 @@ onEdit(e)
           type="button"
           className="btn btn-warning marginApp"
           onClick={() => this.onEdit(x)}
+           style={{fontFamily:'Vazirmatn'}}
         >
           ویرایش
         </button>

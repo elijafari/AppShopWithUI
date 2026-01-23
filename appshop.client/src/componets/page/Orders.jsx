@@ -118,7 +118,7 @@ export class Orders extends React.Component {
     }
 
     return (
-      <div dir="rtl" className="container mt-4">
+      <div dir="rtl" className="container mt-4 fontApp">
         <h3 className="mb-4 text-center fw-bold">
           {this.state.isAdmin ? "مدیریت سفارشات" : "سفارشات من"}
         </h3>
@@ -158,6 +158,7 @@ export class Orders extends React.Component {
                         <button
                           className="btn btn-sm btn-info"
                           onClick={() => window.location.href = `/OrderDetails/${order.id}`}
+                           style={{fontFamily:'Vazirmatn'}}
                         >
                           مشاهده
                         </button>
@@ -167,12 +168,14 @@ export class Orders extends React.Component {
                           <button
                             className="btn btn-sm btn-warning"
                             onClick={() => this.showModal(order)}
+                             style={{fontFamily:'Vazirmatn'}}
                           > تغییر وضعیت
                           </button>
                         ) : (
                           <button
                             className="btn btn-sm btn-danger"
                              onClick={() => this.showModal(order)}
+                              style={{fontFamily:'Vazirmatn'}}
                           >
                             لغو سفارش
                           </button>

@@ -31,16 +31,17 @@ export class Home extends Component {
 
   componentDidMount() {
     const params = new URLSearchParams(window.location.search);
-    const page = parseInt(params.get("page")) || 1;
+  //const page = parseInt(params.get("page")) || 1;
+    const page =  1;
     this.loadCategory();
     this.loadDate(page);
   }
 
   loadDate(pageNumber) {
     // ✅ تغییر آدرس مرورگر
-    const url = new URL(window.location);
-    url.searchParams.set("page", pageNumber);
-    window.history.pushState({}, "", url);
+    // const url = new URL(window.location);
+    // url.searchParams.set("page", pageNumber);
+    // window.history.pushState({}, "", url);
 
 
     this.setState({
@@ -178,6 +179,7 @@ export class Home extends Component {
               <button
                 onClick={() => this.loadDate(this.state.currentPage)}
                 className="btn btn-success d-flex align-items-center gap-2"
+                style={{fontFamily:'Vazirmatn'}}
               >
                 <FaSearch />
                 جستجو
@@ -199,13 +201,13 @@ export class Home extends Component {
               ))}
             </div>
             <br />
-            <Pageing
+            {/* <Pageing
               updateKey={this.state.updateKey}
               currentPage={currentPage}
               pageCount={pageCount}
               totalCount={totalCount}
               onChangePage={(e) => this.loadDate(e)}
-            />
+            /> */}
           </>
         )}
       </>

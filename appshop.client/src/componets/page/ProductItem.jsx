@@ -41,26 +41,6 @@ export class ProductItem extends React.Component {
     const product = this.props.data;
     return (
       <>
-        <style>
-          {`
-      .product-card {
-        border: 2px solid transparent;
-        transition: border-color 0.3s ease, box-shadow 0.3s ease;
-      }
-      .product-card:hover {
-        border-color: #ffc107; /* زرد */
-        box-shadow: 0 0 15px rgba(255, 193, 7, 0.5);
-      }
-      .product-title {
-        display: -webkit-box;
-        -webkit-line-clamp: 2; /* حداکثر ۲ خط */
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        min-height: 48px; /* برای هم‌تراز شدن همه کارت‌ها */
-      }
-    `}
-        </style>
 
 
 <ProductSeo name={product.name} 
@@ -137,6 +117,7 @@ slug={product.slug} />
                   type="button"
                   className="btn btn-warning w-100 fw-semibold"
                   onClick={() => this.onView(product)}
+                     style={{fontFamily:'Vazirmatn'}}
                 >
                   اطلاعات بیشتر
                 </button>

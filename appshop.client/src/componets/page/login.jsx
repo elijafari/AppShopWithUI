@@ -1,5 +1,6 @@
 import React from "react";
 import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
+import "../../App.css";
 import {
   NotificationContainer,
   NotificationManager,
@@ -66,7 +67,7 @@ export class Login extends React.Component {
                   style={{ borderRadius: "1.2rem" }}
                 >
                   <div className="card-body p-5">
-                    <h3 className="mb-4 text-center fw-bold text-warning">
+                    <h3 className="mb-4 text-center fw-bold text-warning fontApp">
                       ورود به سیستم <FaLock className="mb-1" />
                     </h3>
 
@@ -114,6 +115,7 @@ export class Login extends React.Component {
                       className="btn btn-warning btn-lg w-100 mb-3"
                       type="submit"
                       onClick={() => this.login()}
+                       style={{fontFamily:'Vazirmatn'}}
                     >
                       ورود
                     </button>
@@ -122,6 +124,7 @@ export class Login extends React.Component {
                     <button
                       className="btn btn-outline-warning btn-lg w-100"
                       onClick={() => this.createUser()}
+                       style={{fontFamily:'Vazirmatn'}}
                     >
                       ایجاد حساب کاربری جدید
                     </button>

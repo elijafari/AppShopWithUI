@@ -94,7 +94,9 @@ class OrderDetails extends React.Component {
                 </div>
 
                 <div className="text-center mt-4">
-                    <button className="btn btn-primary me-2" onClick={() => window.location.href = "/orders"}>
+                    <button className="btn btn-primary me-2"
+                        onClick={() => window.location.href = "/orders"}
+                        style={{ fontFamily: 'Vazirmatn' }}>
                         بازگشت به سفارش‌ها
                     </button>
                 </div>

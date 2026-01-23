@@ -1,3 +1,44 @@
+
+
+
+@font-face {
+  font-family: 'Vazirmatn';
+  src: url('/fonts/Vazirmatn.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+
+@font-face {
+  font-family: 'BTir';
+  src:   url('/fonts/BTir.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+
+@font-face {
+  font-family: 'BYekan';
+  src:  url('/fonts/BYekan.ttf') format('truetype') ;
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+
+@font-face {
+  font-family: 'BZar';
+  src:   url('/fonts/BZar.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 .App {
   text-align: center;
 }
@@ -6,15 +47,34 @@
   height: 40vmin;
   pointer-events: none;
 }
-@font-face {
-  font-family: 'Vazirmatn';
-  src: url('/fonts/Vazirmatn.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
 
 body {
   font-family: 'Vazirmatn', sans-serif;
+}
+label {
+  font-family: 'Vazirmatn', sans-serif;
+}
+p {
+  font-family: 'Vazirmatn', sans-serif;
+}
+span {
+  font-family: 'Vazirmatn', sans-serif;
+}
+th {
+  font-family: 'Vazirmatn', sans-serif;
+}
+td {
+  font-family: 'Vazirmatn', sans-serif;
+}
+a {
+  font-family: 'Vazirmatn', sans-serif;
+}
+.fontApp
+ {
+  font-family: 'Vazirmatn', sans-serif;
+}
+.alert{
+   font-family: 'Vazirmatn', sans-serif;
 }
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
@@ -41,34 +101,38 @@ body {
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
 }
-.counterLabel
-{
+
+.counterLabel {
   font-size: medium;
   margin: 10px;
 }
-.shoppingCard{
+
+.shoppingCard {
   margin: 10px;
 }
-.shopIcon{
+
+.shopIcon {
   font-size: xx-large;
 }
-.marginApp
-{
-  margin-left:5px;
-  margin-right:5px;
+
+.marginApp {
+  margin-left: 5px;
+  margin-right: 5px;
 }
-.userInfo
-{
+
+.userInfo {
   direction: ltr;
 }
-.modal-body
-{
+
+.modal-body {
   direction: rtl;
 }
+
 .formInfo {
   width: 75%;
   background-color: rgb(198 233 186);
@@ -76,50 +140,55 @@ body {
   margin-left: auto;
   margin-right: auto;
 }
-.rowSum
-{
+
+.rowSum {
   background-color: mediumseagreen;
 }
-.borderPaging
-{
+
+.borderPaging {
   border-top: groove;
 }
-.page-link-App
-{
-  cursor:pointer
+
+.page-link-App {
+  cursor: pointer
 }
-.iconRefresh
-{
+
+.iconRefresh {
   position: absolute;
-  left: 10px ;
+  left: 10px;
 }
-.colorMenu
-{
-    background-color:lightgrey;
+
+.colorMenu {
+  background-color: lightgrey;
 }
+
 .nav-link {
-    color: black !important;
-     font-size: larger !important;
-    font-weight: bold !important;
+  color: black !important;
+  font-size: larger !important;
+  font-weight: bold !important;
 }
+
 .leftBtn {
-    left: 22px;
-    position: absolute;
+  left: 22px;
+  position: absolute;
 }
+
 .animate-card {
-    animation: fadeInUp 0.7s ease-in-out;
+  animation: fadeInUp 0.7s ease-in-out;
 }
 
 @keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(40px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
+
 .custom-switch {
   display: flex;
   align-items: center;
@@ -136,7 +205,7 @@ body {
   border-radius: 50px;
   transition: 0.4s;
   cursor: pointer;
-   -webkit-appearance: none;
+  -webkit-appearance: none;
 }
 
 .custom-switch input:checked {
@@ -163,14 +232,18 @@ body {
   font-size: 1rem;
   cursor: pointer;
 }
-.card-header{
+
+.card-header {
   background-color: #ffdf83 !important;
   margin-top: 1px !important;
+  font-family: 'Vazirmatn', sans-serif;
 }
-.font-size{
+
+.font-size {
   font-size: 10px;
-  font-family:'Vazirmatn' !important;
+font-family: 'Vazirmatn', sans-serif;
 }
+
 /* لینک‌های منو افکت دار */
 .custom-link {
   color: black !important;
@@ -199,6 +272,7 @@ body {
 .custom-link:hover::after {
   width: 100%;
 }
+
 header h4 {
   letter-spacing: 1px;
 }
@@ -212,13 +286,16 @@ header p {
   header h4 {
     font-size: 16px;
   }
+
   header p {
     font-size: 12px;
   }
 }
+
 @media (max-width: 576px) {
   table.table thead {
-    display: none; /* هدر حذف میشه در موبایل */
+    display: none;
+    /* هدر حذف میشه در موبایل */
   }
 
   table.table tr {
@@ -229,7 +306,7 @@ header p {
     padding: 8px;
   }
 
-  table.table td, 
+  table.table td,
   table.table th {
     display: block;
     text-align: right;
@@ -239,7 +316,8 @@ header p {
   }
 
   table.table td::before {
-    content: attr(data-label); /* متن هدر میاد */
+    content: attr(data-label);
+    /* متن هدر میاد */
     font-weight: bold;
     margin-left: 5px;
     color: #444;
@@ -247,6 +325,7 @@ header p {
     min-width: 70px;
   }
 }
+
 .title-header {
   display: flex;
   justify-content: space-between;
@@ -257,17 +336,19 @@ header p {
   color: #333;
   text-align: right;
   direction: rtl;
-  font-family: 'Vazirmatn' , sans-serif;
+  font-family: 'Vazirmatn', sans-serif;
 }
 
 .keyword-tag {
   display: inline-block;
   color: #8f8f86;
+  font-family:'Vazirmatn';
   font-size: 0.85rem;
   padding: 2px 8px;
   border-radius: 12px;
   margin: 2px;
 }
+
 .float-btn {
   position: fixed;
   right: 20px;
@@ -295,6 +376,7 @@ header p {
 .tooltip-app {
   position: relative;
 }
+
 .tooltip-app::after {
   content: attr(data-tooltip);
   position: absolute;
@@ -327,7 +409,7 @@ header p {
 
   opacity: 0;
   visibility: hidden;
-  transition: 0.2s ease; 
+  transition: 0.2s ease;
 }
 
 .tooltip-app:hover::after,
@@ -335,6 +417,7 @@ header p {
   opacity: 1;
   visibility: visible;
 }
+
 /* تولتیپ کوچک و مینیمال */
 .float-btn::after {
   content: attr(data-tooltip);
@@ -360,7 +443,8 @@ header p {
   right: 58px;
   top: 50%;
   transform: translateY(-50%);
-  border: 5px solid transparent;   /* کوچیک‌تر */
+  border: 5px solid transparent;
+  /* کوچیک‌تر */
   border-left-color: #222;
   opacity: 0;
   transition: 0.25s ease;
@@ -371,3 +455,22 @@ header p {
   opacity: 1;
 }
 
+.product-card {
+  border: 2px solid transparent;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-card:hover {
+  border-color: #ffc107;
+  box-shadow: 0 0 15px rgba(255, 193, 7, 0.5);
+}
+
+.product-title {
+  font-family: 'Vazirmatn', sans-serif;
+  display: '-webkit-box';
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-height: 48px;
+}

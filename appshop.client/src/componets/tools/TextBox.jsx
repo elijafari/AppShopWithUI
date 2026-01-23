@@ -51,7 +51,7 @@ export class TextBox extends React.Component {
                 : ""
             }
             maxLength={this.props.maxLength}
-            style={{textAlign:this.props.isLeft? "left":"right"}}
+            style={{textAlign:this.props.isLeft? "left":"right" ,fontFamily:'Vazirmatn'}}
             onKeyUp={(e) => this.handleOnKeyUp(e)}
             key={this.props.name + this.props.updateKey}
           />

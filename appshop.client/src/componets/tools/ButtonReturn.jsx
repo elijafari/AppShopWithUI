@@ -6,7 +6,7 @@ export function ButtonReturn() {
   };
   return (
     <button
-      onClick={() => onClick()} className="btn btn-light leftBtn mt-2">
+      onClick={() => onClick()} className="btn btn-light leftBtn mt-2" style={{fontFamily:'Vazirmatn'}}>
       بازگشت
     </button>
   );

@@ -32,6 +32,7 @@ export class NoAccess extends Component {
         <button
           className="btn btn-outline-warning w-100 shadow-sm"
           onClick={() => (window.location.href = "/")}
+           style={{fontFamily:'Vazirmatn'}}
         >
           بازگشت به صفحه اصلی
         </button>
@@ -39,6 +40,7 @@ export class NoAccess extends Component {
         <button
           className="btn btn-warning w-100 shadow-sm"
           onClick={() => (window.location.href = "/login")}
+           style={{fontFamily:'Vazirmatn'}}
         >
           ورود به سیستم
         </button>

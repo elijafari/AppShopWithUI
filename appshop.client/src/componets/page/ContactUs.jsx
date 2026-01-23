@@ -1,6 +1,7 @@
 import React from "react";
 import { FaEnvelope, FaPhone, FaMapMarkerAlt } from "react-icons/fa";
 import api from "../tools/axiosConfig";
+import "../../App.css";
 import {
   NotificationContainer,
   NotificationManager,
@@ -47,7 +48,7 @@ export default class ContactUs extends React.Component {
   render() {
     return (
       <>      
-      <div className="container py-5">
+      <div className="container py-5 fontApp" >
         <h1 className="text-center mb-5">تماس با ما</h1>
 
         <div className="row g-4">

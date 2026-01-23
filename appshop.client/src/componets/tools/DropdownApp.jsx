@@ -1,4 +1,5 @@
 import "bootstrap/dist/css/bootstrap.rtl.min.css";
+import "../../App.css";
 export function DropdownApp(props) {
   const handleChange = (e) => {
     props.context.setState({ [props.name]: parseInt(e.target.value) });
@@ -10,7 +11,9 @@ export function DropdownApp(props) {
     <div className={props.className}>
       <label className="form-label mt-2">{props.title}</label>
       <select
-        className="form-select" aria-label=".form-select-sm example"
+        className="form-select"
+        style={{fontFamily:'Vazirmatn'}}
+         aria-label=".form-select-sm example"
         onChange={(e) => handleChange(e)}
         value={props.context.state[props.name]}
         key={props.updateKey}

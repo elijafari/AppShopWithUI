@@ -5,6 +5,7 @@ export  function ButtonWaith(props) {
               onClick={()=>props.onClick()}
           className={props.className ==null ?"btn btn-success mt-2 w-10":props.className}
                         disabled={props.loading}
+                           style={{fontFamily:'Vazirmatn'}}
             >
               {props.loading ? (
                 <>

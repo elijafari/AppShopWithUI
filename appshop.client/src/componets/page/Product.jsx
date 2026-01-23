@@ -234,6 +234,7 @@ export class Product extends React.Component {
                                         <button
                                             className="btn btn-outline-danger btn-sm"
                                             onClick={() => this.removeImage(i)}
+                                             style={{fontFamily:'Vazirmatn'}}
                                         >
                                             حذف
                                         </button>

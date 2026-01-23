@@ -52,10 +52,10 @@ export function TrackingCode(props) {
 
             {/* دکمه‌ها */}
             <div className="d-flex justify-content-center gap-3 mt-4">
-              <button className="btn btn-outline-primary" onClick={() => window.location.href = "/"}   >
+              <button className="btn btn-outline-primary" onClick={() => window.location.href = "/"}   style={{fontFamily:'Vazirmatn'}} >
                 بازگشت به صفحه اصلی
               </button>
-              <button className="btn btn-success" onClick={() => window.location.href = "/orders"}>
+              <button className="btn btn-success" onClick={() => window.location.href = "/orders"} style={{fontFamily:'Vazirmatn'}}>
                 مشاهده سفارش‌ها
               </button>
             </div>

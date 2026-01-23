@@ -8,6 +8,7 @@ import {
 import { TextBox } from "../tools/TextBox";
 import { ButtonWaith } from "../tools/ButtonWaith";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import "../../App.css";
 
 export class ForgtoPassword extends React.Component {
   constructor(props) {
@@ -100,7 +101,7 @@ export class ForgtoPassword extends React.Component {
   render() {
     return (
       <>
-        <div className="container mt-5" style={{ maxWidth: "500px" }}>
+        <div className="container mt-5 fontApp" style={{ maxWidth: "500px" }}>
           <h3 className="text-center mb-4">فراموشی رمز عبور</h3>
 
 

@@ -60,11 +60,11 @@ export class Menu extends Component {
   render() {
     return (
       <>
-<div className="sticky-top bg-light shadow-sm">
+<div className="sticky-top bg-light shadow-sm"style={{     borderRadius: "10px"}}>
   <div className="d-flex justify-content-between align-items-center px-3 py-2">
     
     {/* سمت چپ - ساعت */}
-    <div className="d-flex align-items-center">
+    <div className="d-flex align-items-center" >
       <Watch />
     </div>
 
@@ -126,6 +126,7 @@ export class Menu extends Component {
             backgroundColor: "#FFD700", // رنگ طلایی
             fontFamily: "Vazirmatn",
             fontSize: "12px",
+                 borderRadius: "10px"
           }}
         >
           {/* دکمه موبایل */}

@@ -21,12 +21,12 @@ root.render(
       </main>
 
       {/* فوتر */}
-      <footer className="bg-dark text-white pt-5 pb-4 mt-5">
+      <footer className="bg-dark text-white pt-5 pb-4 mt-5 fontApp" style={{     borderRadius: "10px"}}>
         <div className="container">
           <div className="row">
 
             {/* لینک‌ها */}
-            <div className="col-md-10 mb-4 mb-md-0">
+            <div className="col-md-10 mb-4 mb-md-0" >
               <h5 className="fw-bold mb-3">لینک‌های سریع</h5>
               <ul className="nav flex-column">
                 <li className="nav-item mb-2">

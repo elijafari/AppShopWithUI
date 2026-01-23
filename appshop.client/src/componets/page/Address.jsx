@@ -19,6 +19,7 @@ export function Address(props) {
                 <button
                   className="btn btn-sm btn-info"
                   onClick={() =>props.selectAddress(x)}
+                   style={{fontFamily:'Vazirmatn'}}
                 >
                   انتخاب
                 </button>

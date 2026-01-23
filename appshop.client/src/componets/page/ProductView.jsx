@@ -78,7 +78,7 @@ export class ProductView extends React.Component {
 {this.state.filePreviews.length > 1 && (
   <button
     className="btn btn-outline-secondary position-absolute shadow-sm rounded-circle"
-    style={{ left: "22px", top: "50%", transform: "translateY(-50%)" }}
+    style={{ left: "22px", top: "50%", transform: "translateY(-50%)"  ,fontFamily:'Vazirmatn'}}
     onClick={() =>
       this.setState((prev) => ({
         currentIndex:
@@ -130,7 +130,9 @@ export class ProductView extends React.Component {
 
           </div>
           {this.state.isActive ? (
-            <button onClick={() => this.shopItem()} className="btn btn-success">
+            <button onClick={() => this.shopItem()} className="btn btn-success"
+            style={{fontFamily:'Vazirmatn'}}
+            >
               افزودن به سبد خرید
             </button>
           ) : (

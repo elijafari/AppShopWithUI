@@ -1,4 +1,5 @@
 import React from "react";
+import "../../App.css";
 export default class Watch extends React.Component {
   constructor(props) {
     super(props);
@@ -28,7 +29,7 @@ export default class Watch extends React.Component {
     return (
           <>
           {/* تاریخ و ساعت */}
-        <div className="col-auto small text-black-200 mt-2">
+        <div className="col-auto small text-black-200 mt-2 fontApp">
             ⏰ {timeStr} | 📅 {dateStr}
           </div>
           </>

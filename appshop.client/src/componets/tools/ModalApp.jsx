@@ -16,7 +16,7 @@ export function ModalApp(props) {
 
   return (
     <>
-       <button type="button" className={props.className} onClick={handleShow}>
+       <button type="button" className={props.className} onClick={handleShow}  style={{fontFamily:'Vazirmatn'}}>
         {props.btnTitle}
         </button>   
 
