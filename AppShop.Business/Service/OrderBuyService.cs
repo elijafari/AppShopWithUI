@@ -61,9 +61,9 @@ namespace AppShop.Business.Service
             db.OrderBuys.Add(entity);
             db.SaveChanges();
 
-            //SendEmailToMe(entity.TrackingCode);
+            SendEmailToMe(entity.TrackingCode);
 
-            //SendEmailToUser(entity);
+            SendEmailToUser(entity);
 
             return new KeyValue(entity.Id,  entity.TrackingCode.ToString());
         }
@@ -83,8 +83,11 @@ namespace AppShop.Business.Service
 
         private void SendEmailToMe(long trackingCode)
         {
-            var listTo = new List<string>();
-            listTo.Add("e.jafari64@gmail.com");
+            var listTo = new List<string>
+            {
+                "e.jafari64@gmail.com",
+                "ehsanjaafari12@gmail.com"
+            };
             emailService.SendEmailAsync(listTo, "ثبت سفارش", EmailMessege.OrderMessage(trackingCode));
         }
 

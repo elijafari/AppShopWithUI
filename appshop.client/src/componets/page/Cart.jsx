@@ -35,8 +35,7 @@ export class Cart extends Component {
       payTypies: [{
         title: "خرید حضوری", value: 1
       },
-      { title: "پرداخت در محل", value: 2 },
-      { title: "پرداخت آنلاین", value: 3 }
+      { title: "پرداخت آنلاین", value: 2 }
       ],
 
       loading: false,
@@ -175,7 +174,7 @@ export class Cart extends Component {
   AddData() {
     // /*تست */
     //   // اگر پرداخت آنلاین انتخاب شده
-    //       if (this.state.payType === 3) {
+    //       if (this.state.payType === 2) {
     //         var amount = this.state.data.reduce((acc, x) => acc + (x.count * x.data.price), 0);
     //         SentDataToZarinpal(NotificationManager, amount);
     //       }
@@ -206,7 +205,7 @@ export class Cart extends Component {
           this.setState({ loading: false });
           if (res.status === 200) {
             // اگر پرداخت آنلاین انتخاب شده
-            if (this.state.payType === 3) {
+            if (this.state.payType === 2) {
               SentDataToZarinpal(NotificationManager, res.data.data.key);
             }
             else {
@@ -249,6 +248,7 @@ export class Cart extends Component {
         updateKeyCity: this.state.updateKeyCity + 1,
         show: false
       });
+      this.  onChangeCity({value:e.provinceId});
   }
   render() {
     return (
