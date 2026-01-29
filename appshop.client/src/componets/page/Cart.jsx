@@ -169,6 +169,10 @@ export class Cart extends Component {
       NotificationManager.error("نوع پرداخت انتخاب نشده است", "خطا");
       return;
     }
+   if (this.state.sendType == null) {
+      NotificationManager.error("نوع ارسال انتخاب نشده است", "خطا");
+      return;
+    }
     return true;
   }
   AddData() {

@@ -4,6 +4,7 @@ using AppShop.Business.DataModel;
 using AppShop.Business.IService;
 using AppShop.Business.Service;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Net;
 namespace AppShop.Server.Helper
 {
@@ -65,7 +66,7 @@ namespace AppShop.Server.Helper
             catch (Exception ex) // سایر خطاها
             {
 
-                logService.Add(ex.Message);
+                logService.Add(JsonConvert.SerializeObject( ex ,new JsonSerializerSettings() { ReferenceLoopHandling=ReferenceLoopHandling.Ignore});
                 return StatusCode((int)HttpStatusCode.InternalServerError, new ApiResponse
                 {
                     Success = false,
