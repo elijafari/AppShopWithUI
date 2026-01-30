@@ -43,17 +43,28 @@ namespace AppShop.Business.Service
             message.Subject = subject;
             message.Body = new TextPart("html") { Text = body };
 
-            using var client = new SmtpClient();
-            await client.ConnectAsync(Server, Port, UseSSL);
+             var client = new SmtpClient();
 
-            await client.AuthenticateAsync(
-                _config["SmtpSettings:Username"],
-                _config["SmtpSettings:Password"]
-            );
+            try
+            {
+                await client.ConnectAsync(Server, Port, UseSSL);
 
-            await client.SendAsync(message);
-            await client.DisconnectAsync(true);
+                await client.AuthenticateAsync(
+                    _config["SmtpSettings:Username"],
+                    _config["SmtpSettings:Password"]
+                );
+
+                await client.SendAsync(message);
+                await client.DisconnectAsync(true);
             return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.InnerException?.Message);
+                return false;
+            }
+         
         }
     }
 

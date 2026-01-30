@@ -50,7 +50,7 @@ class OrderDetails extends React.Component {
         }
 
         return (
-            <div dir="rtl" className="container mt-4">
+            <div dir="rtl" className="container mt-4"  style={{ fontFamily: 'Vazirmatn' }}>
                 <h3 className="mb-4 text-center fw-bold">جزئیات سفارش</h3>
 
                 <div className="mb-3 text-center">
@@ -68,7 +68,7 @@ class OrderDetails extends React.Component {
                     <table className="table table-bordered table-striped text-center align-middle">
                         <thead className="table-dark">
                             <tr>
-                                <th>#</th>
+                                <th>ردیف</th>
                                 <th>نام کالا</th>
                                 <th>تعداد</th>
                                 <th>قیمت واحد (تومان)</th>
@@ -78,16 +78,16 @@ class OrderDetails extends React.Component {
                         <tbody>
                             {order.items.map((item, index) => (
                                 <tr key={index}>
-                                    <td>{index + 1}</td>
-                                    <td>{item.name}</td>
-                                    <td>{item.count}</td>
-                                    <td>{item.price.toLocaleString()}</td>
-                                    <td>{(item.count * item.price).toLocaleString()}</td>
+                                    <td data-label="ردیف">{index + 1}</td>
+                                    <td data-label="نام">{item.name}</td>
+                                    <td data-label="تعداد">{item.count}</td>
+                                    <td data-label="فیمت واحد (تومان)">{item.price.toLocaleString()}</td>
+                                    <td data-label="جمع (تومان)">{(item.count * item.price).toLocaleString()}</td>
                                 </tr>
                             ))}
                             <tr>
                                 <td colSpan={4} className="fw-bold">جمع کل</td>
-                                <td className="fw-bold">{order.items.reduce((sum, x) => sum + x.count * x.price, 0).toLocaleString()}</td>
+                                <td className="fw-bold">{order.items.reduce((sum, x) => sum + x.count * x.price, 0).toLocaleString() +"تومان"}</td>
                             </tr>
                         </tbody>
                     </table>

@@ -46,7 +46,5 @@ namespace AppShop.Server.Controllers
         public IActionResult CheckCode(InUserForgetCode input) => Response(() => service.CheckCode(input));
         [HttpPost]
         public IActionResult ResetPassword(InUserNewPassword input) => Response(() => service.ResetPassword(input));
-        [HttpGet]
-        public Task<IActionResult> SendEmailAsync() => ResponseAsync(async () => await emailService.SendEmailAsync("e.jafari64@gmail.com", "test app", "elo elo elo"));
-    }
+         }
 }

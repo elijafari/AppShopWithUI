@@ -193,6 +193,7 @@ export class Cart extends Component {
         },
         dateDelivery: this.state.dateDelivery,
         payType: this.state.payType,
+        sendType:this.state.sendType
       };
 
       this.state.data.map((x, i) =>
@@ -227,7 +228,6 @@ export class Cart extends Component {
 
   }
   showModal() {
-
     api.get("/Address/GetByUserId").then((response) => {
       this.setState({ address: response.data.data, show: true });
     })

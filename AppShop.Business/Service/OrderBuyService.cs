@@ -33,6 +33,7 @@ namespace AppShop.Business.Service
             var entity = new OrderBuy();
             entity.Id = Guid.NewGuid();
             entity.PayType = input.PayType;
+            entity.SendType = input.SendType;
             entity.DateDelivery = DateTime.Now.AddDays(input.DateDelivery);
             entity.UserId = userId;
             entity.DateOrder = DateTime.Now;
@@ -120,6 +121,10 @@ namespace AppShop.Business.Service
             if (input.PayType == 0)
             {
                 throw new PersianException("نوع پرداخت انتخاب نشده است");
+            }
+            if (input.SendType==null)
+            {
+                throw new PersianException("نوع ارسال انتخاب نشده است");
             }
 
         }

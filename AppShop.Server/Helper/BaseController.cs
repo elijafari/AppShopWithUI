@@ -66,7 +66,7 @@ namespace AppShop.Server.Helper
             catch (Exception ex) // سایر خطاها
             {
 
-                logService.Add(JsonConvert.SerializeObject( ex ,new JsonSerializerSettings() { ReferenceLoopHandling=ReferenceLoopHandling.Ignore});
+                logService.Add(JsonConvert.SerializeObject( ex ,new JsonSerializerSettings() { ReferenceLoopHandling=ReferenceLoopHandling.Ignore}));
                 return StatusCode((int)HttpStatusCode.InternalServerError, new ApiResponse
                 {
                     Success = false,
