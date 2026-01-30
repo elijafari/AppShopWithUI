@@ -147,13 +147,13 @@ export class Orders extends React.Component {
                 <tbody>
                   {this.state.orders.map((order, index) => (
                     <tr key={index}>
-                      {this.state.isAdmin && <td>{order.fullName}</td>}
-                      {this.state.isAdmin && <td>{order.phone}</td>}
-                      <td>{order.trackingCode}</td>
-                      <td>{order.solorDateOrder}</td>
-                      <td>{order.solorDateDelivery}</td>
-                      <td>{order.totalPrice.toLocaleString()}</td>
-                      <td>{order.strStatues}</td>
+                      {this.state.isAdmin && <td data-label="نام و نام خانوادگی">{order.fullName}</td>}
+                      {this.state.isAdmin && <td data-label="شماره همراه">{order.phone}</td>}
+                      <td data-label="کد پیگیری">{order.trackingCode}</td>
+                      <td data-label="تاریخ سفارش">{order.solorDateOrder}</td>
+                      <td data-label="تاریخ تحویل">{order.solorDateDelivery}</td>
+                      <td data-label="مبلغ (تومان)">{order.totalPrice.toLocaleString()}</td>
+                      <td data-label="وضعیت">{order.strStatues}</td>
                       <td>
                         <button
                           className="btn btn-sm btn-info"

@@ -81,7 +81,7 @@ class OrderDetails extends React.Component {
                                     <td data-label="ردیف">{index + 1}</td>
                                     <td data-label="نام">{item.name}</td>
                                     <td data-label="تعداد">{item.count}</td>
-                                    <td data-label="فیمت واحد (تومان)">{item.price.toLocaleString()}</td>
+                                    <td data-label="قیمت واحد (تومان)">{item.price.toLocaleString()}</td>
                                     <td data-label="جمع (تومان)">{(item.count * item.price).toLocaleString()}</td>
                                 </tr>
                             ))}
