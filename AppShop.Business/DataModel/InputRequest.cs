@@ -15,6 +15,7 @@ namespace AppShop.Business.DataModel
     {
         public int PageNumber { get; set; }
         public Filter Filter { get; set; }
+        public Sort? Sort { get; set; }
 
     }
     public class Filter

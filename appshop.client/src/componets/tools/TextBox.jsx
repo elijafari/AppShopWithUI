@@ -9,13 +9,13 @@ export class TextBox extends React.Component {
   }
   handleInputChange = (e) => {
     var value=e.target.value;
-    if(this.props.type=="number"  )
-      value=toEnglishDigits(e.target.value);
+    // if(this.props.type=="number"  )
+    //   value=toEnglishDigits(e.target.value);
 
 
-    // فقط عدد
+   // فقط عدد
         if (this.props.separator)
-  value = Number(value.replace(/\D/g, "")).toLocaleString("fa-IR");
+  value =value.toLocaleString("fa-IR");
 
     this.props.context.setState({ [e.target.name]: value });
   };

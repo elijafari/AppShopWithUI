@@ -9,7 +9,6 @@ import { DropdownApp } from "../tools/DropdownApp";
 import { FaSearch } from "react-icons/fa";
 import api from "../tools/axiosConfig";
 import { Helmet } from "react-helmet";
-
 export class Home extends Component {
   constructor(props) {
     super(props);
@@ -17,6 +16,10 @@ export class Home extends Component {
     this.state = {
       data: [],
       cat: [],
+      sort: [
+        { title: "ارزانترین", value: 1 },
+        { title: "گرانترین", value: 2 }
+      ],
       updateKey: 1,
       loading: false,
       pageCount: 0,
@@ -26,13 +29,14 @@ export class Home extends Component {
       toPrice: "",
       productName: "",
       categoryId: 0,
+      showFilter:false,
     };
   }
 
   componentDidMount() {
     const params = new URLSearchParams(window.location.search);
-  //const page = parseInt(params.get("page")) || 1;
-    const page =  1;
+    //const page = parseInt(params.get("page")) || 1;
+    const page = 1;
     this.loadCategory();
     this.loadDate(page);
   }
@@ -55,7 +59,7 @@ export class Home extends Component {
       categoryId: this.state.categoryId,
     };
     api
-      .post("/product/GetAll", { filter: filter, pageNumber: pageNumber })
+      .post("/product/GetAll", { filter: filter, pageNumber: pageNumber, sort: this.state.sortId })
       .then((response) => {
         this.setState({
           data: response.data.data.data,
@@ -141,75 +145,104 @@ export class Home extends Component {
         </Helmet>
 
         {/* 🟢 فیلترها */}
-        <div className="card mb-3">
-          <p className="card-header">فیلتر ها</p>
-          <div className="card-body">
-            <div className="row">
-              <TextBox
-                context={this}
-                title="نام کالا"
-                name="productName"
-                className="col-md-3 col-sm-12"
-              />
-              <DropdownApp
-                context={this}
-                name="categoryId"
-                title="گروه کالا"
-                className="col-md-3 col-sm-12"
-                data={this.state.cat}
-              />
-              <TextBox
-                context={this}
-                title="از قیمت"
-                name="fromPrice"
-                className="col-md-3 col-sm-12"
-                isLeft={true}
-                separator={true}
-              />
-              <TextBox
-                context={this}
-                title="تا قیمت"
-                name="toPrice"
-                className="col-md-3 col-sm-12"
-                isLeft={true}
-                separator={true}
-              />
-            </div>
-            <div className="d-flex justify-content mt-3">
-              <button
-                onClick={() => this.loadDate(this.state.currentPage)}
-                className="btn btn-success d-flex align-items-center gap-2"
-                style={{fontFamily:'Vazirmatn'}}
-              >
-                <FaSearch />
-                جستجو
-              </button>
+        <div className="accordion mb-3" id="filterAccordion">
+          <div className="accordion-item">
+            <h2 className="accordion-header">
+            <button
+  className="accordion-button card-header"
+  onClick={() => this.setState({ showFilter: !this.state.showFilter })}
+>
+جستجو کالا
+</button>
+   </h2>
+<div className={`accordion-collapse collapse ${this.state.showFilter ? 'show' : ''}`}>
+              <div className="accordion-body">
+                <div className="row g-3">
+
+                  <TextBox
+                    context={this}
+                    title="نام کالا"
+                    name="productName"
+                    className="col-md-6 col-sm-12"
+                  />
+
+                  <DropdownApp
+                    context={this}
+                    name="categoryId"
+                    title="گروه کالا"
+                    className="col-md-6 col-sm-12"
+                    data={this.state.cat}
+                  />
+
+                  <TextBox
+                    context={this}
+                    title="از قیمت"
+                    name="fromPrice"
+                    className="col-md-6 col-sm-12"
+                    isLeft={true}
+                    separator={true}
+                    maxLength={15}
+                  />
+
+                  <TextBox
+                    context={this}
+                    title="تا قیمت"
+                    name="toPrice"
+                    className="col-md-6 col-sm-12"
+                    isLeft={true}
+                    separator={true}
+                    maxLength={15}
+                  />
+
+                  <DropdownApp
+                    context={this}
+                    name="sortId"
+                    title="ترتیب نمایش"
+                    className="col-md-6 col-sm-12"
+                    data={this.state.sort}
+                  />
+
+                  {/* دکمه جستجو */}
+                  <div className="col-md-6 col-sm-12 d-flex align-items-end">
+                    <button
+                      onClick={() => this.loadDate(this.state.currentPage)}
+                      className="btn btn-success d-flex align-items-center gap-2"
+                      style={{ fontFamily: 'Vazirmatn' }}
+                    >
+                      <FaSearch />
+                      جستجو
+                    </button>
+                  </div>
+
+                </div>
+              </div>
             </div>
           </div>
         </div>
-        {!this.state.loading ? (
-          <Loading />
-        ) : (
-          <>
-            <div className="row" key={this.state.updateKey}>
-              {data.map((x) => (
-                <ProductItem
-                  data={x}
-                  key={x.id}
-                  shopItem={(e1, e2) => this.shopItem(e1, e2)}
-                />
-              ))}
-            </div>
-            <br />
-            {/* <Pageing
+      {!this.state.loading ? (
+        <Loading />
+      ) : (
+        <>
+          <div className="row" key={this.state.updateKey}>
+            {data.map((x) => (
+              <ProductItem
+                data={x}
+                key={x.id}
+                shopItem={(e1, e2) => this.shopItem(e1, e2)}
+              />
+            ))}
+          </div>
+          <br />
+          {/* <Pageing
               updateKey={this.state.updateKey}
               currentPage={currentPage}
               pageCount={pageCount}
               totalCount={totalCount}
               onChangePage={(e) => this.loadDate(e)}
             /> */}
-          </>
-        )}
+        </>
+      )
+  }
       </>
     );
   }

@@ -154,9 +154,17 @@ namespace AppShop.Business.Service
                     if (param.Filter.ToPrice != 0)
                         query = query.Where(x => x.Price <= param.Filter.ToPrice);
                 }
+            if (param.Sort == Sort.Asc)
+                query = query.OrderBy(x => x.Price);
 
-            result.Data = query.OrderByDescending(x=>x.IsActive).ThenBy(x => x.Code).Skip(result.StartRow).Take(param.Take).Cast<object>().ToList();
-            result.TotalCount = query.Count();
+            else if (param.Sort == Sort.Desc)
+                query = query.OrderByDescending(x => x.Price);
+
+            else
+                query = query.OrderByDescending(x => x.IsActive).ThenBy(x => x.Code);
+                    
+           result.Data=query.Skip(result.StartRow).Take(param.Take).Cast<object>().ToList();
+              result.TotalCount = query.Count();
 
           
             return result;
