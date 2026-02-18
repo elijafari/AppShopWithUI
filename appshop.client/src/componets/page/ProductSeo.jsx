@@ -2,14 +2,20 @@ import { Helmet } from "react-helmet";
 
 export function ProductSeo(props) {
     const description = `${props.description}. خرید ${props.name} با بهترین قیمت و کیفیت. ارسال سریع به سراسر کشور از Electroej`;
-
+    const url = `https://electroej.ir/productView/${props.slug}`;
     return (
         <Helmet>
-            <meta name="description" content={`خرید ${props.name} با بهترین قیمت و کیفیت در فروشگاه آنلاین. ارسال سریع به سراسر کشور.`} />
-            <meta name="title" content={`خرید ${props.name}, قیمت ${props.price} از Electroej`} />
-            <meta name="description" content={`خرید ${props.name} | ${props.description}. ارسال سریع به سراسر کشور با بهترین قیمت از Electroej`}
-            />
 
+            <meta name="description" content={description} />
+
+            {/* canonical مهم‌ترین خط */}
+            <link rel="canonical" href={url} />
+
+            <meta property="og:title" content={`خرید ${props.name}`} />
+            <meta property="og:description" content={description} />
+            <meta property="og:url" content={url} />
+            <meta property="og:type" content="product" />
+           
             <script type="application/ld+json">
                 {`
         {
@@ -18,7 +24,7 @@ export function ProductSeo(props) {
           "name": "${props.name}",
           "image": "https://electroej.ir${props.pathImg.replace(/\\/g, "/")}",
           "description": "${description}",
-          "url": "https://electroej.ir/productView/${props.slug}",
+          "url": "${url}",
           "sku": "${props.sku || props.id || "electroej"}",
           "brand": {
             "@type": "Brand",
@@ -26,7 +32,7 @@ export function ProductSeo(props) {
           },
           "offers": {
             "@type": "Offer",
-            "url": "https://electroej.ir/productView/${props.slug}",
+            "url": "${url}",
             "priceCurrency": "IRR",
             "price": "${props.price}",
             "availability": "https://schema.org/InStock",
