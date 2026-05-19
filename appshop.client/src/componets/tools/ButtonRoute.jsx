@@ -1,7 +1,7 @@
 import React from 'react';
 import "bootstrap/dist/css/bootstrap.rtl.min.css";
 import { useNavigate } from "react-router-dom";
-import "../../App.css";
+
 export function ButtonRoute(props) {
   
   let navigate = useNavigate(); 

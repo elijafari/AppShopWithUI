@@ -1,5 +1,5 @@
 import { FaLightbulb } from "react-icons/fa";
-import "../../App.css";
+
 export function Header() {
 
 

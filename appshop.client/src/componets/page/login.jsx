@@ -1,12 +1,12 @@
 import React from "react";
 import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
-import "../../App.css";
+
 import {
   NotificationContainer,
   NotificationManager,
 } from "react-notifications";
 import "react-notifications/lib/notifications.css";
-import "../../App.css";
+
 import { TextBox } from "../tools/TextBox";
 import api from "../tools/axiosConfig";
 import { FaLock, FaEye, FaEyeSlash } from "react-icons/fa";

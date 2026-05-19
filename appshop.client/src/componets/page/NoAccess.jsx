@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import { FaUserLock } from "react-icons/fa";
-import "../../App.css"; // برای استایل انیمیشن
+ // برای استایل انیمیشن
 
 export class NoAccess extends Component {
     render() {

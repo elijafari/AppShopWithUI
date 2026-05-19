@@ -7,7 +7,7 @@ import {
     NotificationManager,
 } from "react-notifications";
 import "react-notifications/lib/notifications.css";
-import "../../App.css";
+
 import { ErrorHanding } from "../Utility";
 
 class OrderDetails extends React.Component {

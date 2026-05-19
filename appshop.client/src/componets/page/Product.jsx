@@ -6,7 +6,7 @@ import {
     NotificationManager,
 } from "react-notifications";
 import "react-notifications/lib/notifications.css";
-import "../../App.css";
+
 import { TextBox } from "../tools/TextBox";
 import { DropdownApp } from "../tools/DropdownApp";
 import { Checkbox } from "../tools/CheckBox";

@@ -6,7 +6,7 @@ import {
   NotificationManager,
 } from "react-notifications";
 import "react-notifications/lib/notifications.css";
-import "../../App.css";
+
 import { ErrorHanding , parseJwt } from "../Utility";
 import { Loading } from "../tools/Loading";
 import Modal from "react-bootstrap/Modal";

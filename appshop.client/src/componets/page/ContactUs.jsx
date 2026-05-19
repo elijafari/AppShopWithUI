@@ -1,7 +1,7 @@
 import React from "react";
 import { FaEnvelope, FaPhone, FaMapMarkerAlt } from "react-icons/fa";
 import api from "../tools/axiosConfig";
-import "../../App.css";
+
 import {
   NotificationContainer,
   NotificationManager,

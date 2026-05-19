@@ -6,7 +6,7 @@ import {
   NotificationManager,
 } from "react-notifications";
 import "react-notifications/lib/notifications.css";
-import "../../App.css";
+
 import { TextBox } from "../tools/TextBox";
 import { ButtonWaith } from "../tools/ButtonWaith";
 import { ErrorHanding, parseJwt, validInput } from "../Utility";

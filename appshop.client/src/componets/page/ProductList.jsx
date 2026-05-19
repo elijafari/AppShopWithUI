@@ -5,7 +5,7 @@ import  api  from "../tools/axiosConfig";
 import { Loading } from "../tools/Loading";
 import { FiRefreshCcw } from "react-icons/fi";
 import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
-import "../../App.css";
+
 export class ProductList extends Component {
   constructor(props) {
     super(props);

@@ -1,5 +1,5 @@
 import React from "react";
-import "../../App.css";
+
 export default class Watch extends React.Component {
   constructor(props) {
     super(props);

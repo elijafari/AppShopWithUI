@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { ProductItem } from "../page/ProductItem";
 import { Pageing } from "../tools/Pageing";
 import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
-import "../../App.css";
+
 import { Loading } from "../tools/Loading";
 import { TextBox } from "../tools/TextBox";
 import { DropdownApp } from "../tools/DropdownApp";

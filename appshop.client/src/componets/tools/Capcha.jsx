@@ -1,6 +1,6 @@
 import React from "react";
 import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
-import '../../App.css';
+
 import { LuRefreshCw } from "react-icons/lu";
 import api from "../tools/axiosConfig";
 export class Capcha extends React.Component {

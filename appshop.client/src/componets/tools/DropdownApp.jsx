@@ -1,5 +1,5 @@
 import "bootstrap/dist/css/bootstrap.rtl.min.css";
-import "../../App.css";
+
 export function DropdownApp(props) {
   const handleChange = (e) => {
     props.context.setState({ [props.name]: parseInt(e.target.value) });

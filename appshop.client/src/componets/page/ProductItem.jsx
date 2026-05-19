@@ -1,6 +1,6 @@
 import React from "react";
 import "../../../node_modules/bootstrap/dist/css/bootstrap.css";
-import "../../App.css";
+
 import {ProductSeo} from "./ProductSeo";
 export class ProductItem extends React.Component {
   constructor(props) {

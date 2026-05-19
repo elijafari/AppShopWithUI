@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
-import "../../App.css";
+
 import { Outlet } from "react-router-dom";
 import { FaShoppingCart } from "react-icons/fa";
 import { ModalApp } from "./ModalApp";

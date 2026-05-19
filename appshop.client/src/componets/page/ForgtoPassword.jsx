@@ -8,7 +8,6 @@ import {
 import { TextBox } from "../tools/TextBox";
 import { ButtonWaith } from "../tools/ButtonWaith";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import "../../App.css";
 
 export class ForgtoPassword extends React.Component {
   constructor(props) {

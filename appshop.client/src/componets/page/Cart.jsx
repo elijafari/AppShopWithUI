@@ -15,7 +15,7 @@ import {
 } from "react-notifications";
 import "react-notifications/lib/notifications.css";
 import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
-import "../../App.css";
+
 export class Cart extends Component {
   constructor(props) {
     super(props);

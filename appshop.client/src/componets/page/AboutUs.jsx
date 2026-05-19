@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import "../../App.css";
 import { FaUsers, FaLightbulb, FaHandshake } from "react-icons/fa";
 
 export default class AboutUs extends Component {

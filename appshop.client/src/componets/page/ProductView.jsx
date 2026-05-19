@@ -1,7 +1,7 @@
 import React from "react";
 import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import "react-notifications/lib/notifications.css";
-import "../../App.css";
+
 import api from "../tools/axiosConfig";
 import { ButtonReturn } from "../tools/ButtonReturn";
 import { ProductSeo } from "./ProductSeo";
