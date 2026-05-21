@@ -20,6 +20,8 @@ namespace AppShop.Business.Mapping
             builder.Property(p => p.Price).IsRequired();
             builder.Property(p => p.Description).HasColumnType("nvarchar(1000)");
             builder.Property(p => p.PathImg).HasColumnType("nvarchar(500)");
+            builder.Property(p => p.CreatedDate).IsRequired();
+            builder.Property(p => p.UpdatedDate);
 
             builder.HasOne(c => c.CategoryEntity).WithMany(c => c.Products).HasForeignKey(c => c.CategoryId);
 

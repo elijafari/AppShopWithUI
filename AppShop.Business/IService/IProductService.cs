@@ -18,5 +18,6 @@ namespace AppShop.Business.IService
         bool AddAll();
         bool AddImage();
         bool UpdatePath();
+        string GetForTorop(InTorop input);
     }
 }

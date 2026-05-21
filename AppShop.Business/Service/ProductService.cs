@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using static Org.BouncyCastle.Crypto.Engines.SM2Engine;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace AppShop.Business.Service
 {
@@ -27,13 +28,14 @@ namespace AppShop.Business.Service
         {
             var entity = mapper.Map<Product>(input);
             ValidtionData(entity);
-            var pathImgs = CopyImage(input, entity.Code,0).Result;
+            var pathImgs = CopyImage(input, entity.Code, 0).Result;
             if (!pathImgs.Any())
             {
                 throw new PersianException(Utility.GetMsgRequired("عکس"));
             }
             entity.PathImg = pathImgs.First();
             entity.Slug = SlugHelper.GenerateSlug(entity.Name);
+            entity.CreatedDate = DateTime.Now;
             foreach (var item in pathImgs)
             {
                 entity.ProductImages.Add(new ProductImage()
@@ -52,10 +54,10 @@ namespace AppShop.Business.Service
             var fileName = $"product_{input.Id}";
 
             var pathImgs = input.ListOldFile;
-            var newpathImgs = CopyImage(input, entity.Code,input.ListOldFile.Count).Result;
-            if(newpathImgs.Any())
+            var newpathImgs = CopyImage(input, entity.Code, input.ListOldFile.Count).Result;
+            if (newpathImgs.Any())
                 pathImgs.AddRange(newpathImgs);
-            
+
             if (!pathImgs.Any())
             {
                 throw new PersianException(Utility.GetMsgRequired("عکس"));
@@ -72,13 +74,14 @@ namespace AppShop.Business.Service
             ValidtionData(entity);
             entity.PathImg = pathImgs.First();
             entity.Slug = SlugHelper.GenerateSlug(entity.Name);
+            entity.UpdatedDate = DateTime.Now;
             db.Products.Update(entity);
             db.SaveChanges();
             return true;
 
 
         }
-        private async Task<List<string>> CopyImage(InProduct input, int Code,int counter)
+        private async Task<List<string>> CopyImage(InProduct input, int Code, int counter)
         {
             var paths = new List<string>();
             if (input.Files != null)
@@ -86,7 +89,7 @@ namespace AppShop.Business.Service
                 foreach (var itemFile in input.Files)
                 {
                     var extension = Path.GetExtension(itemFile.FileName);
-                    var fileName = $"product_{input.Files.IndexOf(itemFile) + 1+counter}{extension}";
+                    var fileName = $"product_{input.Files.IndexOf(itemFile) + 1 + counter}{extension}";
 
                     var folderName = uploadPathProvider.Path + "\\" + Code;
                     if (!Directory.Exists(folderName))
@@ -162,11 +165,11 @@ namespace AppShop.Business.Service
 
             else
                 query = query.OrderByDescending(x => x.IsActive).ThenBy(x => x.Code);
-                    
-           result.Data=query.Skip(result.StartRow).Take(param.Take).Cast<object>().ToList();
-              result.TotalCount = query.Count();
 
-          
+            result.Data = query.Skip(result.StartRow).Take(param.Take).Cast<object>().ToList();
+            result.TotalCount = query.Count();
+
+
             return result;
         }
         public List<Product> GetAll()
@@ -181,7 +184,7 @@ namespace AppShop.Business.Service
         }
         public bool AddImage()
         {
-            var data = db.Products.Where(x=>x.Id<67).ToList();
+            var data = db.Products.Where(x => x.Id < 67).ToList();
             var list = new List<ProductImage>();
 
             foreach (var item in data)
@@ -213,7 +216,7 @@ namespace AppShop.Business.Service
 
             foreach (var item in data)
             {
-           item.PathImg= $"\\uploads\\products\\{item.Id}\\product_1.jpg";
+                item.PathImg = $"\\uploads\\products\\{item.Id}\\product_1.jpg";
 
             }
             db.Products.UpdateRange(data);
@@ -223,8 +226,8 @@ namespace AppShop.Business.Service
 
         public Product GetById(int id)
         {
-            var entity= db.Products.Where(x => x.Id == id).SingleOrDefault();
-            entity.PathImags=db.ProductImages.Where(x=>x.ProductId==id).Select(x=>x.PathImg).ToList();
+            var entity = db.Products.Where(x => x.Id == id).SingleOrDefault();
+            entity.PathImags = db.ProductImages.Where(x => x.ProductId == id).Select(x => x.PathImg).ToList();
             return entity;
         }
         public Product GetBySlug(string slug)
@@ -262,5 +265,64 @@ namespace AppShop.Business.Service
             db.SaveChanges();
             return true;
         }
+        public string GetForTorop(InTorop input)
+        {
+            try
+            {
+                var products = new List<Product>();
+                if (input.page_uniques!=null && input.page_uniques.Any())
+                {
+                    var ids = input.page_uniques.Select(int.Parse).ToList();
+                    products = db.Products.Include(x=>x.CategoryEntity).Where(x => ids.Contains(x.Id)).ToList();
+                }
+                if (input.page_urls!=null && input.page_urls.Any())
+                {
+                    var slugs = input.page_urls.Select(x => x.Split("/")[4]).ToList();
+                    products = db.Products.Include(x => x.CategoryEntity).Where(x => slugs.Contains(x.Slug)).ToList();
+                }
+                if (input.page != 0)
+                {
+                    if (input.sort == "date_added_desc")
+                        products = db.Products.Include(x => x.CategoryEntity).OrderByDescending(x => x.Id).ToList();
+                    else if (input.sort == "date_updated_desc")
+                        products = db.Products.Include(x => x.CategoryEntity).OrderByDescending(x => x.UpdatedDate).ToList();
+                    else
+                        return "error : value of sort in empty";
+                }
+                var torop = new Torop();
+                torop.total = products.Count();
+                torop.products = new List<ToropProduct>();
+                if (products.Any())
+                {
+                    var images = db.ProductImages.ToList();
+                    foreach (var product in products)
+                    {
+                        torop.products.Add(new ToropProduct()
+                        {
+                            availability = product.IsActive.ToString(),
+                            category_name = product.CategoryEntity.Name,
+                            current_price = product.Price,
+                            date_added = product.CreatedDate.ToString(),
+                            date_updated = (product.UpdatedDate ?? product.CreatedDate).ToString(),
+                            old_price = product.Price,
+                            page_unique = product.Id,
+                            page_url = $"https://electroej.ir/product/{product.Slug}",
+                            product_group_id = product.CategoryId,
+                            short_desc = product.Name,
+                            title = product.Name,
+                            spec = new InfoToropProduct() { description = product.Description },
+                            image_links = images.Where(x => x.ProductId == product.Id).Select(x => $"https://electroej.ir/uploads/{x.PathImg.Replace("\\", "/")}").ToList()
+                        });
+                    }
+                }
+                return JsonConvert.SerializeObject(torop);
+            }
+            catch(Exception ex)
+            {
+                return $"error: {ex.Message}";
+            }
+
+        }
+
     }
 }
