@@ -9,6 +9,7 @@ import { DropdownApp } from "../tools/DropdownApp";
 import { FaSearch } from "react-icons/fa";
 import api from "../tools/axiosConfig";
 import { Helmet } from "react-helmet";
+import { ProductTorop } from "./ProductTorop";
 export class Home extends Component {
   constructor(props) {
     super(props);
@@ -223,6 +224,14 @@ export class Home extends Component {
         <Loading />
       ) : (
         <>
+        <div>
+            {data.map((x) => (
+              <ProductTorop
+                data={x}
+                key={x.id}
+              />
+            ))}
+          </div>
           <div className="row" key={this.state.updateKey}>
             {data.map((x) => (
               <ProductItem

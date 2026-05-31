@@ -2,6 +2,7 @@ import React from "react";
 import "../../../node_modules/bootstrap/dist/css/bootstrap.css";
 
 import {ProductSeo} from "./ProductSeo";
+import { ProductTorop } from "./ProductTorop";
 export class ProductItem extends React.Component {
   constructor(props) {
     super(props);
@@ -47,9 +48,9 @@ export class ProductItem extends React.Component {
 description={product.description} 
 price={product.price} 
 pathImg={product.pathImg} 
-slug={product.slug} />
-
-
+slug={product.slug}
+id={product.id}
+isActive={product.isActive} />
 
 
         <div className="col-md-3 col-lg-3 col-sm-6 mb-4">

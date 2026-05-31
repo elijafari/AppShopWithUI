@@ -60,77 +60,87 @@ export class Menu extends Component {
   render() {
     return (
       <>
-<div className="sticky-top bg-light shadow-sm"style={{     borderRadius: "10px"}}>
-  <div className="d-flex justify-content-between align-items-center px-3 py-2">
-    
-    {/* سمت چپ - ساعت */}
-    <div className="d-flex align-items-center" >
-      <Watch />
-    </div>
+        <div className="sticky-top bg-light shadow-sm" style={{ borderRadius: "10px" }}>
+          <div className="d-flex justify-content-between align-items-center px-3 py-2">
 
-    {/* سمت راست - کاربر و ورود/خروج */}
-    <div className="d-flex align-items-center gap-3">
-      {this.state.user && (
-        <span className="mb-0 small text-black">
-         {this.state.user.name}
-        </span>
-      )}
-  {/* آیکون سبد خرید */}
-          <a className="nav-link position-relative" href="/cart">
-            <FaShoppingCart className="shopIcon fs-4" />
-            {this.state.sum > 0 && (
+
+            <div className="d-flex align-items-center">
+              <Watch />
+            </div>
+
+            <div className="d-flex align-items-center ">
+              {/* آیکون سبد خرید */}
+              <a className="nav-link position-relative" href="/cart">
+                <FaShoppingCart className="shopIcon fs-4" />
+                {this.state.sum > 0 && (
+                  <span
+                    className="position-absolute badge rounded-pill bg-danger"
+                    style={{
+                      top: "-5px",
+                      right: "-10px",
+                      fontSize: "0.7rem",
+                    }}
+                  >
+                    {this.state.sum}
+                  </span>
+                )}
+              </a>
+
+              {this.state.isLoging === false ? (
+                <ButtonRoute
+                  title="ورود / ثبت نام"
+                  link="/login"
+                  className="btn btn-light btn-sm"
+                />
+              ) : (
+                <div className="d-flex align-items-center gap-2">
+
+                  {/* دکمه خروج */}
+                  <ModalApp
+                    className="btn btn-danger btn-sm"
+                    msg="آیا می‌خواهید از سیستم خارج شوید؟"
+                    headerTitle="خروج"
+                    noTitle="خیر"
+                    yesTitle="بله"
+                    btnTitle="خروج"
+                    handleOk={this.logout}
+                  />
+                </div>
+              )}
+            </div>
+
+          </div>
+          <div className="d-flex align-items-center mr-2 fontApp">
+            {this.state.user && (
               <span
-                className="position-absolute badge rounded-pill bg-danger"
+                className="small text-black"
                 style={{
-                  top: "-5px",
-                  right: "-10px",
-                  fontSize: "0.7rem",
+                  maxWidth: "100px",
+                  whiteSpace: "normal",
+                  wordBreak: "break-word",
+                  marginRight: "24px",
+                  marginTop: "-5px",
                 }}
               >
-                {this.state.sum}
+                {' کاربرگرامی :' + this.state.user.name}
               </span>
             )}
-          </a>
-
-      {this.state.isLoging === false ? (
-        <ButtonRoute
-          title="ورود / ثبت نام"
-          link="/login"
-          className="btn btn-light btn-sm"
-        />
-      ) : (
-        <div className="d-flex align-items-center gap-2">
-        
-          {/* دکمه خروج */}
-          <ModalApp
-            className="btn btn-danger btn-sm"
-            msg="آیا می‌خواهید از سیستم خارج شوید؟"
-            headerTitle="خروج"
-            noTitle="خیر"
-            yesTitle="بله"
-            btnTitle="خروج"
-            handleOk={this.logout}
-          />
-        </div>
-      )}
-    </div>
-  </div>
-</div>
-
-
+          </div>
+        </div >
         {/* Navbar اصلی */}
 
-        <nav
+        < nav
           className="navbar navbar-expand-lg navbar-dark p-2"
           style={{
             backgroundColor: "#FFD700", // رنگ طلایی
             fontFamily: "Vazirmatn",
             fontSize: "12px",
-                 borderRadius: "10px"
-          }}
+            borderRadius: "10px"
+          }
+          }
         >
           {/* دکمه موبایل */}
-          <button
+          < button
             className="navbar-toggler p-2"
             type="button"
             onClick={this.toggleMenu}
@@ -140,10 +150,10 @@ export class Menu extends Component {
               className="navbar-toggler-icon "
               style={{ width: "20px", height: "20px" }} // کوچکتر کردن آیکون
             ></span>
-          </button>
+          </button >
 
           {/* منو */}
-          <div
+          < div
             className={`collapse navbar-collapse ${this.state.isOpen ? "show" : ""
               }`}
             id="navbarTogglerDemo02"
@@ -187,12 +197,12 @@ export class Menu extends Component {
                 </>
               )}
             </ul>
-          </div>
-        </nav>
+          </div >
+        </nav >
 
 
         {/* خروجی صفحات */}
-        <Outlet />
+        < Outlet />
         <NotificationContainer />
       </>
     );

@@ -1,7 +1,7 @@
 import React from "react";
 import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import "react-notifications/lib/notifications.css";
-
+import '../../../public/style/bootstrap-icons.css';
 import api from "../tools/axiosConfig";
 import { ButtonReturn } from "../tools/ButtonReturn";
 import { ProductSeo } from "./ProductSeo";
@@ -9,7 +9,7 @@ export class ProductView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      slug: window.location.href.split("/")[4],
+      slug: window.location.href.split("/")[4].split("?")[0],
       file: null,
       filePreviews:[],
       updateKeyImage: 1,

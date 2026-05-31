@@ -1,23 +1,22 @@
 import { Helmet } from "react-helmet";
 
 export function ProductSeo(props) {
-    const description = `${props.description}. خرید ${props.name} با بهترین قیمت و کیفیت. ارسال سریع به سراسر کشور از Electroej`;
-    const url = `https://electroej.ir/productView/${props.slug}`;
-    return (
-        <Helmet>
+  
+  const description = `${props.description}. خرید ${props.name} با بهترین قیمت و کیفیت. ارسال سریع به سراسر کشور از Electroej`;
+  const url = `https://electroej.ir/productView/${props.slug}`;
+  return (
+    <Helmet>
+      <meta name="description" content={description} />
 
-            <meta name="description" content={description} />
+      {/* canonical مهم‌ترین خط */}
+      <link rel="canonical" href={url} />
 
-            {/* canonical مهم‌ترین خط */}
-            <link rel="canonical" href={url} />
-
-            <meta property="og:title" content={`خرید ${props.name}`} />
-            <meta property="og:description" content={description} />
-            <meta property="og:url" content={url} />
-            <meta property="og:type" content="product" />
-           
-            <script type="application/ld+json">
-                {`
+      <meta property="og:title" content={`خرید ${props.name}`} />
+      <meta property="og:description" content={description} />
+      <meta property="og:url" content={url} />
+      <meta property="og:type" content="product" />
+      <script type="application/ld+json">
+        {`
         {
           "@context": "https://schema.org",
           "@type": "Product",
@@ -76,7 +75,7 @@ export function ProductSeo(props) {
           }
         }
         `}
-            </script>
-        </Helmet>
-    );
+      </script>
+    </Helmet>
+  );
 }

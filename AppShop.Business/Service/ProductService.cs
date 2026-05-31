@@ -272,7 +272,7 @@ namespace AppShop.Business.Service
                 var products = new List<Product>();
                 if (input.page_uniques!=null && input.page_uniques.Any())
                 {
-                    var ids = input.page_uniques.Select(int.Parse).ToList();
+                    var ids = input.page_uniques.Select(x => int.Parse(x.Split('-')[0])).ToList();
                     products = db.Products.Include(x=>x.CategoryEntity).Where(x => ids.Contains(x.Id)).ToList();
                 }
                 if (input.page_urls!=null && input.page_urls.Any())
@@ -299,19 +299,17 @@ namespace AppShop.Business.Service
                     {
                         torop.products.Add(new ToropProduct()
                         {
-                            availability = product.IsActive.ToString(),
+                            availability = product.IsActive,
                             category_name = product.CategoryEntity.Name,
                             current_price = product.Price,
-                            date_added = product.CreatedDate.ToString(),
-                            date_updated = (product.UpdatedDate ?? product.CreatedDate).ToString(),
-                            old_price = product.Price,
-                            page_unique = product.Id,
-                            page_url = $"https://electroej.ir/product/{product.Slug}",
-                            product_group_id = product.CategoryId,
+                            date_added =product.CreatedDate.ToString("yyyy-MM-ddTHH:mm:ss+03:30"),
+                            date_updated = (product.UpdatedDate ?? product.CreatedDate).ToString("yyyy-MM-ddTHH:mm:ss+03:30"),
+                            page_unique = $"{product.Id}-6826",
+                            page_url = $"https://electroej.ir/productView/{product.Slug}",
                             short_desc = product.Name,
                             title = product.Name,
                             spec = new InfoToropProduct() { description = product.Description },
-                            image_links = images.Where(x => x.ProductId == product.Id).Select(x => $"https://electroej.ir/uploads/{x.PathImg.Replace("\\", "/")}").ToList()
+                            image_links = images.Where(x => x.ProductId == product.Id).Select(x => $"https://electroej.ir/{x.PathImg.Replace("\\", "/")}").ToList()
                         });
                     }
                 }

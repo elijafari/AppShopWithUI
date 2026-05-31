@@ -16,7 +16,7 @@ namespace AppShop.Business
             .ForMember(dest => dest.TotalPrice, opt => opt.MapFrom(src => src.ItemBuys.Sum(x => x.Count * x.Price)))
             .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.UserEntity.FullName))
             .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.UserEntity.Phone))
-            .ForMember(dest => dest.AddressStr, opt => opt.MapFrom(src => src.AddressEntity.AddressStr))
+            .ForMember(dest => dest.AddressStr, opt => opt.MapFrom(src =>$"{src.AddressEntity.CitiEntity.Parent.Name}-{src.AddressEntity.CitiEntity.Name}-{src.AddressEntity.AddressStr}"))
             .ForMember(dest => dest.Items, opt => opt.MapFrom(src => src.ItemBuys));
 
             CreateMap<OrderBuy, OrderBuyPaymentVm>()
