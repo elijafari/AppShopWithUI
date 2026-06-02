@@ -17,11 +17,13 @@ namespace AppShop.Business.DataModel
         public long TrackingCode { get; set; }
         public string FullName { get; set; }
         public string AddressStr { get; set; }
+        public int PayType { get; set; }
         public int SendType { get; set; }
         public string SolorDateOrder => Utility.GetPersion(this.DateOrder);
         public string SolorDateDelivery => Utility.GetPersion(this.DateDelivery);
         public string StrStatues => this.Statues.GetEnumDescription();
         public string StrSendType => this.SendType==1? "تیباکس":SendType==2?"باربری": SendType == 3?"پیک":"";
+        public string StrPayType => this.PayType==1? "حضوری":SendType==2?"آنلاین": "";
         public List<ItemBuyVM> Items { get; set; } = new List<ItemBuyVM>();
         public string Phone { get;  set; }
     }

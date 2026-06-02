@@ -120,7 +120,8 @@ export class Orders extends React.Component {
     return (
       <div dir="rtl" className="container mt-4 fontApp">
         <h3 className="mb-4 text-center fw-bold">
-          {this.state.isAdmin ? "مدیریت سفارشات" : "سفارشات من"}
+          {this.state.isAdmin ? "مدیریت سفارشات" + "("+this.state.orders.length+")"
+                              : "سفارشات من"+ "("+this.state.orders.length+")"}
         </h3>
 
         {this.state.orders.length === 0 ? (
@@ -133,6 +134,7 @@ export class Orders extends React.Component {
               <table className="table table-bordered table-striped text-center align-middle">
                 <thead className="table-dark">
                   <tr>
+                    <th>ردیف</th>
                     {this.state.isAdmin && <th>کاربر</th>}
                     {this.state.isAdmin && <th>شماره همراه</th>}
                     <th>کد پیگیری</th>
@@ -147,6 +149,7 @@ export class Orders extends React.Component {
                 <tbody>
                   {this.state.orders.map((order, index) => (
                     <tr key={index}>
+                       <td data-label="ردیف">{index+1}</td>
                       {this.state.isAdmin && <td data-label="نام و نام خانوادگی">{order.fullName}</td>}
                       {this.state.isAdmin && <td data-label="شماره همراه">{order.phone}</td>}
                       <td data-label="کد پیگیری">{order.trackingCode}</td>

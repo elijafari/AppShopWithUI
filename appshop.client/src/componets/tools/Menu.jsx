@@ -115,14 +115,13 @@ export class Menu extends Component {
               <span
                 className="small text-black"
                 style={{
-                  maxWidth: "100px",
                   whiteSpace: "normal",
                   wordBreak: "break-word",
                   marginRight: "24px",
                   marginTop: "-5px",
                 }}
               >
-                {' کاربرگرامی :' + this.state.user.name}
+                {' کاربرگرامی : ' + this.state.user.name}
               </span>
             )}
           </div>
