@@ -1,5 +1,5 @@
 import React from "react";
-import { FaEnvelope, FaPhone, FaMapMarkerAlt } from "react-icons/fa";
+import { FaEnvelope, FaPhone, FaMapMarkerAlt ,FaRegClock} from "react-icons/fa";
 import api from "../tools/axiosConfig";
 
 import {
@@ -60,6 +60,7 @@ export default class ContactUs extends React.Component {
                 <p className="mb-2"><FaEnvelope className="me-2 text-primary" />info@electroej.ir</p>
                 <p className="mb-2"><FaPhone className="me-2 text-success" /> 09124462355 </p>
                 <p className="mb-2"><FaMapMarkerAlt className="me-2 text-danger" /> تهران، ایران</p>
+                <p className="mb-2"><FaRegClock className="me-2 text-danger" />زمان خرید حضوری هر روز 9 الی 17</p>
               </div>
             </div>
           </div>

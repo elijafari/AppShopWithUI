@@ -478,3 +478,8 @@ header p {
   text-overflow: ellipsis;
   min-height: 48px;
 }
+.dropdown-menu {
+  min-width: 180px;
+  text-align: right;
+  font-family: Vazirmatn;
+}

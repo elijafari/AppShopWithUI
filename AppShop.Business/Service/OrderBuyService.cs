@@ -62,9 +62,9 @@ namespace AppShop.Business.Service
             db.OrderBuys.Add(entity);
             db.SaveChanges();
 
-            SendEmailToMe(entity.TrackingCode);
+            //SendEmailToMe(entity.TrackingCode);
 
-            SendEmailToUser(entity);
+            //SendEmailToUser(entity);
 
             return new KeyValue(entity.Id,  entity.TrackingCode.ToString());
         }
@@ -149,7 +149,7 @@ namespace AppShop.Business.Service
             if (shopStatues == ShopStatues.Cancel && entity.Statues != ShopStatues.Register)
                 throw new PersianException("با نوجه به وضعیت جاری سفارش امکان لغو سفارش وجود ندارد");
 
-            if (shopStatues == ShopStatues.Confirm && entity.Statues != ShopStatues.Register)
+            if (shopStatues == ShopStatues.Confirm && entity.Statues != ShopStatues.Register && entity.Statues!=ShopStatues.Paid)
                 throw new PersianException("با نوجه به وضعیت جاری سفارش امکان تایید سفارش وجود ندارد");
 
             if (shopStatues == ShopStatues.Send && entity.Statues != ShopStatues.Confirm)

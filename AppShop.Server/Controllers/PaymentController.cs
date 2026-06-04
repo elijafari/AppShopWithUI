@@ -17,20 +17,24 @@ namespace AppShop.Server.Controllers
     {
         private readonly HttpClient _httpClient;
         private readonly IOrderBuyService _orderBuyService;
+        private readonly ILogService _logService;
         private readonly string merchantId = "54e3d792-c3a8-4c39-9419-6b0e6cb9ed78"; // MerchantID از زرین‌پال
-                                                                                    
-        private readonly string baseUrl = "https://payment.zarinpal.com/";
-        private string urlFront = "https://electroej.ir/";
-        private string urlBack = "https://electroej.ir/";
 
-        //  private readonly string baseUrl = "https://sandbox.zarinpal.com/";
-        public PaymentController(HttpClient httpClient, IOptions<AppSettings> appSetting, IOrderBuyService orderBuyService)
+        private string baseUrl = "https://payment.zarinpal.com/";
+        private string urlFront = "https://electroej.ir";
+        private string urlBack = "https://electroej.ir";
+
+        public PaymentController(HttpClient httpClient, IOptions<AppSettings> appSetting, IOrderBuyService orderBuyService, ILogService logService)
         {
             _httpClient = httpClient;
-            ////urlFront = appSetting.Value.UrlFront;
-            ////urlBack = appSetting.Value.UrlBack;
+
+            //for test local
+            //urlFront = appSetting.Value.UrlFront;
+            //urlBack = appSetting.Value.UrlBack;
+            //baseUrl = "https://sandbox.zarinpal.com/";
 
             _orderBuyService = orderBuyService;
+            _logService = logService;
         }
 
         [HttpPost]
@@ -83,7 +87,11 @@ namespace AppShop.Server.Controllers
                     var trackingCode = _orderBuyService.UpdatePaymentCode(oId, result.ref_id.ToString());
                     return Redirect(Path.Combine(urlFront, $"payment/success/:{trackingCode}/:{result.ref_id}"));
                 }
+                else
+                    _logService.Add("payment :"+res);
+
             }
+            _logService.Add("payment :"+Status);
             var trackingCodeOnly = _orderBuyService.GetById(oId).TrackingCode;
             return Redirect(Path.Combine(urlFront, $"payment/failed/:{trackingCodeOnly}"));
         }

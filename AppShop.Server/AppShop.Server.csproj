@@ -7,7 +7,7 @@
     <InvariantGlobalization>false</InvariantGlobalization>
     <SpaRoot>..\appshop.client</SpaRoot>
     <SpaProxyLaunchCommand>npm run dev</SpaProxyLaunchCommand>
-    <SpaProxyServerUrl>http://localhost:5173</SpaProxyServerUrl>
+    <SpaProxyServerUrl>http://localhost:5172</SpaProxyServerUrl>
   </PropertyGroup>
 
   <ItemGroup>
