@@ -19,6 +19,9 @@ namespace AppShop.Business.DataModel
         public string AddressStr { get; set; }
         public int PayType { get; set; }
         public int SendType { get; set; }
+        public double GildPrice { get; set; }
+        public double FinalPrice { get; set; }
+        public int? FactorNumber { get; set; }
         public string SolorDateOrder => Utility.GetPersion(this.DateOrder);
         public string SolorDateDelivery => Utility.GetPersion(this.DateDelivery);
         public string StrStatues => this.Statues.GetEnumDescription();

@@ -13,6 +13,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using static Org.BouncyCastle.Math.EC.ECCurve;
 
 namespace AppShop.Business.Service
 {
@@ -54,6 +55,10 @@ namespace AppShop.Business.Service
             entity.ItemBuys = new List<ItemBuy>();
             entity.ItemBuys.AddRange(mapper.Map<List<ItemBuy>>(input.Items));
 
+            var price = input.Items.Sum(x => x.Price * x.Count);
+            entity.GildPrice = price * 0.10;
+            entity.FinalPrice = price + entity.GildPrice;
+
             var statues = new OrderBuyStatues();
             statues.Statues = ShopStatues.Register;
             statues.DateStatues = DateTime.Now;
@@ -66,7 +71,7 @@ namespace AppShop.Business.Service
 
             //SendEmailToUser(entity);
 
-            return new KeyValue(entity.Id,  entity.TrackingCode.ToString());
+            return new KeyValue(entity.Id, entity.TrackingCode.ToString());
         }
 
         private void SendEmailToUser(OrderBuy entity)
@@ -122,7 +127,7 @@ namespace AppShop.Business.Service
             {
                 throw new PersianException("نوع پرداخت انتخاب نشده است");
             }
-            if (input.SendType==null)
+            if (input.SendType == null)
             {
                 throw new PersianException("نوع ارسال انتخاب نشده است");
             }
@@ -139,7 +144,7 @@ namespace AppShop.Business.Service
             return ChangeShopStatuesAndGet(id, ShopStatues.Paid, paymentCode);
         }
 
-        private long ChangeShopStatuesAndGet(Guid id, ShopStatues shopStatues,string paymentCode="")
+        private long ChangeShopStatuesAndGet(Guid id, ShopStatues shopStatues, string paymentCode = "")
         {
             var entity = db.OrderBuys.AsNoTracking().FirstOrDefault(x => x.Id == id);
 
@@ -149,7 +154,7 @@ namespace AppShop.Business.Service
             if (shopStatues == ShopStatues.Cancel && entity.Statues != ShopStatues.Register)
                 throw new PersianException("با نوجه به وضعیت جاری سفارش امکان لغو سفارش وجود ندارد");
 
-            if (shopStatues == ShopStatues.Confirm && entity.Statues != ShopStatues.Register && entity.Statues!=ShopStatues.Paid)
+            if (shopStatues == ShopStatues.Confirm && entity.Statues != ShopStatues.Register && entity.Statues != ShopStatues.Paid)
                 throw new PersianException("با نوجه به وضعیت جاری سفارش امکان تایید سفارش وجود ندارد");
 
             if (shopStatues == ShopStatues.Send && entity.Statues != ShopStatues.Confirm)
@@ -169,6 +174,12 @@ namespace AppShop.Business.Service
             entity.Statues = shopStatues;
             if (shopStatues == ShopStatues.Paid)
                 entity.PaymentCode = paymentCode;
+
+            if (shopStatues == ShopStatues.Confirm)
+            {
+                var factorNumber = db.OrderBuys.Max(x => x.FactorNumber);
+                entity.FactorNumber = factorNumber == null ? 40501 : factorNumber + 1;
+            }
             db.OrderBuys.Update(entity);
             db.SaveChanges();
             return entity.TrackingCode;

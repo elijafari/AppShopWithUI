@@ -29,9 +29,9 @@ namespace AppShop.Server.Controllers
             _httpClient = httpClient;
 
             //for test local
-            //urlFront = appSetting.Value.UrlFront;
-            //urlBack = appSetting.Value.UrlBack;
-            //baseUrl = "https://sandbox.zarinpal.com/";
+            urlFront = appSetting.Value.UrlFront;
+            urlBack = appSetting.Value.UrlBack;
+            baseUrl = "https://sandbox.zarinpal.com/";
 
             _orderBuyService = orderBuyService;
             _logService = logService;
@@ -44,8 +44,8 @@ namespace AppShop.Server.Controllers
             var data = new
             {
                 merchant_id = merchantId,
-                amount = dataOrder.TotalPrice * 10, // مبلغ به ریال
-                callback_url = $"{urlBack}/api/payment/VerifyPayment?Amount={dataOrder.TotalPrice * 10}&oid={model.OrderId}",
+                amount = dataOrder.FinalPrice * 10, // مبلغ به ریال
+                callback_url = $"{urlBack}/api/payment/VerifyPayment?Amount={dataOrder.FinalPrice * 10}&oid={model.OrderId}",
                 description = "خرید از فروشگاه الکتروایجی",
                 metadata = new { email = dataOrder.Email, mobile = dataOrder.Phone },
                 order_id = model.OrderId.ToString(),

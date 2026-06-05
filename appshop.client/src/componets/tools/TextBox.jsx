@@ -42,7 +42,7 @@ export class TextBox extends React.Component {
             value={this.props.context.state[this.props.name]}
             type={this.props.type == "password"?this.props.type :"text" }
             required
-            readOnly={false}
+            readOnly={this.props.readOnly}
             onChange={(e) => this.handleInputChange(e)}
             className="form-control"
             placeholder={

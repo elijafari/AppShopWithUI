@@ -21,6 +21,9 @@ namespace AppShop.Business.Mapping
             builder.Property(p => p.SendType).IsRequired(false);
             builder.Property(p => p.TrackingCode).HasDefaultValueSql("NEXT VALUE FOR shared.TrackingCodeSeq");
             builder.Property(p => p.PaymentCode).HasMaxLength(50);
+            builder.Property(p => p.GildPrice).IsRequired().HasDefaultValue(0);
+            builder.Property(p => p.FinalPrice).IsRequired().HasDefaultValue(0);
+            builder.Property(p => p.FactorNumber).IsRequired(false);
 
             builder.HasOne(c => c.UserEntity).WithMany(c => c.OrderBuys).HasForeignKey(c => c.UserId).OnDelete(DeleteBehavior.NoAction); ;
             builder.HasOne(c => c.AddressEntity).WithMany(c => c.OrderBuys).HasForeignKey(c => c.AddressId);

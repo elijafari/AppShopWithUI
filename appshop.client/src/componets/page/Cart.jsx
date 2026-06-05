@@ -37,7 +37,8 @@ export class Cart extends Component {
       },
       { title: "پرداخت آنلاین", value: 2 }
       ],
-
+      gildPrice: 0,
+      finalPrice: 0,
       loading: false,
       address: []
     };
@@ -70,7 +71,7 @@ export class Cart extends Component {
         updateKeyCity: this.state.updateKeyCity + 1,
       }
     )
-    this.onChangeCity({ value:null});
+    this.onChangeCity({ value: null });
   }
   onChangeCity(e) {
     var arr = [{ title: "تیپاکس", value: 1 },
@@ -121,10 +122,16 @@ export class Cart extends Component {
     this.refreshTable(data);
   }
   refreshTable(data) {
+
+    var totalPrice = data.reduce((acc, x) => acc + (x.count * x.data.price), 0);
+    var gildPrice = totalPrice * 0.1;
+
     this.setState({
       data: data,
       step: data != null && data.length > 0 ? 1 : 0,
       updateKey: this.state.updateKey + 1,
+      gildPrice: gildPrice.toLocaleString("fa-IR") + " تومان",
+      finalPrice: (totalPrice + gildPrice).toLocaleString("fa-IR") + " تومان",
     });
     localStorage.setItem("selectedItem", JSON.stringify(data));
   }
@@ -169,7 +176,7 @@ export class Cart extends Component {
       NotificationManager.error("نوع پرداخت انتخاب نشده است", "خطا");
       return;
     }
-   if (this.state.sendType == null) {
+    if (this.state.sendType == null) {
       NotificationManager.error("نوع ارسال انتخاب نشده است", "خطا");
       return;
     }
@@ -193,7 +200,7 @@ export class Cart extends Component {
         },
         dateDelivery: this.state.dateDelivery,
         payType: this.state.payType,
-        sendType:this.state.sendType
+        sendType: this.state.sendType
       };
 
       this.state.data.map((x, i) =>
@@ -252,7 +259,7 @@ export class Cart extends Component {
         updateKeyCity: this.state.updateKeyCity + 1,
         show: false
       });
-      this.  onChangeCity({value:e.provinceId});
+    this.onChangeCity({ value: e.provinceId });
   }
   render() {
     return (
@@ -304,7 +311,7 @@ export class Cart extends Component {
                             type="button"
                             className="btn btn-warning btn-sm"
                             onClick={() => this.onView(x)}
-                             style={{fontFamily:'Vazirmatn'}}
+                            style={{ fontFamily: 'Vazirmatn' }}
                           >
                             اطلاعات بیشتر
                           </button>
@@ -327,8 +334,8 @@ export class Cart extends Component {
               <p className="card-header">ثبت آدرس</p>
               <div className="g-3 p-3">
                 <button className="col-md-3 col-sm-12 btn btn-success"
-                     style={{fontFamily:'Vazirmatn'}}
- onClick={() => this.showModal()}>تاریخچه آدرس</button>
+                  style={{ fontFamily: 'Vazirmatn' }}
+                  onClick={() => this.showModal()}>تاریخچه آدرس</button>
                 <div className="row">
                   <DropdownApp
                     context={this}
@@ -377,7 +384,7 @@ export class Cart extends Component {
                     title="آدرس"
                     name="addressStr"
                     className="col-md-12 col-sm-12"
-                    readOnly={true}
+                    readOnly={false}
                   />
                 </div>
               </div>
@@ -401,12 +408,26 @@ export class Cart extends Component {
                   />
 
                 </div>
-                <div className="d-flex justify-content-start p-3">
-                  <ButtonWaith onClick={() => this.AddData()}
-                    className="btn btn-success col-md-3 col-sm-12 "
-                    loading={this.state.loading}
-                    title="ثبت سفارش" />
-                  <ButtonReturn />
+              </div>
+              <div className="card mb-1">
+                <p className="card-header">مبلغ نهایی</p>
+                <div className="row g-3 p-3">
+                  <div className="col-md-6 col-sm-12 " style={{ fontSize: "x-large", color: "rgb(238 143 62)", fontFamily: 'Vazirmatn' }}>
+                    <label className="form-label mt-2">مبلغ مالیات بر ارزش افزوده :</label>
+                    <label style={{ fontFamily: 'Vazirmatn' }}>{this.state.gildPrice}</label>
+                  </div>
+
+                  <div className="col-md-6 col-sm-12 " style={{ fontSize: "x-large", color: "#008800", fontFamily: 'Vazirmatn' }}>
+                    <label className="form-label mt-2">مبلغ نهایی :</label>
+                    <label className="btn-success">{this.state.finalPrice}</label>
+                  </div>
+                  <div className="d-flex justify-content-start p-3">
+                    <ButtonWaith onClick={() => this.AddData()}
+                      className="btn btn-success col-md-3 col-sm-12 "
+                      loading={this.state.loading}
+                      title="ثبت سفارش" />
+                    <ButtonReturn />
+                  </div>
                 </div>
               </div>
             </div>

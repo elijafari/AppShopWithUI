@@ -21,7 +21,9 @@ namespace AppShop.Business.Entity
         public int? SendType { get; set; }
         public int AddressId { get; set; }
         public string? PaymentCode { get; set; }
-
+        public double GildPrice{get; set; }
+        public double FinalPrice { get; set; }
+        public int? FactorNumber { get; set; }
         public virtual List<ItemBuy> ItemBuys { get; set; } = new List<ItemBuy>();
         public virtual ICollection<OrderBuyStatues> OrderBuyStatues { get; set; } = new List<OrderBuyStatues>();
         public virtual Address AddressEntity { get; set; }
