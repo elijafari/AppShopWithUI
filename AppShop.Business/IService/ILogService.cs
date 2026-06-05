@@ -9,7 +9,7 @@ namespace AppShop.Business.IService
 {
     public interface ILogService
     {
-        void Add(string message);
+        void Add(string message,string?  userId);
         List<Log> GetList();
         Task<bool> SendEmail();
     }

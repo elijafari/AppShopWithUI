@@ -20,12 +20,12 @@ namespace AppShop.Business.Service
             db = _db;
             emailService = _emailService;
         }
-        public void Add(string message)
+        public void Add(string message,string? userId)
         {
             var entity = new Log();
             entity.Massege = message;
             entity.CreateDateTime = DateTime.Now;
-            entity.UserId = Guid.Empty;
+            entity.UserId =userId==null? Guid.Empty:new Guid(userId);
             db.Logs.Add(entity);
             db.SaveChanges();
             //  throw new Exception(message);

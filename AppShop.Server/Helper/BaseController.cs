@@ -6,6 +6,7 @@ using AppShop.Business.Service;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net;
+using System.Security.Claims;
 namespace AppShop.Server.Helper
 {
     [ApiController]
@@ -65,8 +66,8 @@ namespace AppShop.Server.Helper
             }
             catch (Exception ex) // سایر خطاها
             {
-
-                logService.Add(JsonConvert.SerializeObject( ex ,new JsonSerializerSettings() { ReferenceLoopHandling=ReferenceLoopHandling.Ignore}));
+                var id = User?.FindFirstValue("id");
+                logService.Add(JsonConvert.SerializeObject( ex ,new JsonSerializerSettings() { ReferenceLoopHandling=ReferenceLoopHandling.Ignore}),id);
                 return StatusCode((int)HttpStatusCode.InternalServerError, new ApiResponse
                 {
                     Success = false,

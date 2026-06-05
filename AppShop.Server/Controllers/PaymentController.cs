@@ -5,6 +5,7 @@ using AppShop.Business.Service;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using System.Security.Claims;
 using System.Text;
 using static System.Net.WebRequestMethods;
 
@@ -62,7 +63,6 @@ namespace AppShop.Server.Controllers
         [HttpGet]
         public async Task<IActionResult> VerifyPayment([FromQuery] long Amount, [FromQuery] string Authority, [FromQuery] string Status, [FromQuery] Guid oId)
         {
-
             if (Status == "OK")
             {
 
@@ -88,12 +88,21 @@ namespace AppShop.Server.Controllers
                     return Redirect(Path.Combine(urlFront, $"payment/success/:{trackingCode}/:{result.ref_id}"));
                 }
                 else
-                    _logService.Add("payment :"+res);
+                {
+                    var id = User?.FindFirstValue("id");
+                    _logService.Add($"payment : oid : {oId} Status: {Status} result: {res}",id);
+                    var trackingCodeOnly = _orderBuyService.GetById(oId).TrackingCode;
+                    return Redirect(Path.Combine(urlFront, $"payment/failed/:{trackingCodeOnly}"));
+                }
 
             }
-            _logService.Add("payment :"+Status);
-            var trackingCodeOnly = _orderBuyService.GetById(oId).TrackingCode;
-            return Redirect(Path.Combine(urlFront, $"payment/failed/:{trackingCodeOnly}"));
+            else
+            {
+                var id = User?.FindFirstValue("id");
+                _logService.Add($"payment : oid : {oId} Status: {Status}",id);
+                var trackingCodeOnly = _orderBuyService.GetById(oId).TrackingCode;
+                return Redirect(Path.Combine(urlFront, $"payment/failed/:{trackingCodeOnly}"));
+            }
         }
     }
 }
