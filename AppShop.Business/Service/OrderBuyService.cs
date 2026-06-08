@@ -8,12 +8,6 @@ using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
-using static Org.BouncyCastle.Math.EC.ECCurve;
 
 namespace AppShop.Business.Service
 {
@@ -133,9 +127,9 @@ namespace AppShop.Business.Service
             }
 
         }
-        public bool ChangeShopStatues(Guid id, ShopStatues shopStatues)
+        public bool ChangeShopStatues(Guid id, ShopStatues shopStatues ,bool isAdmin=false)
         {
-            if (ChangeShopStatuesAndGet(id, shopStatues) != 0)
+            if (ChangeShopStatuesAndGet(id, shopStatues,"",isAdmin) != 0)
                 return true;
             return false;
         }
@@ -144,14 +138,16 @@ namespace AppShop.Business.Service
             return ChangeShopStatuesAndGet(id, ShopStatues.Paid, paymentCode);
         }
 
-        private long ChangeShopStatuesAndGet(Guid id, ShopStatues shopStatues, string paymentCode = "")
+        private long ChangeShopStatuesAndGet(Guid id, ShopStatues shopStatues, string paymentCode = "",bool isAdmin=false)
         {
             var entity = db.OrderBuys.AsNoTracking().FirstOrDefault(x => x.Id == id);
+            if(entity.Statues==ShopStatues.Cancel)
+                throw new PersianException("این سفارش لغو شده است امکان تغییر وضعیت وجود ندارد");
 
-            if (shopStatues == ShopStatues.Cancel && entity.Statues == ShopStatues.Paid)
+            if (shopStatues == ShopStatues.Cancel && entity.Statues == ShopStatues.Paid && !isAdmin)
                 throw new PersianException("با نوجه به وضعیت جاری سفارش امکان لغو سفارش وجود ندارد");
 
-            if (shopStatues == ShopStatues.Cancel && entity.Statues != ShopStatues.Register)
+            if (shopStatues == ShopStatues.Cancel && entity.Statues != ShopStatues.Register && !isAdmin)
                 throw new PersianException("با نوجه به وضعیت جاری سفارش امکان لغو سفارش وجود ندارد");
 
             if (shopStatues == ShopStatues.Confirm && entity.Statues != ShopStatues.Register && entity.Statues != ShopStatues.Paid)
@@ -187,9 +183,10 @@ namespace AppShop.Business.Service
         public List<OrderBuyVm> GetAll(Guid userId, bool isAdmin)
         {
             var query = db.OrderBuys.Select(x => x);
-            if (isAdmin)
-                query = query.Where(x => x.Statues != ShopStatues.Cancel);
-            else
+            //if (isAdmin)
+            //    query = query.Where(x => x.Statues != ShopStatues.Cancel);
+           // else
+           if(!isAdmin)
                 query = query.Where(x => x.UserId == userId);
 
             query = query.OrderByDescending(x => x.DateOrder);

@@ -19,18 +19,18 @@ namespace AppShop.Server.Controllers
     {
 
         private readonly IOrderBuyService service;
-       
-        public OrderBuyController(IOrderBuyService _service,ILogService _logService):base(_logService)
+
+        public OrderBuyController(IOrderBuyService _service, ILogService _logService) : base(_logService)
         {
             service = _service;
         }
         [HttpPost]
         public IActionResult Add(InOrderBuy input)
         {
-            return Response(()=>
+            return Response(() =>
             {
                 var id = User.FindFirstValue("id");
-               return service.Add(input, new Guid(id));
+                return service.Add(input, new Guid(id));
             });
         }
         [Authorize(Roles = "Admin")]
@@ -38,20 +38,28 @@ namespace AppShop.Server.Controllers
         public IActionResult ChangeShopStatues(InChangeStatues input) => Response(() => service.ChangeShopStatues(input.Id, input.shopStatues));
         [Authorize]
         [HttpPost]
-        public IActionResult CancelOrder(InId input) => Response(() => service.ChangeShopStatues(input.Id, ShopStatues.Cancel));
+        public IActionResult CancelOrder(InId input)
+        {
+            return Response(() =>
+            {
+                var id = User.FindFirstValue("id");
+                var isAdmin = User.FindFirstValue(ClaimTypes.Role) == "Admin" ? true : false;
+                return service.ChangeShopStatues(input.Id, ShopStatues.Cancel, isAdmin);
+            });
+        }
         [HttpPost]
         public IActionResult GetAll()
         {
             return Response(() =>
             {
                 var id = User.FindFirstValue("id");
-                var isAdmin=User.FindFirstValue(ClaimTypes.Role) == "Admin" ? true : false;
-                return service.GetAll( new Guid(id),isAdmin);
+                var isAdmin = User.FindFirstValue(ClaimTypes.Role) == "Admin" ? true : false;
+                return service.GetAll(new Guid(id), isAdmin);
             });
         }
         [HttpPost]
-        public IActionResult GetById(InId input) =>Response(()=>service.GetById(input.Id));
+        public IActionResult GetById(InId input) => Response(() => service.GetById(input.Id));
         [HttpGet]
         public IActionResult GetDays() => Response(() => service.GetDays());
-       }
+    }
 }

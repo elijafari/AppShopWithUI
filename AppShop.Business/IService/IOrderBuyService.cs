@@ -6,7 +6,7 @@ namespace AppShop.Business.IService
     public interface IOrderBuyService
     {
         KeyValue Add(InOrderBuy input, Guid userid);
-        bool ChangeShopStatues(Guid id, ShopStatues shopStatues);
+        bool ChangeShopStatues(Guid id, ShopStatues shopStatues, bool isAdmin = false);
         List<OrderBuyVm> GetAll(Guid userId, bool isAdmin);
         List<KeyValue> GetDays();
         OrderBuyVm GetById(Guid id);

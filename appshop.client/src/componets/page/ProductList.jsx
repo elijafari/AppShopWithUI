@@ -55,7 +55,7 @@ onEdit(e)
       <>
         <div className="card" style={{ cursor: "pointer" }}>
           <div className="card-header">
-            <h5> لیست کالاهای موجود
+            <h5> لیست کالاها
             <FiRefreshCcw 
             className="iconRefresh" onClick={()=>this.loadDate(this.state.currentPage)}/></h5>
           </div>

@@ -37,7 +37,7 @@ namespace AppShop.Business.Service
                 issuer: _configuration["Jwt:Issuer"],
                 audience: _configuration["Jwt:Issuer"],
                 claims: claims,
-                expires: DateTime.UtcNow.AddDays(2),
+                expires: DateTime.UtcNow.AddDays(30),
                 signingCredentials: creds
             );
 

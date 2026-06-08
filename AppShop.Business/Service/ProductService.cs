@@ -164,7 +164,7 @@ namespace AppShop.Business.Service
                 query = query.OrderByDescending(x => x.Price);
 
             else
-                query = query.OrderByDescending(x => x.IsActive).ThenBy(x => x.Code);
+                query = query.OrderBy(x => x.Code);
 
             result.Data = query.Skip(result.StartRow).Take(param.Take).Cast<object>().ToList();
             result.TotalCount = query.Count();

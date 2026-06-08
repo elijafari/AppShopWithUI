@@ -83,7 +83,6 @@ export class Orders extends React.Component {
     var data = {
       id: e.id,
     }
-
     api.post("/orderBuy/cancelOrder", data)
       .then(res => {
         this.setState({ loading: false });
@@ -101,21 +100,26 @@ export class Orders extends React.Component {
   }
 
   changeOrder() {
-    if (this.state.isAdmin)
-      this.changeStatuesOrder();
-    else
+    if (this.state.isCancel)
       this.cancelOrder();
+    else
+      this.changeStatuesOrder();
   }
-  showModal(e) {
-    debugger;
-    var msg = " آیا می خواهید لغو سفارش انجام شود؟ ";
-    if (this.state.isAdmin) {
+  showModal(e, isCancel) {
+    if (e.statues == 6) {
+      NotificationManager.error("این سفارش لغو شده است امکان تغییر وضعیت وجود ندارد");
+      return;
+    }
+    var msg = "";
+    if (isCancel)
+      msg = " آیا می خواهید لغو سفارش انجام شود؟ ";
+    else if (this.state.isAdmin) {
       if (e.statues == 7)
         msg = "آیا می خواهید تایید سفارش انجام شود؟";
       else
         msg = " آیا می خواهید " + this.statues[e.statues] + " انجام شود؟ ";
     }
-    this.setState({ order: e, msg: msg, show: true });
+    this.setState({ order: e, msg: msg, show: true, isCancel });
   }
   closeModal() {
     this.setState({ show: false });
@@ -172,7 +176,7 @@ export class Orders extends React.Component {
                       <td data-label="مبلغ نهایی (تومان)">{order.finalPrice.toLocaleString()}</td>
                       {this.state.isAdmin && <td data-label="نوع پرداخت">{order.strPayType}</td>}
                       {this.state.isAdmin && <td data-label="شناسه تراکنش پرداخت">{order.paymentCode}</td>}
-                      <td data-label="وضعیت">{order.strStatues}</td>
+                      <td data-label="وضعیت" className={order.statues == 6 ? "text-danger" : ""}>{order.strStatues}</td>
                       {this.state.isAdmin && <td data-label="شماره فاکتور">{order.factorNumber}</td>}
                       <td>
                         <div className="dropdown">
@@ -193,12 +197,17 @@ export class Orders extends React.Component {
                                 onClick={() => window.location.href = `/OrderDetails/${order.id}`}> مشاهده جزئیات </button>
                             </li>
 
+                            <li>
+                              <button
+                                className="dropdown-item text-danger"
+                                onClick={() => this.showModal(order, true)}>لغو سفارش </button>
+                            </li>
                             {this.state.isAdmin ? (
                               <>
                                 <li>
                                   <button
                                     className="dropdown-item"
-                                    onClick={() => this.showModal(order)}> تغییر وضعیت </button>
+                                    onClick={() => this.showModal(order, false)}> تغییر وضعیت </button>
                                 </li>
                                 {/* <li>
                                   <button
@@ -210,36 +219,10 @@ export class Orders extends React.Component {
                                     onClick={() => this.setState({ selectedOrder: order, showBjk: true })} >              چاپ بیجک
                                   </button>    </li>
                               </>
-                            ) : (
-                              <li>
-                                <button
-                                  className="dropdown-item text-danger"
-                                  onClick={() => this.showModal(order)}>لغو سفارش </button>
-                              </li>
-                            )}
+                            ) : null}
                           </ul>
                         </div>
                       </td>
-
-                      {/* <td>
-{this.state.isAdmin ? (
- <button
- className="btn btn-sm btn-warning"
- onClick={() => this.showModal(order)}
- style={{ fontFamily: 'Vazirmatn' }}
- > تغییر وضعیت
- </button>
-) : (
- <button
- className="btn btn-sm btn-danger"
- onClick={() => this.showModal(order)}
- style={{ fontFamily: 'Vazirmatn' }}
- >
- لغو سفارش
- </button>
-
-)}
-</td> */}
                     </tr>
                   ))}
                 </tbody>

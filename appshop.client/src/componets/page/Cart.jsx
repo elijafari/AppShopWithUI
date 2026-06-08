@@ -214,7 +214,6 @@ export class Cart extends Component {
       this.setState({ loading: true });
       api.post("/orderBuy/add", data)
         .then((res) => {
-          this.setState({ loading: false });
           if (res.status === 200) {
             // اگر پرداخت آنلاین انتخاب شده
             if (this.state.payType === 2) {
@@ -224,8 +223,10 @@ export class Cart extends Component {
               window.location.href = "/successOrder/" + res.data.data.title;
             }
             localStorage.removeItem("selectedItem");
-          } else
+          } else {
+            this.setState({ loading: false });
             ErrorHanding(NotificationManager, res.data.message);
+          }
         })
         .catch((error) => {
           ErrorHanding(NotificationManager, error);
