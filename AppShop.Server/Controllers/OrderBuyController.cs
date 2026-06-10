@@ -48,13 +48,13 @@ namespace AppShop.Server.Controllers
             });
         }
         [HttpPost]
-        public IActionResult GetAll()
+        public IActionResult GetAll(InStatues inStatues)
         {
             return Response(() =>
             {
                 var id = User.FindFirstValue("id");
                 var isAdmin = User.FindFirstValue(ClaimTypes.Role) == "Admin" ? true : false;
-                return service.GetAll(new Guid(id), isAdmin);
+                return service.GetAll(new Guid(id), isAdmin,inStatues);
             });
         }
         [HttpPost]

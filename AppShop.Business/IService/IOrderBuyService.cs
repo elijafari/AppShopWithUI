@@ -7,7 +7,7 @@ namespace AppShop.Business.IService
     {
         KeyValue Add(InOrderBuy input, Guid userid);
         bool ChangeShopStatues(Guid id, ShopStatues shopStatues, bool isAdmin = false);
-        List<OrderBuyVm> GetAll(Guid userId, bool isAdmin);
+        List<OrderBuyVm> GetAll(Guid userId, bool isAdmin, InStatues inStatues);
         List<KeyValue> GetDays();
         OrderBuyVm GetById(Guid id);
         OrderBuyPaymentVm GetByForPaymentId(Guid id);

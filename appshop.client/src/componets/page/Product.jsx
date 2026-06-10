@@ -194,6 +194,7 @@ export class Product extends React.Component {
                             name="description"
                             className="col-md-12 col-sm-12"
                             updateKey={this.state.updateKey}
+                            style={{height: '300px',textAlign: 'right'}}
                         />
                         <div className="col-md-6 col-sm-12 d-flex align-items-center">
                             <Checkbox

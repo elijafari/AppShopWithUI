@@ -37,4 +37,9 @@ namespace AppShop.Business.DataModel
         public Guid Id { get; set; }
         public ShopStatues shopStatues { get; set; }
     }
+
+    public class InStatues
+    {
+        public int StatuesId { get; set; }
+    }
 }

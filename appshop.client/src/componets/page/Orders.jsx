@@ -1,5 +1,6 @@
 import React from "react";
 import api from "../tools/axiosConfig";
+import { DropdownApp } from "../tools/DropdownApp";
 import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css"
 import {
   NotificationContainer,
@@ -12,16 +13,24 @@ import { Loading } from "../tools/Loading";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import { Bijak } from "./Bijak";
+import Value from "autoprefixer/lib/value";
+import { Factor } from "./Factor";
 export class Orders extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       show: false,
+      statuesId:101,
       orders: [],
       loading: true,
       msg: "",
       isAdmin: false, // از توکن یا پروفایل بیار
-    };
+      statuesList: [
+        { value: 101, title: "ثبت اولیه / پرداخت شده" },
+        { value: 102, title: "تایید/ ارسال / تحویل سفارش" },
+        { value: 103, title: "لغو شده / مرجوعی" },
+      ]
+    }
     this.statues = ["ثبت اولیه", "تایید سفارش", "ارسال سفارش", "تحویل سفارش", "مرجوع سفارش",];
   }
 
@@ -34,7 +43,7 @@ export class Orders extends React.Component {
     let token = localStorage.getItem("token");
     let user = parseJwt(token);
 
-    api.post("/orderBuy/GetAll")
+    api.post("/orderBuy/GetAll",{statuesId:this.state.statuesId})
       .then(res => {
         this.setState({ loading: false });
         if (res.status === 200) {
@@ -130,12 +139,32 @@ export class Orders extends React.Component {
     }
 
     return (
+
       <div dir="rtl" className="container mt-4 fontApp">
+  
         <h3 className="mb-4 text-center fw-bold">
           {this.state.isAdmin ? "مدیریت سفارشات" + "(" + this.state.orders.length + ")"
             : "سفارشات من" + "(" + this.state.orders.length + ")"}
         </h3>
 
+      {this.state.isAdmin && (<div
+          className="col-md-6 col-sm-12 d-flex align-items-end gap-2 mb-3"
+        >
+          <DropdownApp
+            context={this}
+            name="statuesId"
+            title="وضعیت سفارش"
+            data={this.state.statuesList}
+          />
+
+          <button
+            onClick={() => this.getOrders()}
+            className="btn btn-success"
+            style={{ fontFamily: "Vazirmatn" }}
+          >
+            نمایش
+          </button>
+        </div>)}
         {this.state.orders.length === 0 ? (
           <div className="alert alert-warning text-center">
             هیچ سفارشی یافت نشد.
@@ -209,11 +238,11 @@ export class Orders extends React.Component {
                                     className="dropdown-item"
                                     onClick={() => this.showModal(order, false)}> تغییر وضعیت </button>
                                 </li>
-                                {/* <li>
+                                 <li>
                                   <button
                                     className="dropdown-item"
-                                    onClick={() => this.printOrder(order.id)}>چاپ فاکتور </button>
-                                </li> */}
+                                    onClick={() => this.setState({ selectedOrder: order, showFac: true })} >چاپ فاکتور </button>
+                                </li> 
                                 <li>
                                   <button className="dropdown-item"
                                     onClick={() => this.setState({ selectedOrder: order, showBjk: true })} >              چاپ بیجک
@@ -254,6 +283,10 @@ export class Orders extends React.Component {
               fullName={this.state.selectedOrder?.fullName}
               phone={this.state.selectedOrder?.phone}
               address={this.state.selectedOrder?.addressStr} />
+    <Factor
+              show={this.state.showFac}
+              onHide={() => { this.setState({ showFac: false }) }}
+              order={this.state.selectedOrder}/>
           </>
         )}
       </div>

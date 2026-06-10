@@ -61,7 +61,7 @@ namespace AppShop.Business.Service
             db.OrderBuys.Add(entity);
             db.SaveChanges();
 
-            //SendEmailToMe(entity.TrackingCode);
+           // SendEmailToMe(entity.TrackingCode);
 
             //SendEmailToUser(entity);
 
@@ -180,13 +180,19 @@ namespace AppShop.Business.Service
             db.SaveChanges();
             return entity.TrackingCode;
         }
-        public List<OrderBuyVm> GetAll(Guid userId, bool isAdmin)
+        public List<OrderBuyVm> GetAll(Guid userId, bool isAdmin, InStatues inStatues)
         {
             var query = db.OrderBuys.Select(x => x);
-            //if (isAdmin)
-            //    query = query.Where(x => x.Statues != ShopStatues.Cancel);
-           // else
-           if(!isAdmin)
+            if (isAdmin)
+            {
+                if (inStatues.StatuesId == 101)
+                    query = query.Where(x => x.Statues == ShopStatues.Register || x.Statues == ShopStatues.Paid);
+                else if (inStatues.StatuesId == 102)
+                    query = query.Where(x => x.Statues == ShopStatues.Confirm || x.Statues == ShopStatues.Send || x.Statues == ShopStatues.Delivery);
+                else if (inStatues.StatuesId == 103)
+                    query = query.Where(x => x.Statues == ShopStatues.Cancel || x.Statues == ShopStatues.Reject);
+            }
+            else
                 query = query.Where(x => x.UserId == userId);
 
             query = query.OrderByDescending(x => x.DateOrder);

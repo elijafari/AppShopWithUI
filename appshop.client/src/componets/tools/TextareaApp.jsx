@@ -23,7 +23,7 @@ export class TextareaApp extends React.Component {
             readOnly={false}
             onChange={(e) => this.handleInputChange(e)}
             className="form-control"
-            style={{ textAlign: "right" }}
+            style={this.props.style}
             key={this.props.name + this.props.updateKey}
           />
         </div>
