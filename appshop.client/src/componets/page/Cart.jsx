@@ -37,8 +37,8 @@ export class Cart extends Component {
       },
       { title: "پرداخت آنلاین", value: 2 }
       ],
-      gildPrice: 0,
-      finalPrice: 0,
+      // gildPrice: 0,
+      // finalPrice: 0,
       loading: false,
       address: []
     };
@@ -123,15 +123,15 @@ export class Cart extends Component {
   }
   refreshTable(data) {
 
-    var totalPrice = data.reduce((acc, x) => acc + (x.count * x.data.price), 0);
-    var gildPrice = totalPrice * 0.1;
+    //  var totalPrice = data.reduce((acc, x) => acc + (x.count * x.data.price), 0);
+    //var gildPrice = totalPrice * 0.1;
 
     this.setState({
       data: data,
       step: data != null && data.length > 0 ? 1 : 0,
       updateKey: this.state.updateKey + 1,
-      gildPrice: gildPrice.toLocaleString("fa-IR") + " تومان",
-      finalPrice: (totalPrice + gildPrice).toLocaleString("fa-IR") + " تومان",
+      //  gildPrice: gildPrice.toLocaleString("fa-IR") + " تومان",
+      //  finalPrice: (totalPrice + gildPrice).toLocaleString("fa-IR") + " تومان",
     });
     localStorage.setItem("selectedItem", JSON.stringify(data));
   }
@@ -407,10 +407,16 @@ export class Cart extends Component {
                     name="payType"
                     data={this.state.payTypies}
                   />
-
+                  <div className="d-flex justify-content-start p-3">
+                    <ButtonWaith onClick={() => this.AddData()}
+                      className="btn btn-success col-md-3 col-sm-12 "
+                      loading={this.state.loading}
+                      title="ثبت سفارش" />
+                    <ButtonReturn />
+                  </div>
                 </div>
               </div>
-              <div className="card mb-1">
+              {/* <div className="card mb-1">
                 <p className="card-header">مبلغ نهایی</p>
                 <div className="row g-3 p-3">
                   <div className="col-md-6 col-sm-12 " style={{ fontSize: "x-large", color: "rgb(238 143 62)", fontFamily: 'Vazirmatn' }}>
@@ -422,15 +428,9 @@ export class Cart extends Component {
                     <label className="form-label mt-2">مبلغ نهایی :</label>
                     <label className="btn-success">{this.state.finalPrice}</label>
                   </div>
-                  <div className="d-flex justify-content-start p-3">
-                    <ButtonWaith onClick={() => this.AddData()}
-                      className="btn btn-success col-md-3 col-sm-12 "
-                      loading={this.state.loading}
-                      title="ثبت سفارش" />
-                    <ButtonReturn />
-                  </div>
+                
                 </div>
-              </div>
+              </div> */}
             </div>
 
             <Modal

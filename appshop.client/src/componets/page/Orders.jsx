@@ -182,8 +182,8 @@ export class Orders extends React.Component {
                     <th>تاریخ سفارش</th>
                     <th>تاریخ تحویل</th>
                     {this.state.isAdmin && <th>مبلغ (تومان)</th>}
-                    {this.state.isAdmin && <th>مالیات بر ارزش افزوده(تومان)</th>}
-                    <th>مبلغ نهایی(تومان)</th>
+                    {/* {this.state.isAdmin && <th>مالیات بر ارزش افزوده(تومان)</th>}
+                    <th>مبلغ نهایی(تومان)</th> */}
                     {this.state.isAdmin && <th>نوع پرداخت</th>}
                     {this.state.isAdmin && <th>شناسه تراکنش پرداخت</th>}
                     <th>وضعیت</th>
@@ -201,8 +201,8 @@ export class Orders extends React.Component {
                       <td data-label="تاریخ سفارش">{order.solorDateOrder}</td>
                       <td data-label="تاریخ تحویل">{order.solorDateDelivery}</td>
                       {this.state.isAdmin && <td data-label="مبلغ (تومان)">{order.totalPrice.toLocaleString()}</td>}
-                      {this.state.isAdmin && <td data-label="مالیات بر ارزش افزوده (تومان)">{order.gildPrice.toLocaleString()}</td>}
-                      <td data-label="مبلغ نهایی (تومان)">{order.finalPrice.toLocaleString()}</td>
+                  {/* //    {this.state.isAdmin && <td data-label="مالیات بر ارزش افزوده (تومان)">{order.gildPrice.toLocaleString()}</td>}
+                  //    <td data-label="مبلغ نهایی (تومان)">{order.finalPrice.toLocaleString()}</td> */}
                       {this.state.isAdmin && <td data-label="نوع پرداخت">{order.strPayType}</td>}
                       {this.state.isAdmin && <td data-label="شناسه تراکنش پرداخت">{order.paymentCode}</td>}
                       <td data-label="وضعیت" className={order.statues == 6 ? "text-danger" : ""}>{order.strStatues}</td>

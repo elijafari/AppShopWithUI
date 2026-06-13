@@ -124,7 +124,7 @@ export function Factor(props) {
                     </table>
 
                     <div className="text-left mt-4">
-                        <p> مالیات بر ارزش افزوده:  {props.order?.gildPrice.toLocaleString()} تومان  </p>
+                      {/* //  <p> مالیات بر ارزش افزوده:  {props.order?.gildPrice.toLocaleString()} تومان  </p> */}
                         <p> مبلغ نهایی :    {props.order?.finalPrice.toLocaleString()} تومان   </p>
                     </div>
                 </div>

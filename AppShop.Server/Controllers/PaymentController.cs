@@ -30,9 +30,9 @@ namespace AppShop.Server.Controllers
             _httpClient = httpClient;
 
             //for test local
-            //urlFront = appSetting.Value.UrlFront;
-            //urlBack = appSetting.Value.UrlBack;
-            //baseUrl = "https://sandbox.zarinpal.com/";
+            urlFront = appSetting.Value.UrlFront;
+            urlBack = appSetting.Value.UrlBack;
+            baseUrl = "https://sandbox.zarinpal.com/";
 
             _orderBuyService = orderBuyService;
             _logService = logService;

@@ -91,14 +91,14 @@ class OrderDetails extends React.Component {
                                 <td className="fw-bold">{order.items.reduce((sum, x) => sum + x.count * x.price, 0).toLocaleString()}</td>
                             </tr>
                             
-                            <tr>
+                            {/* <tr>
                                 <td colSpan={4} className="fw-bold">مبلغ مالیات بر ارزش افزوده</td>
                                 <td className="fw-bold">{order.gildPrice.toLocaleString()}</td>
-                            </tr>
-                            <tr>
+                            </tr> */}
+                            {/* <tr>
                                 <td colSpan={4} className="fw-bold">مبلغ نهایی</td>
                                 <td className="fw-bold">{order.finalPrice.toLocaleString()}</td>
-                            </tr>
+                            </tr> */}
                         </tbody>
                     </table>
                 </div>

@@ -50,8 +50,9 @@ namespace AppShop.Business.Service
             entity.ItemBuys.AddRange(mapper.Map<List<ItemBuy>>(input.Items));
 
             var price = input.Items.Sum(x => x.Price * x.Count);
-            entity.GildPrice = price * 0.10;
-            entity.FinalPrice = price + entity.GildPrice;
+            // entity.GildPrice = price * 0.10;
+            //entity.FinalPrice = price + entity.GildPrice;
+            entity.FinalPrice = price;
 
             var statues = new OrderBuyStatues();
             statues.Statues = ShopStatues.Register;

@@ -9,11 +9,13 @@ export function SentDataToZarinpal(NotificationManager, orderId) {
             if (resp.data.data && resp.data.data.authority) {
                 const authority = resp.data.data.authority;
 
-               let urlZaripal = 'https://sandbox.zarinpal.com/pg/StartPay/';
-                //  let urlZaripal = 'https://www.zarinpal.com/pg/StartPay/'
+                 //  let urlZaripal = 'https://sandbox.zarinpal.com/pg/StartPay/';
+                // let urlZaripal = 'https://www.zarinpal.com/pg/StartPay/'
+             
+               let urlZaripal = import.meta.env.VITE_ZARINPAL_URL
                 // ریدایرکت به زرین‌پال
                 window.location.href = urlZaripal + authority
-                
+
             }
         })
         .catch(error => {
