@@ -139,8 +139,10 @@ namespace AppShop.Business.Service
 
         }
 
-        public DataView GetAll(DataRequest param)
+        public DataView GetAll(DataRequest param,bool isAdmin)
         {
+            if(isAdmin==false)
+            AddVisit("Home");
             var result = new DataView(param.Take, param.PageNumber);
 
             var query = from p in db.Products select p;
@@ -174,7 +176,14 @@ namespace AppShop.Business.Service
         }
         public List<Product> GetAll()
         {
+           
             return db.Products.ToList();
+        }
+
+        private void AddVisit(string namePage)
+        {
+            db.Visits.Add(new Visit() { Date = DateTime.Now, NamePage = namePage });
+            db.SaveChanges();
         }
 
         public string GetJson()
@@ -226,13 +235,15 @@ namespace AppShop.Business.Service
 
         public Product GetById(int id)
         {
-            var entity = db.Products.Where(x => x.Id == id).SingleOrDefault();
+             var entity = db.Products.Where(x => x.Id == id).SingleOrDefault();
             entity.PathImags = db.ProductImages.Where(x => x.ProductId == id).Select(x => x.PathImg).ToList();
             return entity;
         }
-        public Product GetBySlug(string slug)
-        {
+        public Product GetBySlug(string slug,bool isAdmin)
+        {       
             var entity = db.Products.Where(x => x.Slug == slug).AsNoTracking().SingleOrDefault();
+            if(!isAdmin)
+            AddVisit(entity.Name);    
             entity.CategoryName = db.Categories.FirstOrDefault(x => x.Id == entity.CategoryId)?.Name;
             entity.PathImags = db.ProductImages.Where(x => x.ProductId == entity.Id).Select(x => x.PathImg).ToList();
             return entity;

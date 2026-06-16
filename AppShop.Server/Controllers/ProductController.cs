@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Mvc;
 using Org.BouncyCastle.X509;
 using System.Net;
+using System.Security.Claims;
 
 namespace AppShop.Server.Controllers
 {
@@ -80,7 +81,8 @@ namespace AppShop.Server.Controllers
             {
                 var param = new DataRequest(inputRequest.PageNumber, 100,inputRequest.Sort);
                 param.Filter = inputRequest.Filter;
-               return service.GetAll(param);
+                var isAdmin = User.FindFirstValue(ClaimTypes.Role) == "Admin" ? true : false;
+                return service.GetAll(param,isAdmin);
             });
         }
         [HttpPost]
@@ -91,13 +93,13 @@ namespace AppShop.Server.Controllers
             return Response(() =>
             {
                 var param = new DataRequest(inputRequest.PageNumber, 1000);
-                return service.GetAll(param);
+                return service.GetAll(param,true);
             });
         }
         [HttpPost]
         public IActionResult GetById(InRecord input) => Response(() => service.GetById(int.Parse(input.Id)));
         [HttpPost]
-        public IActionResult GetBySlug(InSlug input) => Response(() => service.GetBySlug(input.Slug));
+        public IActionResult GetBySlug(InSlug input) => Response(() => service.GetBySlug(input.Slug,User.FindFirstValue(ClaimTypes.Role) == "Admin" ? true : false));
         [HttpGet]
         [Authorize(Roles = "Admin")]
         public IActionResult DeleteAll() => Response(() => service.DeleteAll());

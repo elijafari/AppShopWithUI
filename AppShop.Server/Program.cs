@@ -111,6 +111,7 @@ builder.Services.AddScoped<ICityService, CityService>();
 builder.Services.AddScoped<IAddressService, AddressService>(); 
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IContactService, ContactService>();
+builder.Services.AddScoped<IVisitService, VisitService>();
 
 
 

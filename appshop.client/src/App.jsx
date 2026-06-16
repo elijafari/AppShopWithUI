@@ -13,6 +13,7 @@ import { NoAccess } from './componets/page/NoAccess';
 import { ForgtoPassword } from './componets/page/ForgtoPassword';
 import { Orders } from './componets/page/Orders';
 import { LogList } from './componets/page/LogList';
+import { VisitList } from './componets/page/VisitList';
 import  OrderDetails  from './componets/page/OrderDetails';
 import AboutUs from './componets/page/AboutUs';
 import ContactUs from './componets/page/ContactUs';
@@ -38,6 +39,7 @@ export default class App extends Component {
               <Route path="/product/:id" element={<Product isEdit={true} />} />
               <Route path="/productView/:id" element={<ProductView />} />
               <Route path="/productList" element={<ProductList />} />
+              <Route path="/visitList" element={<VisitList />} />
               <Route path="/log" element={<LogList />} />
               <Route path="/aboutUs" element={<AboutUs />} />
               <Route path="/contactUs" element={<ContactUs />} />

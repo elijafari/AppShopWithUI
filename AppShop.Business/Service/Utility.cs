@@ -22,7 +22,7 @@ namespace AppShop.Business.Service
         public static string GetPersion(DateTime d)
         {
             PersianCalendar pc = new PersianCalendar();
-            return string.Format("{0}/{1}/{2}", pc.GetYear(d), pc.GetMonth(d), pc.GetDayOfMonth(d));
+            return string.Format("{0}/{1}/{2}", pc.GetYear(d), pc.GetMonth(d).ToString("d2"), pc.GetDayOfMonth(d).ToString("d2"));
         }
         public static string GetDay(DateTime d)
         {

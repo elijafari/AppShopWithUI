@@ -177,6 +177,12 @@ export class Menu extends Component {
                       لیست کالاها
                     </a>
                   </li>
+                <li className="nav-item">
+                    <a className="nav-link custom-link" href="/visitList">
+                      مشاهده بازدید ها
+                    </a>
+                  </li>
+                  
                 </>
               )}
 
