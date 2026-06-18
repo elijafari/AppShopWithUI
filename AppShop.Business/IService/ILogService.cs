@@ -11,6 +11,8 @@ namespace AppShop.Business.IService
     {
         void Add(string message,string?  userId);
         List<Log> GetList();
+        Task<bool> SendEmailFromHast();
         Task<bool> SendEmail();
+//        bool SendEmail();
     }
 }

@@ -35,6 +35,15 @@ namespace AppShop.Business.Service
         {
             return db.Logs.OrderByDescending(x => x.CreateDateTime).ToList();
         }
+        public async Task<bool> SendEmailFromHast()
+        {
+            var listTo = new List<string>
+            {
+                "ehsanjaafari12@gmail.com",
+                "e.jafari64@gmail.com",
+            };
+            return await emailService.SendEmailAsync(listTo, "ثبت سفارش تستی", "/**ثبت سفارش تستی**/");
+        }
         public async Task<bool> SendEmail()
         {
             var listTo = new List<string>
@@ -42,7 +51,7 @@ namespace AppShop.Business.Service
                 "e.jafari64@gmail.com",
                // "ehsanjaafari12@gmail.com"
             };
-           return await  emailService.SendEmailAsync(listTo, "ثبت سفارش تستی", "/**ثبت سفارش تستی**/");
+             return await  emailService.SendEmailAsync(listTo, "ثبت سفارش تستی", "/**ثبت سفارش تستی**/");
         }
     }
 }

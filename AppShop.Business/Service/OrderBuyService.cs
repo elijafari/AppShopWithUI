@@ -8,6 +8,7 @@ using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace AppShop.Business.Service
 {
@@ -22,7 +23,7 @@ namespace AppShop.Business.Service
             mapper = _mapper;
             emailService = _emailService;
         }
-        public KeyValue Add(InOrderBuy input, Guid userId)
+        public async Task<KeyValue> Add(InOrderBuy input, Guid userId)
         {
             Validtion(input);
             var entity = new OrderBuy();
@@ -62,14 +63,14 @@ namespace AppShop.Business.Service
             db.OrderBuys.Add(entity);
             db.SaveChanges();
 
-           // SendEmailToMe(entity.TrackingCode);
 
-            //SendEmailToUser(entity);
+          await  SendEmailToMe(entity.TrackingCode,entity.Id);
+           await SendEmailToUser(entity);
 
             return new KeyValue(entity.Id, entity.TrackingCode.ToString());
         }
 
-        private void SendEmailToUser(OrderBuy entity)
+        private async Task SendEmailToUser(OrderBuy entity)
         {
             var user = db.Users.FirstOrDefault(x => x.Id == entity.UserId);
             if (user != null)
@@ -77,19 +78,19 @@ namespace AppShop.Business.Service
                 if (!string.IsNullOrEmpty(user.Email))
                 {
                     var products = db.Products.Where(y => entity.ItemBuys.Select(x => x.ProductId).Contains(y.Id)).ToList();
-                    emailService.SendEmailAsync(user.Email, "تاییدیه سفارش", EmailMessege.OrderMessage(entity, user, products));
+                    await emailService.SendEmailAsync(user.Email, "تاییدیه سفارش", EmailMessege.OrderMessage(entity, user, products));
 
                 }
         }
 
-        private void SendEmailToMe(long trackingCode)
+        private async Task SendEmailToMe(long trackingCode,Guid id)
         {
             var listTo = new List<string>
             {
                 "e.jafari64@gmail.com",
                 "ehsanjaafari12@gmail.com"
             };
-            emailService.SendEmailAsync(listTo, "ثبت سفارش", EmailMessege.OrderMessage(trackingCode));
+            await emailService.SendEmailAsync(listTo, "ثبت سفارش", EmailMessege.OrderMessage(trackingCode,id));
         }
 
         private void Validtion(InOrderBuy input)
@@ -108,10 +109,10 @@ namespace AppShop.Business.Service
                 throw new PersianException("شهر انتخاب نشده است");
             }
 
-            if (input.Address.PostalCode.Length == 0)
-            {
-                throw new PersianException("کدپستی وارد نشده است");
-            }
+            //if (input.Address.PostalCode.Length == 0)
+            //{
+            //    throw new PersianException("کدپستی وارد نشده است");
+            //}
 
             if (input.Address.AddressStr.Length == 0)
             {
@@ -128,9 +129,9 @@ namespace AppShop.Business.Service
             }
 
         }
-        public bool ChangeShopStatues(Guid id, ShopStatues shopStatues ,bool isAdmin=false)
+        public bool ChangeShopStatues(Guid id, ShopStatues shopStatues, bool isAdmin = false)
         {
-            if (ChangeShopStatuesAndGet(id, shopStatues,"",isAdmin) != 0)
+            if (ChangeShopStatuesAndGet(id, shopStatues, "", isAdmin) != 0)
                 return true;
             return false;
         }
@@ -139,10 +140,10 @@ namespace AppShop.Business.Service
             return ChangeShopStatuesAndGet(id, ShopStatues.Paid, paymentCode);
         }
 
-        private long ChangeShopStatuesAndGet(Guid id, ShopStatues shopStatues, string paymentCode = "",bool isAdmin=false)
+        private long ChangeShopStatuesAndGet(Guid id, ShopStatues shopStatues, string paymentCode = "", bool isAdmin = false)
         {
             var entity = db.OrderBuys.AsNoTracking().FirstOrDefault(x => x.Id == id);
-            if(entity.Statues==ShopStatues.Cancel)
+            if (entity.Statues == ShopStatues.Cancel)
                 throw new PersianException("این سفارش لغو شده است امکان تغییر وضعیت وجود ندارد");
 
             if (shopStatues == ShopStatues.Cancel && entity.Statues == ShopStatues.Paid && !isAdmin)

@@ -10,5 +10,6 @@ namespace AppShop.Business
     {
         public string UrlFront {  get; set; }
         public string UrlBack {  get; set; }
+        public string UrlZarinpal {  get; set; }
     }
 }

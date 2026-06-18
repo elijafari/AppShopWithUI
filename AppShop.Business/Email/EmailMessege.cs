@@ -137,7 +137,7 @@ namespace AppShop.Business.Email
 ";
         }
 
-        public static string OrderMessage(long number)
+        public static string OrderMessage(long number,Guid id)
         {
 
             return $@"
@@ -158,9 +158,11 @@ namespace AppShop.Business.Email
       <td style='padding:30px; color:#333; font-size:15px; line-height:1.8; direction:rtl; text-align:right;'>
         <p>سفارش  با شماره پیگیری زیر ثبت شد</p>
         <b>{number}</b>
+<br />
+<a href='https://electroej.ir/OrderDetails/{id}'> جزئیات سفارش </a>
       </td>
     </tr>
-</table>
+</table
 </body>
 </html>
 ";

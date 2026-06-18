@@ -74,6 +74,7 @@ export class Cart extends Component {
     this.onChangeCity({ value: null });
   }
   onChangeCity(e) {
+    debugger
     var arr = [{ title: "تیپاکس", value: 1 },
     { title: "باربری", value: 2 },
     ];
@@ -158,8 +159,9 @@ export class Cart extends Component {
     }
 
     if (this.state.postalCode == null) {
-      NotificationManager.error("کدپستی وارد نشده است", "خطا");
-      return;
+      this.state.postalCode="";
+      // NotificationManager.error("کدپستی وارد نشده است", "خطا");
+      // return;
     }
 
     if (this.state.addressStr == null) {
@@ -260,7 +262,7 @@ export class Cart extends Component {
         updateKeyCity: this.state.updateKeyCity + 1,
         show: false
       });
-    this.onChangeCity({ value: e.provinceId });
+    this.onChangeCity({ value: e.cityId });
   }
   render() {
     return (

@@ -171,7 +171,7 @@ export class Orders extends React.Component {
           </div>
         ) : (
           <>
-            <div className="table-responsive">
+            <div className="table-responsive" style={{minHeight:"300px"}}>
               <table className="table table-bordered table-striped text-center align-middle">
                 <thead className="table-dark">
                   <tr>

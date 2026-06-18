@@ -71,7 +71,10 @@ export class ProductView extends React.Component {
               </div>
               <div className="row mb-3">
                 <b>توضیحات کالا : </b>
-                <span>{this.state.description}</span>
+                <pre
+    style={{ fontFamily:'Vazirmatn', fontSize:'16px'}}
+                
+                >{this.state.description}</pre>
               </div>
             </div>
          <div className="col-md-3 d-flex flex-column align-items-center justify-content-center position-relative p-3">

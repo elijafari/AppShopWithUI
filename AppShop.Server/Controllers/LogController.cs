@@ -33,6 +33,16 @@ namespace AppShop.Server.Controllers
         }
         [Authorize(Roles = "Admin")]
         [HttpGet]
+        public async Task<IActionResult> SendEmailFromHast()
+        {
+            var tag = await service.SendEmailFromHast();
+            if (tag)
+                return Ok("success");
+            else
+                return BadRequest();
+        }
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
         public async Task<IActionResult> SendEmail()
         {
             var tag = await service.SendEmail();

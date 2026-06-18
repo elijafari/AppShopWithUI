@@ -25,12 +25,12 @@ namespace AppShop.Server.Controllers
             service = _service;
         }
         [HttpPost]
-        public IActionResult Add(InOrderBuy input)
+        public async Task<IActionResult> Add(InOrderBuy input)
         {
-            return Response(() =>
+            return await ResponseAsync(async () =>
             {
                 var id = User.FindFirstValue("id");
-                return service.Add(input, new Guid(id));
+                return await service.Add(input, new Guid(id));
             });
         }
         [Authorize(Roles = "Admin")]

@@ -21,18 +21,16 @@ namespace AppShop.Server.Controllers
         private readonly ILogService _logService;
         private readonly string merchantId = "54e3d792-c3a8-4c39-9419-6b0e6cb9ed78"; // MerchantID از زرین‌پال
 
-        private string baseUrl = "https://payment.zarinpal.com/";
-        private string urlFront = "https://electroej.ir";
-        private string urlBack = "https://electroej.ir";
-
+        private string urlZarinpal = string.Empty;// "https://payment.zarinpal.com/";
+        private string urlFront = "";
+        private string urlBack = "";
         public PaymentController(HttpClient httpClient, IOptions<AppSettings> appSetting, IOrderBuyService orderBuyService, ILogService logService)
         {
             _httpClient = httpClient;
 
-            //for test local
             urlFront = appSetting.Value.UrlFront;
             urlBack = appSetting.Value.UrlBack;
-            baseUrl = "https://sandbox.zarinpal.com/";
+            urlZarinpal =appSetting.Value.UrlZarinpal;
 
             _orderBuyService = orderBuyService;
             _logService = logService;
@@ -54,7 +52,7 @@ namespace AppShop.Server.Controllers
             //  Console.WriteLine("REQUEST SEND => " + JsonConvert.SerializeObject(data));
             var content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
 
-            var url = baseUrl + "pg/v4/payment/request.json";
+            var url = urlZarinpal + "pg/v4/payment/request.json";
             var response = await _httpClient.PostAsync(url, content);
             var result = await response.Content.ReadAsStringAsync();
             // Console.WriteLine("REQUEST RESULT => " + result);
@@ -75,7 +73,7 @@ namespace AppShop.Server.Controllers
 
                 var content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
 
-                var response = await _httpClient.PostAsync(baseUrl + "pg/v4/payment/verify.json", content);
+                var response = await _httpClient.PostAsync(urlZarinpal + "pg/v4/payment/verify.json", content);
                 var res = await response.Content.ReadAsStringAsync();
 
                 var result = JsonConvert.DeserializeObject<ZarinpalVerifyResponse>(res).data;
