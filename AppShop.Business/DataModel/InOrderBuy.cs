@@ -7,21 +7,16 @@ using System.Threading.Tasks;
 
 namespace AppShop.Business.DataModel
 {
-    public class InOrderBuy
+    public class InOrderBuyHoz
     {
         public Guid UserId { get; set; }
         public int DateDelivery { get; set; }
-        public int PayType { get; set; }
-        public List<InItemBuy> Items { get; set; }
-    }
-
-    public class InOrderBuyOnline
-    {
-        public Guid UserId { get; set; }
-        public int DateDelivery { get; set; }      
-        public int PayType { get; set; }
         public List<InItemBuy> Items { get; set; }
         public int? SendType { get; set; }
+    }
+
+    public class InOrderBuy : InOrderBuyHoz
+    {
         public InAddress Address { get; set; }
 
     }

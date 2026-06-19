@@ -23,17 +23,17 @@ namespace AppShop.Business.Service
             mapper = _mapper;
             emailService = _emailService;
         }
-        public async Task<KeyValue> Add(InOrderBuyOnline input, Guid userId)
+        public async Task<KeyValue> Add(InOrderBuy input, Guid userId)
         {
             Validtion(input);
             var entity = new OrderBuy();
             entity.Id = Guid.NewGuid();
-            entity.PayType = input.PayType;
+            entity.PayType = 2;
             entity.SendType = input.SendType;
             entity.DateDelivery = DateTime.Now.AddDays(input.DateDelivery);
             entity.UserId = userId;
             entity.DateOrder = DateTime.Now;
-            entity.Statues = input.PayType == 1 ? ShopStatues.Register : ShopStatues.WaitPay;
+            entity.Statues = ShopStatues.WaitPay;
 
             if (input.Address != null)
             {
@@ -68,8 +68,8 @@ namespace AppShop.Business.Service
 
             //   if (entity.PayType == 1)
 
-            _ = SendEmailToMe(entity.TrackingCode, entity.Id);
-            _ = SendEmailToUser(entity);
+            ////_ = SendEmailToMe(entity.TrackingCode, entity.Id);
+            ////_ = SendEmailToUser(entity);
 
             return new KeyValue(entity.Id, entity.TrackingCode.ToString());
         }
@@ -97,7 +97,7 @@ namespace AppShop.Business.Service
             _ = emailService.SendEmailAsync(listTo, "ثبت سفارش", EmailMessege.OrderMessage(trackingCode, id));
         }
 
-        private void Validtion(InOrderBuyOnline input)
+        private void Validtion(InOrderBuy input)
         {
             if (input.Items == null)
             {
@@ -108,11 +108,12 @@ namespace AppShop.Business.Service
             {
                 throw new PersianException("ایتمی برای ثبت سفارش وجود ندارد");
             }
-            if (input.PayType == 0)
+
+            if (input.SendType == null)
             {
-                throw new PersianException("نوع پرداخت انتخاب نشده است");
+                throw new PersianException("نوع ارسال انتخاب نشده است");
             }
-            else if (input.PayType == 2)
+            else if (input.SendType != 4)
             {
 
                 if (input.Address.CityId == 0)
@@ -129,10 +130,10 @@ namespace AppShop.Business.Service
                 {
                     throw new PersianException("آدرس وارد نشده است");
                 }
-
-                if (input.SendType == null)
+                if (input.SendType == 3 && input.Address.CityId != 334)
                 {
-                    throw new PersianException("نوع ارسال انتخاب نشده است");
+                    throw new PersianException("برای شهر انتخابی نوع ارسال پیک وجود ندارد لطفا گزینه دیگری برای ارسال انتخاب کنید");
+
                 }
             }
         }
@@ -159,7 +160,7 @@ namespace AppShop.Business.Service
             if (shopStatues == ShopStatues.Cancel && entity.Statues != ShopStatues.Register && !isAdmin)
                 throw new PersianException("با نوجه به وضعیت جاری سفارش امکان لغو سفارش وجود ندارد");
 
-            if (shopStatues == ShopStatues.Confirm && entity.Statues != ShopStatues.Register && entity.Statues != ShopStatues.Paid && entity.Statues!=ShopStatues.WaitPay)
+            if (shopStatues == ShopStatues.Confirm && entity.Statues != ShopStatues.Register && entity.Statues != ShopStatues.Paid && entity.Statues != ShopStatues.WaitPay)
                 throw new PersianException("با نوجه به وضعیت جاری سفارش امکان تایید سفارش وجود ندارد");
 
             if (shopStatues == ShopStatues.Send && entity.Statues != ShopStatues.Confirm)

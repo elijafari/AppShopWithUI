@@ -8,16 +8,18 @@ import { ProductSeo } from "./ProductSeo";
 export class ProductView extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      slug: window.location.href.split("/")[4].split("?")[0],
-      file: null,
-      filePreviews:[],
-      updateKeyImage: 1,
-      updateKey: 1,
-      currentIndex:0,
-      isload:false,
-      keywords: "خرید/لوازم الکتریکی/فروشگاه آنلاین/electroej/ الکتروایجی/الکترو ایجی",
-    };
+  this.state = {
+  slug: window.location.href.split("/")[4].split("?")[0],
+  file: null,
+  filePreviews: [],
+  updateKeyImage: 1,
+  updateKey: 1,
+  currentIndex: 0,
+  isload: false,
+  showImageModal: false, // اضافه کن
+  keywords:
+    "خرید/لوازم الکتریکی/فروشگاه آنلاین/electroej/ الکتروایجی/الکترو ایجی",
+};
   }
   componentDidMount() {
     api.post("/product/GetBySlug", { slug: this.state.slug }).then((response) => {
@@ -33,6 +35,13 @@ export class ProductView extends React.Component {
       });
     });
   }
+  componentDidUpdate(prevProps, prevState) {
+  if (prevState.showImageModal !== this.state.showImageModal) {
+    document.body.style.overflow = this.state.showImageModal
+      ? "hidden"
+      : "auto";
+  }
+}
   shopItem() {
     let array = JSON.parse(localStorage.getItem("selectedItem"));
     if (array === null) array = [];
@@ -97,16 +106,19 @@ export class ProductView extends React.Component {
 )}
   {/* عکس فعلی */}
   <img
-    src={this.state.filePreviews[this.state.currentIndex]}
-    className="img-fluid img-thumbnail shadow-lg rounded-3"
-    style={{
-      width: "350px",
-      height: "350px",
-      objectFit: "cover",
-      border: "3px solid #eee",
-    }}
-    alt={this.state.name}
-  />
+  src={this.state.filePreviews[this.state.currentIndex]}
+  className="img-fluid img-thumbnail shadow-lg rounded-3"
+  style={{
+    width: "100%",
+    maxWidth: "350px",
+    aspectRatio: "1/1",
+    objectFit: "cover",
+    border: "3px solid #eee",
+    cursor: "pointer",
+  }}
+  alt={this.state.name}
+  onClick={() => this.setState({ showImageModal: true })}
+/>
 {this.state.filePreviews.length > 1&& (
   <button
     className="btn btn-outline-secondary position-absolute shadow-sm rounded-circle"
@@ -152,6 +164,98 @@ export class ProductView extends React.Component {
             </h2>
           ))}
         </div>
+
+        {this.state.showImageModal && (
+  <div
+    onClick={() => this.setState({ showImageModal: false })}
+    style={{
+      position: "fixed",
+      top: 0,
+      left: 0,
+      width: "100vw",
+      height: "100vh",
+      background: "rgba(0,0,0,.95)",
+      zIndex: 9999,
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      padding: "15px",
+    }}
+  >
+    <button
+      className="btn btn-light position-absolute"
+      style={{
+        top: "15px",
+        right: "15px",
+        zIndex: 10000,
+      }}
+      onClick={(e) => {
+        e.stopPropagation();
+        this.setState({ showImageModal: false });
+      }}
+    >
+      ✕
+    </button>
+
+    {this.state.filePreviews.length > 1 && (
+      <button
+        className="btn btn-light position-absolute"
+        style={{
+          left: "10px",
+          top: "50%",
+          transform: "translateY(-50%)",
+          zIndex: 10000,
+        }}
+        onClick={(e) => {
+          e.stopPropagation();
+          this.setState((prev) => ({
+            currentIndex:
+              prev.currentIndex > 0
+                ? prev.currentIndex - 1
+                : this.state.filePreviews.length - 1,
+          }));
+        }}
+      >
+        <i className="bi bi-chevron-right fs-4"></i>
+      </button>
+    )}
+
+    <img
+      src={this.state.filePreviews[this.state.currentIndex]}
+      alt={this.state.name}
+      onClick={(e) => e.stopPropagation()}
+      style={{
+        maxWidth: "100%",
+        maxHeight: "90vh",
+        objectFit: "contain",
+        borderRadius: "10px",
+      }}
+    />
+
+    {this.state.filePreviews.length > 1 && (
+      <button
+        className="btn btn-light position-absolute"
+        style={{
+          right: "10px",
+          top: "50%",
+          transform: "translateY(-50%)",
+          zIndex: 10000,
+        }}
+        onClick={(e) => {
+          e.stopPropagation();
+          this.setState((prev) => ({
+            currentIndex:
+              prev.currentIndex < this.state.filePreviews.length - 1
+                ? prev.currentIndex + 1
+                : 0,
+          }));
+        }}
+      >
+        <i className="bi bi-chevron-left fs-4"></i>
+      </button>
+    )}
+  </div>
+)}
       </>
 ) 
     );

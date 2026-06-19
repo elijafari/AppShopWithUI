@@ -25,29 +25,29 @@ namespace AppShop.Server.Controllers
             service = _service;
         }
         [HttpPost]
+        public async Task<IActionResult> AddHoz(InOrderBuyHoz input)
+        {
+            return await ResponseAsync(async () =>
+            {
+                var id = User.FindFirstValue("id");
+                var inOrderBuy = new InOrderBuy()
+                {
+                    Items = input.Items,
+                    DateDelivery = input.DateDelivery,
+                    UserId = input.UserId,
+                    SendType = input.SendType,
+                };
+
+                return await service.Add(inOrderBuy, new Guid(id));
+            });
+        }
+        [HttpPost]
         public async Task<IActionResult> Add(InOrderBuy input)
         {
             return await ResponseAsync(async () =>
             {
                 var id = User.FindFirstValue("id");
-                var inOrderBuyOnline = new InOrderBuyOnline()
-                {
-                    Items = input.Items,
-                    DateDelivery = input.DateDelivery,
-                    PayType = input.PayType,
-                    UserId = input.UserId,
-                };
-
-                return await service.Add(inOrderBuyOnline, new Guid(id));
-            });
-        }
-        [HttpPost]
-        public async Task<IActionResult> AddOnline(InOrderBuyOnline input)
-        {
-            return await ResponseAsync(async () =>
-            {
-                var id = User.FindFirstValue("id");
-               return await service.Add(input, new Guid(id));
+                return await service.Add(input, new Guid(id));
             });
         }
         [Authorize(Roles = "Admin")]
@@ -71,7 +71,7 @@ namespace AppShop.Server.Controllers
             {
                 var id = User.FindFirstValue("id");
                 var isAdmin = User.FindFirstValue(ClaimTypes.Role) == "Admin" ? true : false;
-                return service.GetAll(new Guid(id), isAdmin,inStatues);
+                return service.GetAll(new Guid(id), isAdmin, inStatues);
             });
         }
         [HttpPost]

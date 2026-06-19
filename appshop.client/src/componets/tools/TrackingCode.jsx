@@ -13,7 +13,7 @@ export function TrackingCode(props) {
       const timer = setTimeout(() => {
         SentDataToZarinpal(key);
 
-      },2000); // نیم ثانیه
+      },1000); // نیم ثانیه
 
       return () => clearTimeout(timer);
     }

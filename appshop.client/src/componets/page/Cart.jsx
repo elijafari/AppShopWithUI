@@ -29,14 +29,12 @@ export class Cart extends Component {
       cityAll: [],
       province: [],
       city: [],
-      sendTypies: [],
+      sendTypies: [{ title: "مراجعه حضوری به فروشگاه", value: 4 },
+      { title: "تیپاکس", value: 1 },
+      { title: "باربری", value: 2 },
+      { title: "پیک", value: 3 }],
       trackingCode: 10001,
       show: false,
-      payTypies: [{
-        title: "خرید حضوری", value: 1
-      },
-      { title: "پرداخت آنلاین", value: 2 }
-      ],
       // gildPrice: 0,
       // finalPrice: 0,
       loading: false,
@@ -71,20 +69,6 @@ export class Cart extends Component {
         updateKeyCity: this.state.updateKeyCity + 1,
       }
     )
-    this.onChangeCity({ value: null });
-  }
-  onChangeCity(e) {
-    var arr = [{ title: "تیپاکس", value: 1 },
-    { title: "باربری", value: 2 },
-    ];
-    if (e.value == "334")
-      arr.push({ title: "پیک", value: 3 });
-
-    this.setState({
-      sendTypies: arr,
-      updateKeySendType: this.state.updateKeySendType + 1,
-      sendType: null
-    });
   }
   getCity() {
     api.get("/City/GetAll").then((response) => {
@@ -153,12 +137,11 @@ export class Cart extends Component {
       NotificationManager.error("تاریخ تحویل سفارش انتخاب نشده است", "خطا");
       return;
     }
-
-    if (this.state.payType == null) {
-      NotificationManager.error("نوع پرداخت انتخاب نشده است", "خطا");
+    if (this.state.sendType == null) {
+      NotificationManager.error("نوع ارسال انتخاب نشده است", "خطا");
       return;
     }
-    else if (this.state.payType == 2) {
+    else if (this.state.sendType != 4) {
       if (this.state.provinceId == null) {
         NotificationManager.error("استان انتخاب نشده است", "خطا");
         return;
@@ -178,10 +161,6 @@ export class Cart extends Component {
         NotificationManager.error("آدرس وارد نشده است", "خطا");
         return;
       }
-      if (this.state.sendType == null) {
-        NotificationManager.error("نوع ارسال انتخاب نشده است", "خطا");
-        return;
-      }
     }
     return true;
   }
@@ -190,7 +169,7 @@ export class Cart extends Component {
       var data = {
         items: [],
         dateDelivery: this.state.dateDelivery,
-        payType: this.state.payType,
+        sendType: this.state.sendType
       };
       this.state.data.map((x, i) =>
         data.items.push({
@@ -198,29 +177,21 @@ export class Cart extends Component {
           price: x.data.price,
           count: x.count
         }))
-      var url = "/orderBuy/add";
-      if (this.state.payType == 2) {
-        url = "/orderBuy/addOnline";
+      var url = "/orderBuy/addHoz";
+      if (this.state.sendType != 4) {
+        url = "/orderBuy/add";
         data.address = {
           addressStr: this.state.addressStr,
           postalCode: this.state.postalCode,
           cityId: this.state.cityId
-        },
-          data.sendType = this.state.sendType;
+        };
       }
 
       this.setState({ loading: true });
       api.post(url, data)
         .then((res) => {
           if (res.status === 200) {
-            // اگر پرداخت آنلاین انتخاب شده
-            if (this.state.payType === 2) {
-              window.location.href = "/successOrderOnline/" + res.data.data.title + "/" + res.data.data.key;
-              // SentDataToZarinpal(NotificationManager, res.data.data.key);
-            }
-            else {
-              window.location.href = "/successOrder/" + res.data.data.title;
-            }
+            window.location.href = "/successOrderOnline/" + res.data.data.title + "/" + res.data.data.key;
             localStorage.removeItem("selectedItem");
           } else {
             this.setState({ loading: false });
@@ -259,7 +230,6 @@ export class Cart extends Component {
         updateKeyCity: this.state.updateKeyCity + 1,
         show: false
       });
-    this.onChangeCity({ value: e.cityId });
   }
   render() {
     return (
@@ -340,22 +310,30 @@ export class Cart extends Component {
                   data={this.state.days}
                 />
                 <DropdownApp
-                  title="نوع پرداخت"
-                  className="col-md-4 col-sm-12"
+                  title="نوع ارسال"
+                  className="col-md-3 col-sm-12"
                   context={this}
-                  name="payType"
-                  data={this.state.payTypies}
+                  name="sendType"
+                  updateKey={this.state.updateKeySendType}
+                  data={this.state.sendTypies}
                 />
               </div>
             </div>
-            {this.state.payType == 2 && (
+            {this.state.sendType != null && this.state.sendType != 4 && (
               <div className="card mb-1">
                 <p className="card-header">ثبت آدرس</p>
                 <div className="g-3 p-3">
-                  <button className="col-md-3 col-sm-12 btn btn-success"
-                    style={{ fontFamily: 'Vazirmatn' }}
-                    onClick={() => this.showModal()}>تاریخچه آدرس</button>
+                  <div className="alert alert-secondary py-3 px-3 d-flex align-items-start mt-2" role="alert" >
+                    <div className="flex-grow-1 text-end">
+                      <strong>هزینه ارسال</strong>
+                      <div>بر اساس روش انتخابی (تیپاکس، باربری یا پیک) محاسبه می شود و بر عهده مشتری است.</div>
+                    </div>
+                  </div>
                   <div className="row">
+                    <button className="col-md-3 col-sm-12 btn btn-success"
+                      style={{ fontFamily: 'Vazirmatn' }}
+                      onClick={() => this.showModal()}>تاریخچه آدرس</button>
+
                     <DropdownApp
                       context={this}
                       name="provinceId"
@@ -371,7 +349,6 @@ export class Cart extends Component {
                       className="col-md-3 col-sm-12"
                       data={this.state.city}
                       updateKey={this.state.updateKeyCity}
-                      onChange={(e) => this.onChangeCity(e)}
                     />
 
                     <TextBox
@@ -381,23 +358,6 @@ export class Cart extends Component {
                       type="number"
                       className="col-md-3 col-sm-12"
                     />
-
-                    <DropdownApp
-                      title="نوع ارسال"
-                      className="col-md-3 col-sm-12"
-                      context={this}
-                      name="sendType"
-                      updateKey={this.state.updateKeySendType}
-                      data={this.state.sendTypies}
-                    />
-
-
-                    <div className="alert alert-secondary py-3 px-3 d-flex align-items-start mt-2" role="alert" >
-                      <div className="flex-grow-1 text-end">
-                        <strong>هزینه ارسال</strong>
-                        <div>بر اساس روش انتخابی (تیپاکس، باربری یا پیک) محاسبه می شود و بر عهده مشتری است.</div>
-                      </div>
-                    </div>
                     <TextBox
                       context={this}
                       title="آدرس"
@@ -414,7 +374,7 @@ export class Cart extends Component {
                 <ButtonWaith onClick={() => this.AddData()}
                   className="btn btn-success col-md-3 col-sm-12 "
                   loading={this.state.loading}
-                  title="ثبت سفارش" />
+                  title="ثبت  و پرداخت سفارش" />
                 <ButtonReturn />
               </div>
             </div>
