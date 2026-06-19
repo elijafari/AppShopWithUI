@@ -46,9 +46,14 @@ export default class App extends Component {
               <Route path="/forgtoPassword" element={<ForgtoPassword />}/>
               <Route path="/orders" element={<Orders />}/>
               <Route path="/OrderDetails/:id" element={<OrderDetails/>}/>
+              {/* //پرداخت موفق */}
               <Route path="/payment/success/:trackingCode/:refId" element={<TrackingCode type={2}/>}/>
+              {/* //پرداخت ناموفق */}
               <Route path="/payment/failed/:trackingCode" element={<TrackingCode type={3}/>}/>
+              {/* //خرید حضوری */}
               <Route path="/successOrder/:trackingCode" element={<TrackingCode type={1}/>}/>
+               {/* //خرید انلاین */}
+              <Route path="/successOrderOnline/:trackingCode/:key" element={<TrackingCode type={4}/>}/>
             </Route>
           </Routes>
 

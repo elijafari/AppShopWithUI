@@ -17,7 +17,9 @@ namespace AppShop.Business
         [Description("لغو شده")]
         Cancel = 6,
         [Description("پرداخت شده")]
-        Paid = 7
+        Paid = 7,
+        [Description("در انتظار پرداخت")]
+        WaitPay=8
     }
 
     public enum SendType

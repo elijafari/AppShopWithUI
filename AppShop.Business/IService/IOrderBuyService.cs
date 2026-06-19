@@ -5,7 +5,7 @@ namespace AppShop.Business.IService
 {
     public interface IOrderBuyService
     {
-       Task<KeyValue> Add(InOrderBuy input, Guid userid);
+       Task<KeyValue> Add(InOrderBuyOnline input, Guid userid);
         bool ChangeShopStatues(Guid id, ShopStatues shopStatues, bool isAdmin = false);
         List<OrderBuyVm> GetAll(Guid userId, bool isAdmin, InStatues inStatues);
         List<KeyValue> GetDays();
@@ -13,6 +13,7 @@ namespace AppShop.Business.IService
         OrderBuyPaymentVm GetByForPaymentId(Guid id);
         long GetTrackingCode(Guid id);
         long UpdatePaymentCode(Guid id, string paymentCode);
+        Task SendEmailToMe(long trackingCode, Guid id);
 
     }
 }

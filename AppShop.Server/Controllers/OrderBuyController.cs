@@ -30,7 +30,24 @@ namespace AppShop.Server.Controllers
             return await ResponseAsync(async () =>
             {
                 var id = User.FindFirstValue("id");
-                return await service.Add(input, new Guid(id));
+                var inOrderBuyOnline = new InOrderBuyOnline()
+                {
+                    Items = input.Items,
+                    DateDelivery = input.DateDelivery,
+                    PayType = input.PayType,
+                    UserId = input.UserId,
+                };
+
+                return await service.Add(inOrderBuyOnline, new Guid(id));
+            });
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddOnline(InOrderBuyOnline input)
+        {
+            return await ResponseAsync(async () =>
+            {
+                var id = User.FindFirstValue("id");
+               return await service.Add(input, new Guid(id));
             });
         }
         [Authorize(Roles = "Admin")]

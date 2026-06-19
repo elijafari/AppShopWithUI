@@ -83,6 +83,7 @@ namespace AppShop.Server.Controllers
                 {
                     // پرداخت موفق            
                     var trackingCode = _orderBuyService.UpdatePaymentCode(oId, result.ref_id.ToString());
+                   // _ = _orderBuyService.SendEmailToMe(trackingCode,oId);
                     return Redirect(Path.Combine(urlFront, $"payment/success/:{trackingCode}/:{result.ref_id}"));
                 }
                 else

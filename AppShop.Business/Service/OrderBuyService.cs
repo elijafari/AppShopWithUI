@@ -23,7 +23,7 @@ namespace AppShop.Business.Service
             mapper = _mapper;
             emailService = _emailService;
         }
-        public async Task<KeyValue> Add(InOrderBuy input, Guid userId)
+        public async Task<KeyValue> Add(InOrderBuyOnline input, Guid userId)
         {
             Validtion(input);
             var entity = new OrderBuy();
@@ -33,20 +33,23 @@ namespace AppShop.Business.Service
             entity.DateDelivery = DateTime.Now.AddDays(input.DateDelivery);
             entity.UserId = userId;
             entity.DateOrder = DateTime.Now;
-            entity.Statues = ShopStatues.Register;
-            var addressEntity = mapper.Map<InAddress, Address>(input.Address);
-            addressEntity.UserId = entity.UserId;
+            entity.Statues = input.PayType == 1 ? ShopStatues.Register : ShopStatues.WaitPay;
 
-            var ex_address = db.Addresss.FirstOrDefault(x => x.UserId == addressEntity.UserId
-                 && x.CityId == addressEntity.CityId
-                 && x.PostalCode == addressEntity.PostalCode
-                 && x.AddressStr == addressEntity.AddressStr);
+            if (input.Address != null)
+            {
+                var addressEntity = mapper.Map<InAddress, Address>(input.Address);
+                addressEntity.UserId = entity.UserId;
 
-            if (ex_address == null)
-                entity.AddressEntity = addressEntity;
-            else
-                entity.AddressId = ex_address.Id;
+                var ex_address = db.Addresss.FirstOrDefault(x => x.UserId == addressEntity.UserId
+                     && x.CityId == addressEntity.CityId
+                     && x.PostalCode == addressEntity.PostalCode
+                     && x.AddressStr == addressEntity.AddressStr);
 
+                if (ex_address == null)
+                    entity.AddressEntity = addressEntity;
+                else
+                    entity.AddressId = ex_address.Id;
+            }
             entity.ItemBuys = new List<ItemBuy>();
             entity.ItemBuys.AddRange(mapper.Map<List<ItemBuy>>(input.Items));
 
@@ -56,16 +59,17 @@ namespace AppShop.Business.Service
             entity.FinalPrice = price;
 
             var statues = new OrderBuyStatues();
-            statues.Statues = ShopStatues.Register;
+            statues.Statues = entity.Statues;
             statues.DateStatues = DateTime.Now;
             entity.OrderBuyStatues.Add(statues);
 
             db.OrderBuys.Add(entity);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
 
+            //   if (entity.PayType == 1)
 
-          await  SendEmailToMe(entity.TrackingCode,entity.Id);
-           await SendEmailToUser(entity);
+            _ = SendEmailToMe(entity.TrackingCode, entity.Id);
+            _ = SendEmailToUser(entity);
 
             return new KeyValue(entity.Id, entity.TrackingCode.ToString());
         }
@@ -78,22 +82,23 @@ namespace AppShop.Business.Service
                 if (!string.IsNullOrEmpty(user.Email))
                 {
                     var products = db.Products.Where(y => entity.ItemBuys.Select(x => x.ProductId).Contains(y.Id)).ToList();
-                    await emailService.SendEmailAsync(user.Email, "تاییدیه سفارش", EmailMessege.OrderMessage(entity, user, products));
+                    _ = emailService.SendEmailAsync(user.Email, "تاییدیه سفارش", EmailMessege.OrderMessage(entity, user, products));
 
                 }
         }
 
-        private async Task SendEmailToMe(long trackingCode,Guid id)
+        public async Task SendEmailToMe(long trackingCode, Guid id)
         {
             var listTo = new List<string>
             {
                 "e.jafari64@gmail.com",
-                "ehsanjaafari12@gmail.com"
+               // "ehsanjaafari12@gmail.com",
+                "pone.5053@gmail.com"
             };
-            await emailService.SendEmailAsync(listTo, "ثبت سفارش", EmailMessege.OrderMessage(trackingCode,id));
+            _ = emailService.SendEmailAsync(listTo, "ثبت سفارش", EmailMessege.OrderMessage(trackingCode, id));
         }
 
-        private void Validtion(InOrderBuy input)
+        private void Validtion(InOrderBuyOnline input)
         {
             if (input.Items == null)
             {
@@ -104,30 +109,33 @@ namespace AppShop.Business.Service
             {
                 throw new PersianException("ایتمی برای ثبت سفارش وجود ندارد");
             }
-            if (input.Address.CityId == 0)
-            {
-                throw new PersianException("شهر انتخاب نشده است");
-            }
-
-            //if (input.Address.PostalCode.Length == 0)
-            //{
-            //    throw new PersianException("کدپستی وارد نشده است");
-            //}
-
-            if (input.Address.AddressStr.Length == 0)
-            {
-                throw new PersianException("آدرس وارد نشده است");
-            }
-
             if (input.PayType == 0)
             {
                 throw new PersianException("نوع پرداخت انتخاب نشده است");
             }
-            if (input.SendType == null)
+            else if (input.PayType == 2)
             {
-                throw new PersianException("نوع ارسال انتخاب نشده است");
-            }
 
+                if (input.Address.CityId == 0)
+                {
+                    throw new PersianException("شهر انتخاب نشده است");
+                }
+
+                //if (input.Address.PostalCode.Length == 0)
+                //{
+                //    throw new PersianException("کدپستی وارد نشده است");
+                //}
+
+                if (input.Address.AddressStr.Length == 0)
+                {
+                    throw new PersianException("آدرس وارد نشده است");
+                }
+
+                if (input.SendType == null)
+                {
+                    throw new PersianException("نوع ارسال انتخاب نشده است");
+                }
+            }
         }
         public bool ChangeShopStatues(Guid id, ShopStatues shopStatues, bool isAdmin = false)
         {
@@ -188,7 +196,7 @@ namespace AppShop.Business.Service
             if (isAdmin)
             {
                 if (inStatues.StatuesId == 101)
-                    query = query.Where(x => x.Statues == ShopStatues.Register || x.Statues == ShopStatues.Paid);
+                    query = query.Where(x => x.Statues == ShopStatues.Register || x.Statues == ShopStatues.Paid || x.Statues == ShopStatues.WaitPay);
                 else if (inStatues.StatuesId == 102)
                     query = query.Where(x => x.Statues == ShopStatues.Confirm || x.Statues == ShopStatues.Send || x.Statues == ShopStatues.Delivery);
                 else if (inStatues.StatuesId == 103)

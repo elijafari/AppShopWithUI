@@ -50,7 +50,7 @@ class OrderDetails extends React.Component {
         }
 
         return (
-            <div dir="rtl" className="container mt-4"  style={{ fontFamily: 'Vazirmatn' }}>
+            <div dir="rtl" className="container mt-4" style={{ fontFamily: 'Vazirmatn' }}>
                 <h3 className="mb-4 text-center fw-bold">جزئیات سفارش</h3>
 
                 <div className="mb-3 text-center">
@@ -60,9 +60,11 @@ class OrderDetails extends React.Component {
                     <p>تاریخ سفارش: {order.solorDateOrder}</p>
                     <p>تاریخ تحویل: {order.solorDateDelivery}</p>
                     <p>وضعیت: {order.strStatues}</p>
-                    <p>نوع ارسال: {order.strSendType}</p>
                     <p>نوع پرداخت: {order.strPayType}</p>
-                    <p>آدرس کامل: {order.addressStr}</p>
+                    {order.payType == 2 && (
+                        <>                  <p>نوع ارسال: {order.strSendType}</p>
+                            <p>آدرس کامل: {order.addressStr}</p>
+                        </>)}
                 </div>
 
                 <div className="table-responsive">
@@ -90,7 +92,7 @@ class OrderDetails extends React.Component {
                                 <td colSpan={4} className="fw-bold">جمع کل</td>
                                 <td className="fw-bold">{order.items.reduce((sum, x) => sum + x.count * x.price, 0).toLocaleString()}</td>
                             </tr>
-                            
+
                             {/* <tr>
                                 <td colSpan={4} className="fw-bold">مبلغ مالیات بر ارزش افزوده</td>
                                 <td className="fw-bold">{order.gildPrice.toLocaleString()}</td>

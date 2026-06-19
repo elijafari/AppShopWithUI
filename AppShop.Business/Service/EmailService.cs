@@ -118,7 +118,7 @@ namespace AppShop.Business.Service
             message.From.Add(new MailboxAddress("electorej.ir - الکتروایجی", fromMail));
             foreach (var item in to)
             {
-                message.To.Add(new MailboxAddress("Receiver", item));
+                message.To.Add(MailboxAddress.Parse(item));
             }
 
             message.Subject = subject;

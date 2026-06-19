@@ -1,8 +1,11 @@
 import { ErrorHanding } from "../Utility";
 import api from "../tools/axiosConfig";
-export function SentDataToZarinpal(NotificationManager, orderId) {
+import {
+  NotificationContainer,
+  NotificationManager,
+} from "react-notifications";
 
-
+export function SentDataToZarinpal(orderId) {
     // فراخوانی API بک‌اند برای گرفتن authority
     api.post("/payment/requestPayment", { orderId: orderId })
         .then(resp => {

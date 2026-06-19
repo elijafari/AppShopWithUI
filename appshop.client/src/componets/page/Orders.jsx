@@ -15,18 +15,20 @@ import Button from "react-bootstrap/Button";
 import { Bijak } from "./Bijak";
 import Value from "autoprefixer/lib/value";
 import { Factor } from "./Factor";
+import { SentDataToZarinpal } from "../tools/Zarinpal";
+
 export class Orders extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       show: false,
-      statuesId:101,
+      statuesId: 101,
       orders: [],
       loading: true,
       msg: "",
       isAdmin: false, // از توکن یا پروفایل بیار
       statuesList: [
-        { value: 101, title: "ثبت اولیه / پرداخت شده" },
+        { value: 101, title: "ثبت اولیه /در انتظار پرداخت/ پرداخت شده" },
         { value: 102, title: "تایید/ ارسال / تحویل سفارش" },
         { value: 103, title: "لغو شده / مرجوعی" },
       ]
@@ -43,7 +45,7 @@ export class Orders extends React.Component {
     let token = localStorage.getItem("token");
     let user = parseJwt(token);
 
-    api.post("/orderBuy/GetAll",{statuesId:this.state.statuesId})
+    api.post("/orderBuy/GetAll", { statuesId: this.state.statuesId })
       .then(res => {
         this.setState({ loading: false });
         if (res.status === 200) {
@@ -133,6 +135,10 @@ export class Orders extends React.Component {
   closeModal() {
     this.setState({ show: false });
   }
+  paymant(e)
+  {
+     SentDataToZarinpal(e.id);
+  }
   render() {
     if (this.state.loading) {
       return <Loading />
@@ -141,13 +147,13 @@ export class Orders extends React.Component {
     return (
 
       <div dir="rtl" className="container mt-4 fontApp">
-  
+
         <h3 className="mb-4 text-center fw-bold">
           {this.state.isAdmin ? "مدیریت سفارشات" + "(" + this.state.orders.length + ")"
             : "سفارشات من" + "(" + this.state.orders.length + ")"}
         </h3>
 
-      {this.state.isAdmin && (<div
+        {this.state.isAdmin && (<div
           className="col-md-6 col-sm-12 d-flex align-items-end gap-2 mb-3"
         >
           <DropdownApp
@@ -171,7 +177,7 @@ export class Orders extends React.Component {
           </div>
         ) : (
           <>
-            <div className="table-responsive" style={{minHeight:"300px"}}>
+            <div className="table-responsive" style={{ minHeight: "300px" }}>
               <table className="table table-bordered table-striped text-center align-middle">
                 <thead className="table-dark">
                   <tr>
@@ -181,7 +187,7 @@ export class Orders extends React.Component {
                     <th>کد پیگیری</th>
                     <th>تاریخ سفارش</th>
                     <th>تاریخ تحویل</th>
-                    {this.state.isAdmin && <th>مبلغ (تومان)</th>}
+                    <th>مبلغ (تومان)</th>
                     {/* {this.state.isAdmin && <th>مالیات بر ارزش افزوده(تومان)</th>}
                     <th>مبلغ نهایی(تومان)</th> */}
                     {this.state.isAdmin && <th>نوع پرداخت</th>}
@@ -200,8 +206,8 @@ export class Orders extends React.Component {
                       <td data-label="کد پیگیری">{order.trackingCode}</td>
                       <td data-label="تاریخ سفارش">{order.solorDateOrder}</td>
                       <td data-label="تاریخ تحویل">{order.solorDateDelivery}</td>
-                      {this.state.isAdmin && <td data-label="مبلغ (تومان)">{order.totalPrice.toLocaleString()}</td>}
-                  {/* //    {this.state.isAdmin && <td data-label="مالیات بر ارزش افزوده (تومان)">{order.gildPrice.toLocaleString()}</td>}
+                      <td data-label="مبلغ (تومان)">{order.totalPrice.toLocaleString()}</td>
+                      {/* //    {this.state.isAdmin && <td data-label="مالیات بر ارزش افزوده (تومان)">{order.gildPrice.toLocaleString()}</td>}
                   //    <td data-label="مبلغ نهایی (تومان)">{order.finalPrice.toLocaleString()}</td> */}
                       {this.state.isAdmin && <td data-label="نوع پرداخت">{order.strPayType}</td>}
                       {this.state.isAdmin && <td data-label="شناسه تراکنش پرداخت">{order.paymentCode}</td>}
@@ -225,7 +231,13 @@ export class Orders extends React.Component {
                                 style={{ fontFamily: 'Vazirmatn' }}
                                 onClick={() => window.location.href = `/OrderDetails/${order.id}`}> مشاهده جزئیات </button>
                             </li>
-
+                            {order.statues == 8 &&(
+                              <li>
+                                <button
+                                  className="dropdown-item text-primary"
+                                  onClick={() => this.paymant(order)}>پرداخت</button>
+                              </li>
+                            )}
                             <li>
                               <button
                                 className="dropdown-item text-danger"
@@ -238,11 +250,11 @@ export class Orders extends React.Component {
                                     className="dropdown-item"
                                     onClick={() => this.showModal(order, false)}> تغییر وضعیت </button>
                                 </li>
-                                 <li>
+                                <li>
                                   <button
                                     className="dropdown-item"
                                     onClick={() => this.setState({ selectedOrder: order, showFac: true })} >چاپ فاکتور </button>
-                                </li> 
+                                </li>
                                 <li>
                                   <button className="dropdown-item"
                                     onClick={() => this.setState({ selectedOrder: order, showBjk: true })} >              چاپ بیجک
@@ -283,10 +295,10 @@ export class Orders extends React.Component {
               fullName={this.state.selectedOrder?.fullName}
               phone={this.state.selectedOrder?.phone}
               address={this.state.selectedOrder?.addressStr} />
-    <Factor
+            <Factor
               show={this.state.showFac}
               onHide={() => { this.setState({ showFac: false }) }}
-              order={this.state.selectedOrder}/>
+              order={this.state.selectedOrder} />
           </>
         )}
       </div>

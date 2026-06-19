@@ -19,7 +19,7 @@ namespace AppShop.Business.Entity
         public long TrackingCode { get; set; }
         public int PayType { get; set; }
         public int? SendType { get; set; }
-        public int AddressId { get; set; }
+        public int? AddressId { get; set; }
         public string? PaymentCode { get; set; }
         public double GildPrice{get; set; }
         public double FinalPrice { get; set; }

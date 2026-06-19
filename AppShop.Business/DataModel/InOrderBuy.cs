@@ -10,11 +10,20 @@ namespace AppShop.Business.DataModel
     public class InOrderBuy
     {
         public Guid UserId { get; set; }
+        public int DateDelivery { get; set; }
+        public int PayType { get; set; }
+        public List<InItemBuy> Items { get; set; }
+    }
+
+    public class InOrderBuyOnline
+    {
+        public Guid UserId { get; set; }
         public int DateDelivery { get; set; }      
         public int PayType { get; set; }
-        public int? SendType { get; set; }
         public List<InItemBuy> Items { get; set; }
+        public int? SendType { get; set; }
         public InAddress Address { get; set; }
+
     }
     public class InAddress
     {

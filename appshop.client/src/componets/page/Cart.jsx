@@ -40,7 +40,7 @@ export class Cart extends Component {
       // gildPrice: 0,
       // finalPrice: 0,
       loading: false,
-      address: []
+      address: [],
     };
 
     this.header = [
@@ -74,7 +74,6 @@ export class Cart extends Component {
     this.onChangeCity({ value: null });
   }
   onChangeCity(e) {
-    debugger
     var arr = [{ title: "تیپاکس", value: 1 },
     { title: "باربری", value: 2 },
     ];
@@ -149,25 +148,6 @@ export class Cart extends Component {
       NotificationManager.error("ایتمی برای ثبت سفارش وجود ندارد", "خطا");
       return;
     }
-    if (this.state.provinceId == null) {
-      NotificationManager.error("استان انتخاب نشده است", "خطا");
-      return;
-    }
-    if (this.state.cityId == null) {
-      NotificationManager.error("شهر انتخاب نشده است", "خطا");
-      return;
-    }
-
-    if (this.state.postalCode == null) {
-      this.state.postalCode="";
-      // NotificationManager.error("کدپستی وارد نشده است", "خطا");
-      // return;
-    }
-
-    if (this.state.addressStr == null) {
-      NotificationManager.error("آدرس وارد نشده است", "خطا");
-      return;
-    }
 
     if (this.state.dateDelivery == null) {
       NotificationManager.error("تاریخ تحویل سفارش انتخاب نشده است", "خطا");
@@ -178,48 +158,65 @@ export class Cart extends Component {
       NotificationManager.error("نوع پرداخت انتخاب نشده است", "خطا");
       return;
     }
-    if (this.state.sendType == null) {
-      NotificationManager.error("نوع ارسال انتخاب نشده است", "خطا");
-      return;
+    else if (this.state.payType == 2) {
+      if (this.state.provinceId == null) {
+        NotificationManager.error("استان انتخاب نشده است", "خطا");
+        return;
+      }
+      if (this.state.cityId == null) {
+        NotificationManager.error("شهر انتخاب نشده است", "خطا");
+        return;
+      }
+
+      if (this.state.postalCode == null) {
+        this.state.postalCode = "";
+        // NotificationManager.error("کدپستی وارد نشده است", "خطا");
+        // return;
+      }
+
+      if (this.state.addressStr == null) {
+        NotificationManager.error("آدرس وارد نشده است", "خطا");
+        return;
+      }
+      if (this.state.sendType == null) {
+        NotificationManager.error("نوع ارسال انتخاب نشده است", "خطا");
+        return;
+      }
     }
     return true;
   }
   AddData() {
-    // /*تست */
-    //   // اگر پرداخت آنلاین انتخاب شده
-    //       if (this.state.payType === 2) {
-    //         var amount = this.state.data.reduce((acc, x) => acc + (x.count * x.data.price), 0);
-    //         SentDataToZarinpal(NotificationManager, amount);
-    //       }
-
     if (this.validtionData()) {
       var data = {
         items: [],
-        address: {
-          addressStr: this.state.addressStr,
-          postalCode: this.state.postalCode,
-          cityId: this.state.cityId
-        },
         dateDelivery: this.state.dateDelivery,
         payType: this.state.payType,
-        sendType: this.state.sendType
       };
-
       this.state.data.map((x, i) =>
         data.items.push({
           productId: x.data.id,
           price: x.data.price,
           count: x.count
         }))
-
+      var url = "/orderBuy/add";
+      if (this.state.payType == 2) {
+        url = "/orderBuy/addOnline";
+        data.address = {
+          addressStr: this.state.addressStr,
+          postalCode: this.state.postalCode,
+          cityId: this.state.cityId
+        },
+          data.sendType = this.state.sendType;
+      }
 
       this.setState({ loading: true });
-      api.post("/orderBuy/add", data)
+      api.post(url, data)
         .then((res) => {
           if (res.status === 200) {
             // اگر پرداخت آنلاین انتخاب شده
             if (this.state.payType === 2) {
-              SentDataToZarinpal(NotificationManager, res.data.data.key);
+              window.location.href = "/successOrderOnline/" + res.data.data.title + "/" + res.data.data.key;
+              // SentDataToZarinpal(NotificationManager, res.data.data.key);
             }
             else {
               window.location.href = "/successOrder/" + res.data.data.title;
@@ -332,97 +329,100 @@ export class Cart extends Component {
                 </table>
               </div>
             </div>
-
             <div className="card mb-1">
-              <p className="card-header">ثبت آدرس</p>
-              <div className="g-3 p-3">
-                <button className="col-md-3 col-sm-12 btn btn-success"
-                  style={{ fontFamily: 'Vazirmatn' }}
-                  onClick={() => this.showModal()}>تاریخچه آدرس</button>
-                <div className="row">
-                  <DropdownApp
-                    context={this}
-                    name="provinceId"
-                    title="استان"
-                    className="col-md-3 col-sm-12"
-                    data={this.state.province}
-                    onChange={(e) => this.onChangeProvice(e)}
-                  />
-                  <DropdownApp
-                    context={this}
-                    name="cityId"
-                    title="شهر"
-                    className="col-md-3 col-sm-12"
-                    data={this.state.city}
-                    updateKey={this.state.updateKeyCity}
-                    onChange={(e) => this.onChangeCity(e)}
-                  />
-
-                  <TextBox
-                    context={this}
-                    title="کد پستی"
-                    name="postalCode"
-                    type="number"
-                    className="col-md-3 col-sm-12"
-                  />
-
-                  <DropdownApp
-                    title="نوع ارسال"
-                    className="col-md-3 col-sm-12"
-                    context={this}
-                    name="sendType"
-                    updateKey={this.state.updateKeySendType}
-                    data={this.state.sendTypies}
-                  />
-
-
-                  <div className="alert alert-secondary py-3 px-3 d-flex align-items-start mt-2" role="alert" >
-                    <div className="flex-grow-1 text-end">
-                      <strong>هزینه ارسال</strong>
-                      <div>بر اساس روش انتخابی (تیپاکس، باربری یا پیک) محاسبه می شود و بر عهده مشتری است.</div>
-                    </div>
-                  </div>
-                  <TextBox
-                    context={this}
-                    title="آدرس"
-                    name="addressStr"
-                    className="col-md-12 col-sm-12"
-                    readOnly={false}
-                  />
-                </div>
+              <p className="card-header">انتخاب تاریخ تحویل سفارش</p>
+              <div className="row g-3 p-3">
+                <DropdownApp
+                  title="تاریخ دریافت سفارش"
+                  className="col-md-4 col-sm-12"
+                  context={this}
+                  name="dateDelivery"
+                  data={this.state.days}
+                />
+                <DropdownApp
+                  title="نوع پرداخت"
+                  className="col-md-4 col-sm-12"
+                  context={this}
+                  name="payType"
+                  data={this.state.payTypies}
+                />
               </div>
-
+            </div>
+            {this.state.payType == 2 && (
               <div className="card mb-1">
-                <p className="card-header">انتخاب تاریخ تحویل سفارش</p>
-                <div className="row g-3 p-3">
-                  <DropdownApp
-                    title="تاریخ دریافت سفارش"
-                    className="col-md-4 col-sm-12"
-                    context={this}
-                    name="dateDelivery"
-                    data={this.state.days}
-                  />
-                  <DropdownApp
-                    title="نوع پرداخت"
-                    className="col-md-4 col-sm-12"
-                    context={this}
-                    name="payType"
-                    data={this.state.payTypies}
-                  />
-                  <div className="d-flex justify-content-start p-3">
-                    <ButtonWaith onClick={() => this.AddData()}
-                      className="btn btn-success col-md-3 col-sm-12 "
-                      loading={this.state.loading}
-                      title="ثبت سفارش" />
-                    <ButtonReturn />
+                <p className="card-header">ثبت آدرس</p>
+                <div className="g-3 p-3">
+                  <button className="col-md-3 col-sm-12 btn btn-success"
+                    style={{ fontFamily: 'Vazirmatn' }}
+                    onClick={() => this.showModal()}>تاریخچه آدرس</button>
+                  <div className="row">
+                    <DropdownApp
+                      context={this}
+                      name="provinceId"
+                      title="استان"
+                      className="col-md-3 col-sm-12"
+                      data={this.state.province}
+                      onChange={(e) => this.onChangeProvice(e)}
+                    />
+                    <DropdownApp
+                      context={this}
+                      name="cityId"
+                      title="شهر"
+                      className="col-md-3 col-sm-12"
+                      data={this.state.city}
+                      updateKey={this.state.updateKeyCity}
+                      onChange={(e) => this.onChangeCity(e)}
+                    />
+
+                    <TextBox
+                      context={this}
+                      title="کد پستی"
+                      name="postalCode"
+                      type="number"
+                      className="col-md-3 col-sm-12"
+                    />
+
+                    <DropdownApp
+                      title="نوع ارسال"
+                      className="col-md-3 col-sm-12"
+                      context={this}
+                      name="sendType"
+                      updateKey={this.state.updateKeySendType}
+                      data={this.state.sendTypies}
+                    />
+
+
+                    <div className="alert alert-secondary py-3 px-3 d-flex align-items-start mt-2" role="alert" >
+                      <div className="flex-grow-1 text-end">
+                        <strong>هزینه ارسال</strong>
+                        <div>بر اساس روش انتخابی (تیپاکس، باربری یا پیک) محاسبه می شود و بر عهده مشتری است.</div>
+                      </div>
+                    </div>
+                    <TextBox
+                      context={this}
+                      title="آدرس"
+                      name="addressStr"
+                      className="col-md-12 col-sm-12"
+                      readOnly={false}
+                    />
                   </div>
                 </div>
               </div>
-              {/* <div className="card mb-1">
+            )}
+            <div className="card mb-1">
+              <div className="d-flex justify-content-start p-3">
+                <ButtonWaith onClick={() => this.AddData()}
+                  className="btn btn-success col-md-3 col-sm-12 "
+                  loading={this.state.loading}
+                  title="ثبت سفارش" />
+                <ButtonReturn />
+              </div>
+            </div>
+            {/* <div className="card mb-1">
                 <p className="card-header">مبلغ نهایی</p>
                 <div className="row g-3 p-3">
                   <div className="col-md-6 col-sm-12 " style={{ fontSize: "x-large", color: "rgb(238 143 62)", fontFamily: 'Vazirmatn' }}>
-                    <label className="form-label mt-2">مبلغ مالیات بر ارزش افزوده :</label>
+                   <label className="form-label mt-2">مبلغ مالیات بر ارزش افزوده :</label>
                     <label style={{ fontFamily: 'Vazirmatn' }}>{this.state.gildPrice}</label>
                   </div>
 
@@ -433,8 +433,6 @@ export class Cart extends Component {
                 
                 </div>
               </div> */}
-            </div>
-
             <Modal
               show={this.state.show}
               onHide={() => this.closeModal()}
