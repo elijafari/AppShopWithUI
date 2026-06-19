@@ -231,7 +231,7 @@ export class Orders extends React.Component {
                                 style={{ fontFamily: 'Vazirmatn' }}
                                 onClick={() => window.location.href = `/OrderDetails/${order.id}`}> مشاهده جزئیات </button>
                             </li>
-                            {order.statues == 8 &&(
+                            {!this.state.isAdmin && order.statues == 8 &&(
                               <li>
                                 <button
                                   className="dropdown-item text-primary"

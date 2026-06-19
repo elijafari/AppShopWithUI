@@ -91,10 +91,9 @@ namespace AppShop.Business.Service
         {
             var listTo = new List<string>
             {
+                "ehsanjaafari12@gmail.com",
                 "e.jafari64@gmail.com",
-               // "ehsanjaafari12@gmail.com",
-                "pone.5053@gmail.com"
-            };
+          };
             _ = emailService.SendEmailAsync(listTo, "ثبت سفارش", EmailMessege.OrderMessage(trackingCode, id));
         }
 
@@ -160,7 +159,7 @@ namespace AppShop.Business.Service
             if (shopStatues == ShopStatues.Cancel && entity.Statues != ShopStatues.Register && !isAdmin)
                 throw new PersianException("با نوجه به وضعیت جاری سفارش امکان لغو سفارش وجود ندارد");
 
-            if (shopStatues == ShopStatues.Confirm && entity.Statues != ShopStatues.Register && entity.Statues != ShopStatues.Paid)
+            if (shopStatues == ShopStatues.Confirm && entity.Statues != ShopStatues.Register && entity.Statues != ShopStatues.Paid && entity.Statues!=ShopStatues.WaitPay)
                 throw new PersianException("با نوجه به وضعیت جاری سفارش امکان تایید سفارش وجود ندارد");
 
             if (shopStatues == ShopStatues.Send && entity.Statues != ShopStatues.Confirm)
