@@ -62,7 +62,7 @@ class OrderDetails extends React.Component {
                     <p>وضعیت: {order.strStatues}</p>
                     <p>نوع پرداخت: {order.strPayType}</p>
                     <p>نوع ارسال: {order.strSendType}</p>
-                    {order.sendType == 2 && (
+                    {order.sendType != 4 && (
                         <>
                             <p>آدرس کامل: {order.addressStr}</p>
                         </>)}
