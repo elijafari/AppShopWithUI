@@ -81,7 +81,9 @@ export class ProductView extends React.Component {
               <div className="row mb-3">
                 <b>توضیحات کالا : </b>
                 <pre
-    style={{ fontFamily:'Vazirmatn', fontSize:'16px'}}
+                                    style={{
+                                        fontFamily: 'Vazirmatn', fontSize: '16px',
+                                        whiteSpace: 'pre-wrap', overflowWrap: 'break-word',wordWrap: 'break-word'}}
                 
                 >{this.state.description}</pre>
               </div>
