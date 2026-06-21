@@ -115,7 +115,7 @@ export class Product extends React.Component {
                             window.location.href = "/productList";
                         else
                             this.clearInput();
-                    },1000)
+                    }, 1000)
 
                 } else
                     ErrorHanding(NotificationManager, res.data.message);
@@ -146,7 +146,10 @@ export class Product extends React.Component {
         newPreviews.splice(index, 1);
         this.setState({ files: newFiles, filePreviews: newPreviews });
     }
-
+isChangeMainImage(i)
+{
+    
+}
     render() {
         return (
             <>
@@ -194,7 +197,7 @@ export class Product extends React.Component {
                             name="description"
                             className="col-md-12 col-sm-12"
                             updateKey={this.state.updateKey}
-                            style={{height: '300px',textAlign: 'right'}}
+                            style={{ height: '300px', textAlign: 'right' }}
                         />
                         <div className="col-md-6 col-sm-12 d-flex align-items-center">
                             <Checkbox
@@ -215,45 +218,45 @@ export class Product extends React.Component {
                                 />
                             </div>
                         </div>
-
-                        <div className="col-12 mt-3">
-                            <div className="alert alert-warning" role="alert">
-                                توجه : عکس اول بعنوان عکس اصلی نمایش داده می‌شود
-                            </div>
-
-                            <div className="row">
-                                {this.state.filePreviews.map((src, i) => (
-                                    <div key={i} className="col-6 d-flex flex-column align-items-center mb-4">
-                                        <img
-                                            src={src}
-                                            width={200}
-                                            height={200}
-                                            className="img-fluid img-thumbnail mb-2 shadow-sm"
-                                            alt={`preview-${i}`}
-                                        />
-                                        {i == 0 ? <label className="text-success">عکس اصلی</label> : null}
-                                        <button
-                                            className="btn btn-outline-danger btn-sm"
-                                            onClick={() => this.removeImage(i)}
-                                             style={{fontFamily:'Vazirmatn'}}
-                                        >
-                                            حذف
-                                        </button>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-
-                        <div className="col-12 d-flex justify-content-start mt-3">
-                            <ButtonWaith
-                                onClick={() => this.AddData()}
-                                loading={this.state.loading}
-                                title="ثبت"
-                            />
-                            <ButtonReturn />
+                        <div className="row">
+                            {this.state.filePreviews.map((src, i) => (
+                                <div key={i} className="col-4 d-flex flex-column align-items-center mb-4">
+                                    <img
+                                        src={src}
+                                        width={200}
+                                        height={200}
+                                        className="img-fluid img-thumbnail mb-2 shadow-sm"
+                                        alt={`preview-${i}`}
+                                    />
+                                    <Checkbox
+                                        context={this}
+                                        title="بعنوان عکس اصلی"
+                                        name=`isMain${i}`"
+                                        onChange={(e)=>isChangeMainImage(i)}
+                                        updateKey={this.state.updateKey}
+                                    />
+                                    <button
+                                        className="btn btn-outline-danger btn-sm"
+                                        onClick={() => this.removeImage(i)}
+                                        style={{ fontFamily: 'Vazirmatn' }}
+                                    >
+                                        حذف
+                                    </button>
+                                </div>
+                            ))}
                         </div>
                     </div>
+
+                    <div className="col-12 d-flex justify-content-start mt-3">
+                        <ButtonWaith
+                            onClick={() => this.AddData()}
+                            loading={this.state.loading}
+                            title="ثبت"
+                        />
+                        <ButtonReturn />
+                    </div>
                 </div>
+            </div >
                 <NotificationContainer />
             </>
         );

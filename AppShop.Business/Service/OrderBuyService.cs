@@ -68,8 +68,8 @@ namespace AppShop.Business.Service
 
             //   if (entity.PayType == 1)
 
-            ////_ = SendEmailToMe(entity.TrackingCode, entity.Id);
-            ////_ = SendEmailToUser(entity);
+            _ = SendEmailToMe(entity.TrackingCode, entity.Id);
+            _ = SendEmailToUser(entity);
 
             return new KeyValue(entity.Id, entity.TrackingCode.ToString());
         }
