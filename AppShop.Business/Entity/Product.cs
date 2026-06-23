@@ -18,14 +18,18 @@ namespace AppShop.Business.Entity
         public string? PathImg { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime? UpdatedDate { get; set; }
-
         public string? Slug { get; set; }
         public virtual Category CategoryEntity { get; set; }
         public virtual List<ItemBuy> ItemBuys { get; set; } = new List<ItemBuy>();
+        public string? Feature { get; set; }
+        public string? Description2 { get; set; }
+
         [NotMapped]
         public string CategoryName{ get; set; }
         public List<ProductImage> ProductImages { get; set; } = new List<ProductImage>();
         [NotMapped ]
         public List<string> PathImags { get; set; }= new List<string>();
+        [NotMapped]
+        public int IndexMain { get; set; }
     }
 }

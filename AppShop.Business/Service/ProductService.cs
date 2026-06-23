@@ -33,7 +33,7 @@ namespace AppShop.Business.Service
             {
                 throw new PersianException(Utility.GetMsgRequired("عکس"));
             }
-            entity.PathImg = pathImgs.First();
+            entity.PathImg = pathImgs[input.IndexMain];
             entity.Slug = SlugHelper.GenerateSlug(entity.Name);
             entity.CreatedDate = DateTime.Now;
             foreach (var item in pathImgs)
@@ -72,7 +72,8 @@ namespace AppShop.Business.Service
                 });
             }
             ValidtionData(entity);
-            entity.PathImg = pathImgs.First();
+            entity.PathImg = pathImgs[input.IndexMain];
+
             entity.Slug = SlugHelper.GenerateSlug(entity.Name);
             entity.UpdatedDate = DateTime.Now;
             db.Products.Update(entity);
@@ -237,6 +238,7 @@ namespace AppShop.Business.Service
         {
              var entity = db.Products.Where(x => x.Id == id).SingleOrDefault();
             entity.PathImags = db.ProductImages.Where(x => x.ProductId == id).Select(x => x.PathImg).ToList();
+            entity.IndexMain=entity. PathImags.IndexOf(entity.PathImg);
             return entity;
         }
         public Product GetBySlug(string slug,bool isAdmin)

@@ -52,12 +52,14 @@ namespace AppShop.Server.Controllers
             var form = Request.Form;
             input.Id = int.Parse(form[nameof(input.Id).ToCamelCose()]);
             input.Code = int.Parse(form[nameof(input.Code).ToCamelCose()]);
+            input.IndexMain = int.Parse(form[nameof(input.IndexMain).ToCamelCose()]);
             input.Name = form[nameof(input.Name).ToCamelCose()];
             input.Price = int.Parse(form[nameof(input.Price).ToCamelCose()]);
             input.Description = form[nameof(input.Description).ToCamelCose()];
+            input.Description2 = form[nameof(input.Description2).ToCamelCose()];
+            input.Feature = form[nameof(input.Feature).ToCamelCose()];
             input.CategoryId = int.Parse(form[nameof(input.CategoryId).ToCamelCose()]);
             input.IsActive = bool.Parse(form[nameof(input.IsActive).ToCamelCose()]);
-
             input.OldFiles = form[nameof(input.OldFiles).ToCamelCose()];
             if (!string.IsNullOrEmpty(input.OldFiles))
             {

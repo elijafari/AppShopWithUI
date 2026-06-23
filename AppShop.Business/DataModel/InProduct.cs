@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Org.BouncyCastle.Bcpg.Sig;
 
 namespace AppShop.Business.DataModel
 {
-   public class InProduct
+    public class InProduct
     {
         public int CategoryId { get; set; }
         public int Code { get; set; }
@@ -13,6 +14,11 @@ namespace AppShop.Business.DataModel
         public int Id { get; set; }
         public string OldFiles { get; set; }
         public List<IFormFile> Files { get; set; }
-        public List<string> ListOldFile { get; set; }=new List<string>();
+        public int IndexMain { get; set; }
+        public List<string> ListOldFile { get; set; } = new List<string>();
+        public string Feature { get; set; }
+        public string? Description2 { get; set; }
+
+
     }
 }

@@ -8,12 +8,18 @@ namespace AppShop.Business.DataModel
 {
     public class KeyValue
     {
-        public KeyValue(object _key,string _title) {
-         Key = _key;
+        public KeyValue(object _key, string _title)
+        {
+            Key = _key;
             Title = _title;
-        
+
         }
         public object Key { get; set; }
-       public string Title { get; set; }
+        public string Title { get; set; }
+    }
+    public class KeyValue2
+    {
+        public string Key { get; set; }
+        public string Value  { get; set; }
     }
 }

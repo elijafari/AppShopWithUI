@@ -14,6 +14,7 @@ export class Checkbox extends React.Component {
   }
   handleInputChange = (e) => {
     this.props.context.setState({ [this.props.name]: e.target.checked });
+    this.props.onChange(e.target.checked)
   };
   render() {
     return (
