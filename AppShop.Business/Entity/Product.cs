@@ -31,5 +31,7 @@ namespace AppShop.Business.Entity
         public List<string> PathImags { get; set; }= new List<string>();
         [NotMapped]
         public int IndexMain { get; set; }
+        [NotMapped]
+        public List<Product> RelatedProducts { get; internal set; }
     }
 }

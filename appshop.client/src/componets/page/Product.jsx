@@ -66,6 +66,7 @@ export class Product extends React.Component {
 
                 this.setState({
                     ...result,
+                    feature: JSON.parse(result.feature || "[]"),
                     price: result.price.toLocaleString("fa-IR"),
                     filePreviews: filePreviews,
                     updateKey: this.state.updateKey + 1,
@@ -117,7 +118,7 @@ export class Product extends React.Component {
         formData.append("categoryId", this.state.categoryId);
         formData.append("isActive", this.state.isActive);
         formData.append("indexMain", this.state.indexMain);
-        formData.append("feature",JSON.stringify(this.state.feature));
+        formData.append("feature", JSON.stringify(this.state.feature));
         this.setState({ loading: true });
         api.post(this.isEdit ? "/product/update" : "/product/add", formData, { isMultipart: true })
             .then((res) => {

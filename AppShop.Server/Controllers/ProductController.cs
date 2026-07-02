@@ -95,6 +95,11 @@ namespace AppShop.Server.Controllers
             return Response(() =>
             {
                 var param = new DataRequest(inputRequest.PageNumber, 1000);
+                if(!string.IsNullOrEmpty(inputRequest.ProductName))
+                {
+                    param.Filter = new Filter();
+                    param.Filter.ProductName = inputRequest.ProductName;
+                }
                 return service.GetAll(param,true);
             });
         }

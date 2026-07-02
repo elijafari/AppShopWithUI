@@ -9,6 +9,8 @@ namespace AppShop.Business.DataModel
     public class InputRequestProduct
     {
         public int PageNumber { get; set; }
+        public string ProductName { get; set; }
+
 
     }
     public class InputRequest

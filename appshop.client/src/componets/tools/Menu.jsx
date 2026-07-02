@@ -81,7 +81,7 @@ export class Menu extends Component {
                       fontSize: "0.7rem",
                     }}
                   >
-                    {this.state.sum}
+                    {this.state.sum.toLocaleString('fa-IR')}
                   </span>
                 )}
               </a>

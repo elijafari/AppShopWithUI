@@ -4,14 +4,19 @@ import "react-notifications/lib/notifications.css";
 import "../../../node_modules/bootstrap-icons/font/bootstrap-icons.min.css";
 import api from "../tools/axiosConfig";
 import { ButtonReturn } from "../tools/ButtonReturn";
+import { toPersianDigits1 } from "../Utility";
 import { ProductSeo } from "./ProductSeo";
+import { RelatedProducts } from "./RelatedProducts";
+
 export class ProductView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       slug: window.location.href.split("/")[4].split("?")[0],
       file: null,
-      filePreviews: [], features: [],
+      filePreviews: [], 
+      features: [],
+      relatedProducts:[],
       updateKeyImage: 1,
       updateKey: 1,
       currentIndex: 0,
@@ -67,7 +72,7 @@ export class ProductView extends React.Component {
           slug={this.state.slug} />
 
 
-        <div className="card">
+        <div className="card pb-4">
           <h1 className="card-header title-header">{this.state.name}</h1>
 
 
@@ -80,22 +85,22 @@ export class ProductView extends React.Component {
                   </span>
                 </div>
                 <div className="row mb-3">
-                  <b>توضیحات کالا : </b>
+                  <b className="mb-2">توضیحات کالا : </b>
                   <pre
                     style={{
                       fontFamily: 'Vazirmatn', fontSize: '16px',
                       whiteSpace: 'pre-wrap', overflowWrap: 'break-word', wordWrap: 'break-word'
                     }}
 
-                  >{this.state.description}</pre>
+                  >{toPersianDigits1(this.state.description)}</pre>
                 </div>
                 {this.state.features.length > 0 && (
                   <div className="row mb-3">
-                    <b>وِپژیگی های کالا : </b>
-                    <ul style={{ marginRight: "20px" }}>
+                    <b className="mb-2">وِپژیگی های کالا : </b>
+                    <ul style={{ marginRight: "20px"   , fontFamily: 'Vazirmatn', fontSize: '16px',}}>
                       {this.state.features.map((x, index) => (
                         <li key={index}>
-                          {x.key} : {x.value}
+                        {toPersianDigits1(x.key)} : {toPersianDigits1(x.value)}
                         </li>
                       ))}
                     </ul>
@@ -109,7 +114,7 @@ export class ProductView extends React.Component {
                       whiteSpace: 'pre-wrap', overflowWrap: 'break-word', wordWrap: 'break-word'
                     }}
 
-                  >{this.state.description2}</pre>
+                  >{toPersianDigits1(this.state.description2?.replace("null",""))}</pre>
                 </div>
               </div>
               <div className="col-md-3 d-flex flex-column align-items-center p-3">
@@ -180,6 +185,8 @@ export class ProductView extends React.Component {
             <ButtonReturn />
           </div>
         </div >
+
+        <RelatedProducts products={this.state.relatedProducts} />
 
         <div className="mt-3">
           {this.state.keywords?.split("/").map((kw, i) => (

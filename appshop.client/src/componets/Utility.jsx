@@ -34,30 +34,38 @@ export function ErrorHanding(NotificationManager, error) {
     }
 }
 export function toEnglishDigits(str) {
-  return str.replace(/[\u06F0-\u06F9]/g, d => d.charCodeAt(0) - 1776)
-            .replace(/[\u0660-\u0669]/g, d => d.charCodeAt(0) - 1632);
+    return str.replace(/[\u06F0-\u06F9]/g, d => d.charCodeAt(0) - 1776)
+        .replace(/[\u0660-\u0669]/g, d => d.charCodeAt(0) - 1632);
 }
 export function normalizePrice(str) {
-  return str
-    .replace(/[\u06F0-\u06F9]/g, d => d.charCodeAt(0) - 1776) // اعداد فارسی
-    .replace(/[\u0660-\u0669]/g, d => d.charCodeAt(0) - 1632) // اعداد عربی
-    .replace(/[^0-9]/g, ""); // حذف جداکننده‌ها و کاراکترهای غیرعددی
+    return str
+        .replace(/[\u06F0-\u06F9]/g, d => d.charCodeAt(0) - 1776) // اعداد فارسی
+        .replace(/[\u0660-\u0669]/g, d => d.charCodeAt(0) - 1632) // اعداد عربی
+        .replace(/[^0-9]/g, ""); // حذف جداکننده‌ها و کاراکترهای غیرعددی
 }
 export function toPersianDigits(number) {
 
-  // تبدیل به فقط عدد
-  var str = number.toString().replace(/\D/g, "");
+    // تبدیل به فقط عدد
+    var str = number.toString().replace(/\D/g, "");
 
-  // تبدیل هر رقم لاتین یا عربی به فارسی
-  const persianMap = ["۰","۱","۲","۳","۴","۵","۶","۷","۸","۹"];
-  return str.replace(/\d/g, d => persianMap[d]);
+    // تبدیل هر رقم لاتین یا عربی به فارسی
+    const persianMap = ["۰", "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹"];
+    return str.replace(/\d/g, d => persianMap[d]);
+}
+export function toPersianDigits1(text) { try { return text.replace(/\d/g, d => "۰۱۲۳۴۵۶۷۸۹"[d]); } catch { } return text; }
+
+export function validInput(NotificationManager, input, title) {
+
+    if (input == "" || input == undefined || input == null) {
+        NotificationManager.error(title + " وارد نشده است ", "خطا");
+        return false;
+    }
+    return true;
 }
 
-export function     validInput(NotificationManager,input, title) {
-
-        if (input == "" || input == undefined || input == null) {
-            NotificationManager.error(title + " وارد نشده است ", "خطا");
-            return false;
-        }
-        return true;
-    }
+export function toPersianNumber(value) {
+    if (value === null || value === undefined) return "";
+    return value
+        .toString()
+        .replace(/\d/g, (d) => "۰۱۲۳۴۵۶۷۸۹"[d]);
+};

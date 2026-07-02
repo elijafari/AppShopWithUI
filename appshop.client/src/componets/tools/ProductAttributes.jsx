@@ -7,20 +7,11 @@ export function ProductAttributes(props) {
         const value = props.context.state[props.name];
         if (!value) return;
         try {
-            const parsed =
-                typeof value === "string"
-                    ? JSON.parse(value)
-                    : JSON.parse(JSON.parse(value));
+            const parsed =value;
 
 if (Array.isArray(parsed) && parsed.length > 0) {
                 setAttributes(parsed);
-            }
-
-            else {
-               let parsed1 = JSON.parse(parsed);
-                if (Array.isArray(parsed1) && parsed1.length > 0) {
-                    setAttributes(parsed1);
-                }
+            
             }
         } catch (err) {
             console.error("Invalid attributes json:", err);

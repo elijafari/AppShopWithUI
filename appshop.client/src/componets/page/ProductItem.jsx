@@ -81,7 +81,7 @@ isActive={product.isActive} />
               {/* نمایش وضعیت محصول (قیمت یا ناموجود) */}
               {product.isActive ? (
                 <p className="text-success fw-semibold mb-2" itemProp="priceCurrency">
-                  {product.price.toLocaleString()} تومان
+                  {product.price.toLocaleString('fa-IR')} تومان
                 </p>
               ) : (
                 <p className="text-danger fw-semibold mb-2">ناموجود</p>
@@ -98,7 +98,7 @@ isActive={product.isActive} />
                     +
                   </button>
                   <label className="fw-bold" key={this.state.updateKey}>
-                    {this.state.count}
+                    {this.state.count.toLocaleString('fa-IR')}
                   </label>
                   {this.state.count > 0 && (
                     <button
@@ -117,7 +117,7 @@ isActive={product.isActive} />
                 <button
                   type="button"
                   className="btn btn-warning w-100 fw-semibold"
-                  onClick={() => this.onView(product)}
+                  onClick={() => this.onVew(product)}
                      style={{fontFamily:'Vazirmatn'}}
                 >
                   اطلاعات بیشتر

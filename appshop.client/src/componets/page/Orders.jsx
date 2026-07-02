@@ -8,7 +8,7 @@ import {
 } from "react-notifications";
 import "react-notifications/lib/notifications.css";
 
-import { ErrorHanding, parseJwt } from "../Utility";
+import { ErrorHanding, parseJwt ,toPersianDigits1,toPersianNumber} from "../Utility";
 import { Loading } from "../tools/Loading";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
@@ -149,8 +149,7 @@ export class Orders extends React.Component {
       <div dir="rtl" className="container mt-4 fontApp">
 
         <h3 className="mb-4 text-center fw-bold">
-          {this.state.isAdmin ? "مدیریت سفارشات" + "(" + this.state.orders.length + ")"
-            : "سفارشات من" + "(" + this.state.orders.length + ")"}
+          {this.state.isAdmin ? "مدیریت سفارشات" : "سفارشات من" + "(" +toPersianNumber( this.state.orders.length )+ ")"}
         </h3>
 
         {this.state.isAdmin && (<div
@@ -191,6 +190,7 @@ export class Orders extends React.Component {
                     {/* {this.state.isAdmin && <th>مالیات بر ارزش افزوده(تومان)</th>}
                     <th>مبلغ نهایی(تومان)</th> */}
                     {this.state.isAdmin && <th>نوع پرداخت</th>}
+                    {this.state.isAdmin && <th>نوع ارسال</th>}
                     {this.state.isAdmin && <th>شناسه تراکنش پرداخت</th>}
                     <th>وضعیت</th>
                     {this.state.isAdmin && <th>شماره فاکتور</th>}
@@ -200,19 +200,20 @@ export class Orders extends React.Component {
                 <tbody>
                   {this.state.orders.map((order, index) => (
                     <tr key={index}>
-                      <td data-label="ردیف">{index + 1}</td>
+                      <td data-label="ردیف">{toPersianNumber(index + 1)}</td>
                       {this.state.isAdmin && <td data-label="نام و نام خانوادگی">{order.fullName}</td>}
-                      {this.state.isAdmin && <td data-label="شماره همراه">{order.phone}</td>}
-                      <td data-label="کد پیگیری">{order.trackingCode}</td>
-                      <td data-label="تاریخ سفارش">{order.solorDateOrder}</td>
-                      <td data-label="تاریخ تحویل">{order.solorDateDelivery}</td>
-                      <td data-label="مبلغ (تومان)">{order.totalPrice.toLocaleString()}</td>
+                      {this.state.isAdmin && <td data-label="شماره همراه">{toPersianDigits1(order.phone)}</td>}
+                      <td data-label="کد پیگیری">{toPersianNumber(order.trackingCode)}</td>
+                      <td data-label="تاریخ سفارش">{toPersianDigits1(order.solorDateOrder)}</td>
+                      <td data-label="تاریخ تحویل">{toPersianDigits1(order.solorDateDelivery)}</td>
+                      <td data-label="مبلغ (تومان)">{order.totalPrice.toLocaleString("fa-IR")}</td>
                       {/* //    {this.state.isAdmin && <td data-label="مالیات بر ارزش افزوده (تومان)">{order.gildPrice.toLocaleString()}</td>}
                   //    <td data-label="مبلغ نهایی (تومان)">{order.finalPrice.toLocaleString()}</td> */}
                       {this.state.isAdmin && <td data-label="نوع پرداخت">{order.strPayType}</td>}
-                      {this.state.isAdmin && <td data-label="شناسه تراکنش پرداخت">{order.paymentCode}</td>}
-                      <td data-label="وضعیت" className={order.statues == 6 ? "text-danger" : ""}>{order.strStatues}</td>
-                      {this.state.isAdmin && <td data-label="شماره فاکتور">{order.factorNumber}</td>}
+                      {this.state.isAdmin && <td data-label="نوع ارسال">{order.strSendType}</td>}
+                      {this.state.isAdmin && <td data-label="شناسه تراکنش پرداخت">{toPersianDigits1(order.paymentCode)}</td>}
+                      <td data-label="وضعیت" className={order.statues == 6 ? "text-danger" : ""}>{toPersianDigits1(order.strStatues)}</td>
+                      {this.state.isAdmin && <td data-label="شماره فاکتور">{toPersianDigits1(order.factorNumber)}</td>}
                       <td>
                         <div className="dropdown">
                           <button
@@ -224,11 +225,11 @@ export class Orders extends React.Component {
                             عملیات
                           </button>
 
-                          <ul className="dropdown-menu">
+                <ul className="dropdown-menu text-end"
+                                style={{ fontFamily: 'Vazirmatn' }}>
                             <li>
                               <button
                                 className="dropdown-item"
-                                style={{ fontFamily: 'Vazirmatn' }}
                                 onClick={() => window.location.href = `/OrderDetails/${order.id}`}> مشاهده جزئیات </button>
                             </li>
                             {!this.state.isAdmin && order.statues == 8 &&(
@@ -238,11 +239,7 @@ export class Orders extends React.Component {
                                   onClick={() => this.paymant(order)}>پرداخت</button>
                               </li>
                             )}
-                            <li>
-                              <button
-                                className="dropdown-item text-danger"
-                                onClick={() => this.showModal(order, true)}>لغو سفارش </button>
-                            </li>
+                           
                             {this.state.isAdmin ? (
                               <>
                                 <li>
@@ -260,7 +257,13 @@ export class Orders extends React.Component {
                                     onClick={() => this.setState({ selectedOrder: order, showBjk: true })} >              چاپ بیجک
                                   </button>    </li>
                               </>
-                            ) : null}
+                            ) : null} 
+                            <li><hr className="dropdown-divider" /></li>
+                            <li>
+                              <button
+                                className="dropdown-item text-danger"
+                                onClick={() => this.showModal(order, true)}>لغو سفارش </button>
+                            </li>
                           </ul>
                         </div>
                       </td>

@@ -5,6 +5,7 @@ using AppShop.Business.Mapping;
 using AutoMapper;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Newtonsoft.Json;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -140,10 +141,10 @@ namespace AppShop.Business.Service
 
         }
 
-        public DataView GetAll(DataRequest param,bool isAdmin)
+        public DataView GetAll(DataRequest param, bool isAdmin)
         {
-            if(isAdmin==false)
-            AddVisit("Home");
+            if (isAdmin == false)
+                AddVisit("Home");
             var result = new DataView(param.Take, param.PageNumber);
 
             var query = from p in db.Products select p;
@@ -177,7 +178,7 @@ namespace AppShop.Business.Service
         }
         public List<Product> GetAll()
         {
-           
+
             return db.Products.ToList();
         }
 
@@ -236,18 +237,29 @@ namespace AppShop.Business.Service
 
         public Product GetById(int id)
         {
-             var entity = db.Products.Where(x => x.Id == id).SingleOrDefault();
+            var entity = db.Products.Where(x => x.Id == id).SingleOrDefault();
             entity.PathImags = db.ProductImages.Where(x => x.ProductId == id).Select(x => x.PathImg).ToList();
-            entity.IndexMain=entity. PathImags.IndexOf(entity.PathImg);
+            entity.IndexMain = entity.PathImags.IndexOf(entity.PathImg);
             return entity;
         }
-        public Product GetBySlug(string slug,bool isAdmin)
-        {       
+        public Product GetBySlug(string slug, bool isAdmin)
+        {
             var entity = db.Products.Where(x => x.Slug == slug).AsNoTracking().SingleOrDefault();
-            if(!isAdmin)
-            AddVisit(entity.Name);    
+            if (!isAdmin)
+                AddVisit(entity.Name);
             entity.CategoryName = db.Categories.FirstOrDefault(x => x.Id == entity.CategoryId)?.Name;
             entity.PathImags = db.ProductImages.Where(x => x.ProductId == entity.Id).Select(x => x.PathImg).ToList();
+
+            int index = entity.PathImags.FindIndex(x => x == entity.PathImg);
+            var firstImg = entity.PathImags[0];
+            entity.PathImags[0] = entity.PathImg;
+            entity.PathImags[index] = firstImg;
+
+            var relatedProducts = db.Products.Where(x =>x.Id!=entity.Id&& x.CategoryId == entity.CategoryId).AsNoTracking().ToList();
+
+
+            entity.RelatedProducts = relatedProducts;
+
             return entity;
         }
 
@@ -283,12 +295,12 @@ namespace AppShop.Business.Service
             try
             {
                 var products = new List<Product>();
-                if (input.page_uniques!=null && input.page_uniques.Any())
+                if (input.page_uniques != null && input.page_uniques.Any())
                 {
                     var ids = input.page_uniques.Select(x => int.Parse(x.Split('-')[0])).ToList();
-                    products = db.Products.Include(x=>x.CategoryEntity).Where(x => ids.Contains(x.Id)).ToList();
+                    products = db.Products.Include(x => x.CategoryEntity).Where(x => ids.Contains(x.Id)).ToList();
                 }
-                if (input.page_urls!=null && input.page_urls.Any())
+                if (input.page_urls != null && input.page_urls.Any())
                 {
                     var slugs = input.page_urls.Select(x => x.Split("/")[4]).ToList();
                     products = db.Products.Include(x => x.CategoryEntity).Where(x => slugs.Contains(x.Slug)).ToList();
@@ -315,7 +327,7 @@ namespace AppShop.Business.Service
                             availability = product.IsActive,
                             category_name = product.CategoryEntity.Name,
                             current_price = product.Price,
-                            date_added =product.CreatedDate.ToString("yyyy-MM-ddTHH:mm:ss+03:30"),
+                            date_added = product.CreatedDate.ToString("yyyy-MM-ddTHH:mm:ss+03:30"),
                             date_updated = (product.UpdatedDate ?? product.CreatedDate).ToString("yyyy-MM-ddTHH:mm:ss+03:30"),
                             page_unique = $"{product.Id}-6826",
                             page_url = $"https://electroej.ir/productView/{product.Slug}",
@@ -328,7 +340,7 @@ namespace AppShop.Business.Service
                 }
                 return JsonConvert.SerializeObject(torop);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return $"error: {ex.Message}";
             }
