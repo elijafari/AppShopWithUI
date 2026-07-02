@@ -322,6 +322,11 @@ namespace AppShop.Business.Service
                     var images = db.ProductImages.ToList();
                     foreach (var product in products)
                     {
+                        var desc=product.Description;
+                        if(product.Description2 != null && product.Description2!="null")
+                        {
+                            desc += product.Description2;
+                        }
                         torop.products.Add(new ToropProduct()
                         {
                             availability = product.IsActive,
@@ -333,7 +338,7 @@ namespace AppShop.Business.Service
                             page_url = $"https://electroej.ir/productView/{product.Slug}",
                             short_desc = product.Name,
                             title = product.Name,
-                            spec = new InfoToropProduct() { description = product.Description },
+                            spec = new InfoToropProduct() { description = desc },
                             image_links = images.Where(x => x.ProductId == product.Id).Select(x => $"https://electroej.ir/{x.PathImg.Replace("\\", "/")}").ToList()
                         });
                     }
