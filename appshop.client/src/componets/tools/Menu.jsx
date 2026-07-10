@@ -107,7 +107,6 @@ export class Menu extends Component {
                   />
                 </div>
               )}
-            </div>
 
           </div>
           <div className="d-flex align-items-center mr-2 fontApp">
@@ -129,7 +128,7 @@ export class Menu extends Component {
         {/* Navbar اصلی */}
 
         < nav
-          className="navbar navbar-expand-lg navbar-dark p-2"
+          className="navbar navbar-expand-lg navbar-dark p-2 mt-2 mb-2"
           style={{
             backgroundColor: "#FFD700", // رنگ طلایی
             fontFamily: "Vazirmatn",
