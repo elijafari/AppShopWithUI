@@ -10,8 +10,6 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <div style={{ margin: "5px" }}>
     <div dir="rtl" className="container d-flex flex-column min-vh-100 bg-light">
-      {/* هدر */}
-      <Header />
 
       {/* محتوای اصلی */}
       <main className="flex-grow-1">
@@ -20,108 +18,89 @@ root.render(
 
       {/* فوتر */}
       <footer
-        className="bg-dark text-white pt-4 pb-4 mt-5 fontApp"
+        className="bg-dark text-white mt-5 py-3 fontApp"
         style={{ borderRadius: "10px" }}
       >
         <div className="container">
 
-          {/* امکانات فروشگاه */}
-          <div className="row text-center border-bottom border-secondary pb-4 mb-4">
+          {/* ردیف امکانات */}
+          <div
+            className="d-flex justify-content-center align-items-center flex-wrap gap-4 pb-3 border-bottom border-secondary"
+          >
 
-            <div className="col-6 col-lg-3 mb-3 mb-lg-0">
-              <i className="bi bi-truck fs-2 text-white-50"></i>
-              <h6 className="mt-2 mb-1">ارسال سریع</h6>
-              <small className="text-white-50">تحویل در کوتاه‌ترین زمان</small>
+            <div className="d-flex align-items-center gap-2">
+              <i className="bi bi-truck fs-4 text-warning"></i>
+              <span>ارسال سریع</span>
             </div>
 
-            <div className="col-6 col-lg-3 mb-3 mb-lg-0">
-              <i className="bi bi-shield-check fs-2 text-white-50"></i>
-              <h6 className="mt-2 mb-1">اصالت کالا</h6>
-              <small className="text-white-50">تضمین اصالت محصولات</small>
+            <div className="d-flex align-items-center gap-2">
+              <i className="bi bi-shield-check fs-4 text-warning"></i>
+              <span>اصالت کالا</span>
             </div>
 
-            <div className="col-6 col-lg-3">
-              <i className="bi bi-cash-coin fs-2 text-white-50"></i>
-              <h6 className="mt-2 mb-1">تضمین قیمت</h6>
-              <small className="text-white-50">بهترین قیمت بازار</small>
+            <div className="d-flex align-items-center gap-2">
+              <i className="bi bi-cash-coin fs-4 text-warning"></i>
+              <span>تضمین قیمت</span>
             </div>
 
-            <div className="col-6 col-lg-3">
-              <i className="bi bi-globe2 fs-2 text-white-50"></i>
-              <h6 className="mt-2 mb-1">ارسال سراسری</h6>
-              <small className="text-white-50">ارسال به سراسر کشور</small>
+            <div className="d-flex align-items-center gap-2">
+              <i className="bi bi-globe2 fs-4 text-warning"></i>
+              <span>ارسال سراسری</span>
             </div>
 
-          </div>
+            {/* زرین پال */}
 
-          {/* لینک ها و نمادها */}
-          <div className="row align-items-center">
-
-            <div className="col-lg-9 mb-4 mb-lg-0">
-              <h5 className="fw-bold mb-3">لینک‌های سریع</h5>
-
-              <ul className="nav flex-column">
-                <li className="nav-item">
-                  <a className="nav-link text-white-50 px-0" href="/home">
-                    صفحه اصلی
-                  </a>
-                </li>
-
-                <li className="nav-item">
-                  <a className="nav-link text-white-50 px-0" href="/contactUs">
-                    تماس با ما
-                  </a>
-                </li>
-
-                <li className="nav-item">
-                  <a className="nav-link text-white-50 px-0" href="/aboutUs">
-                    درباره ما
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            <div className="col-6 col-lg-1 text-center">
-              <a
-                href="https://www.zarinpal.com"
-                target="_blank"
-                rel="noreferrer"
+            <a
+              href="https://www.zarinpal.com"
+              target="_blank"
+              rel="noreferrer"
                 className="tooltip-app"
                 data-tooltip="پرداخت امن با زرین‌پال"
-              >
-                <img
-                  src={zarinpalLogo}
-                  style={{ width: "78px" }}
-                />
-              </a>
-            </div>
+            >
+              <img
+                src={zarinpalLogo}
+                alt="زرین پال"
+                style={{
+                  width: "55px",
+                  height: "55px",
+                  objectFit: "contain",
+                }}
+              />
+            </a>
 
-            <div className="col-6 col-lg-2 text-center">
-              <a
-                referrerPolicy="origin"
-                target="_blank"
-                rel="noreferrer"
-                href="https://trustseal.enamad.ir/?id=678704&Code=Uuq1o2XT9IMXG2cIdfMMbMr2cIA8pBEr"
-                className="tooltip-app"
-                data-tooltip="نماد تجارت الکترونیکی"
-              >
-                <img
-                  src={enamadLogo}
-                  style={{
-                    width: "78px",
-                    height: "78px",
-                    cursor: "pointer",
-                  }}
-                />
-              </a>
-            </div>
+            {/* اینماد */}
+
+            <a
+              referrerPolicy="origin"
+              target="_blank"
+              rel="noreferrer"
+              href="https://trustseal.enamad.ir/?id=678704&Code=Uuq1o2XT9IMXG2cIdfMMbMr2cIA8pBEr"
+              className="tooltip-app"
+              data-tooltip="نماد تجارت الکترونیکی"
+            >
+              <img
+                src={enamadLogo}
+                alt="اینماد"
+                style={{
+                  width: "55px",
+                  height: "55px",
+                  objectFit: "contain",
+                }}
+              />
+            </a>
 
           </div>
 
-          <hr className="border-secondary my-4" />
+          {/* کپی رایت */}
 
-          <div className="text-center text-white-50">
-            © {new Date().getFullYear()} ElectroEJ - تمامی حقوق محفوظ است.
+          <div className="text-center mt-3 text-white-50">
+
+            © {new Date().getFullYear()} <strong>ElectroEJ</strong>
+
+            <br />
+
+            تمامی حقوق این وب‌سایت محفوظ است.
+
           </div>
 
         </div>

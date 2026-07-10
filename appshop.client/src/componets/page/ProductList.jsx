@@ -56,34 +56,50 @@ export class ProductList extends Component {
   render() {
     return (
       <>
-        <div className="card mt-2 mb-2">
-
-          <div className="card-body">
-            <div className="row g-3">
-
-              <TextBox
-                context={this}
-                title="نام کالا"
-                name="productName"
-                className="col-md-6 col-sm-12"
-              />
-
-              {/* دکمه جستجو */}
-              <div className="col-md-6 col-sm-12 d-flex align-items-end">
-                <button
-                  onClick={() => this.loadDate(this.state.currentPage)}
-                  className="btn btn-success d-flex align-items-center gap-2"
-                  style={{ fontFamily: 'Vazirmatn' }}
-                >
-                  <FaSearch />
-                  جستجو
-                </button>
-              </div>
-
-            </div>
-          </div>
-        </div>
-        <div className="card" >
+          <div className=" bg-light shadow-sm">
+             <div className="d-flex justify-content-between align-items-center px-3 py-2">
+   
+               <div style={{ width: "320px" }}>
+                 <div
+                   className="input-group"
+                   style={{
+                     borderRadius: "30px",
+                     overflow: "hidden",
+                     boxShadow: "0 2px 8px rgba(0,0,0,.08)"
+                   }}
+                 >
+                   <input
+                     type="text"
+                     className="form-control border-0"
+                     placeholder="جستجوی کالا..."
+                     value={this.state.productName}
+                     onChange={(e) =>
+                       this.setState({ productName: e.target.value })
+                     }
+                     onKeyDown={(e) => {
+                       if (e.key === "Enter") {
+                         this.loadDate(1)
+                       }
+                     }}
+                   />
+   
+                   <button
+                     type="button"
+                     className="btn"
+                     style={{
+                       background: "#FFC107",
+                       color: "#fff"
+                     }}
+                     onClick={() => this.loadDate(1)}
+                   >
+                     <FaSearch />
+                   </button>
+   
+                 </div>
+   
+               </div>
+             </div>
+           </div>     <div className="card" >
           <div className="card-header">
             <h5> لیست کالاها
               <FiRefreshCcw

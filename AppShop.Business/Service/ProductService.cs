@@ -255,10 +255,10 @@ namespace AppShop.Business.Service
             entity.PathImags[0] = entity.PathImg;
             entity.PathImags[index] = firstImg;
 
-            var relatedProducts = db.Products.Where(x =>x.Id!=entity.Id&& x.CategoryId == entity.CategoryId).AsNoTracking().ToList();
+            entity.RelatedProducts = db.Products.Where(x => x.Id != entity.Id && x.CategoryId == entity.CategoryId).AsNoTracking().ToList();
+            entity.Comments = db.Contacts.Where(x=>x.ProductId==entity.Id).OrderByDescending(c=>c.CreateDate).AsNoTracking().ToList();
 
 
-            entity.RelatedProducts = relatedProducts;
 
             return entity;
         }

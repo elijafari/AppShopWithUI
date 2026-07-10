@@ -12,7 +12,6 @@ namespace AppShop.Business.Mapping
             builder.ToTable("Log");
             builder.HasKey(c => c.Id);
             builder.Property(p => p.Id).UseIdentityColumn();
-            builder.Property(p => p.UserId).IsRequired();
             builder.Property(p => p.CreateDateTime).IsRequired();
             builder.Property(p => p.Massege).IsRequired().HasColumnType("nvarchar(1000)");
 

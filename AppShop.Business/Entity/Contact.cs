@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 
 namespace AppShop.Business.Entity
 {
-   public class Contact
+    public class Contact
     {
-
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Message { get; set; }
-        public string Email { get; set; }
+        public string? Email { get; set; }
+        public DateTime? CreateDate { get; set; }
+        public double? Rate { get; set; }
+        public int? ProductId { get; set; }
     }
 }

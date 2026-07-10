@@ -5,7 +5,7 @@ export default class AboutUs extends Component {
   render() {
     return (
       <div className="container py-5 fontApp">
-        <h1 className="text-center mb-5">درباره فروشگاه الکترو ایجی (ElectroEJ)</h1>
+        <h1 className="text-center mb-5">درباره فروشگاه الکتروایجی (ElectroEJ)</h1>
 
         <div className="row g-4">
           <div className="col-md-4">

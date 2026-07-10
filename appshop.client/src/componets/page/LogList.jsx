@@ -40,7 +40,7 @@ export class LogList extends Component {
   render() {
     return (
       <>
-        <div className="card" style={{ cursor: "pointer" }}>
+        <div className="card">
           <div className="card-header">
             <h5> لیست خطاها</h5>
           </div>
@@ -48,6 +48,7 @@ export class LogList extends Component {
             {!this.state.loading ? (
               <Loading />
             ) : (
+              <div className="table-responsive">
               <table className="table table-striped">
                 <thead>
                   <tr>
@@ -59,21 +60,22 @@ export class LogList extends Component {
                 <tbody>
                   {this.state.data.map((x, i) => (
                     <tr key={"tr" + i}>
-                      <td data-label="ردیف">{this.state.startRow + i}</td>
-                      <td data-label="تاریخ">{x.code}</td>
-                      <td data-label="نام">{x.name}</td>
+                      <td data-label="ردیف">{i+1}</td>
+                      <td data-label="تاریخ">{x.solarCreateDate}</td>
+                      <td data-label="نام">{x.massege}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
+              </div>
             )}
-            <button
+            {/* <button
               className="btn btn-outline-success btn-sm"
               onClick={() => this.sendEmail()}
               style={{ fontFamily: 'Vazirmatn' }}
             >
               ارسال ایمیل
-            </button>
+            </button> */}
           </div>
         </div>
       </>

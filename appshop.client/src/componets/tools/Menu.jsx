@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
-
+import { Link } from "react-router-dom";
 import { Outlet } from "react-router-dom";
-import { FaShoppingCart } from "react-icons/fa";
+import { FaShoppingCart, FaUserCircle, FaLightbulb } from "react-icons/fa";
 import { ModalApp } from "./ModalApp";
 import { ButtonRoute } from "./ButtonRoute";
 import {
@@ -60,73 +60,193 @@ export class Menu extends Component {
   render() {
     return (
       <>
-        <div className="sticky-top bg-light shadow-sm" style={{ borderRadius: "10px" }}>
-          <div className="d-flex justify-content-between align-items-center px-3 py-2">
+        <header
+          className="shadow-sm rounded-3 border bg-yellow"
+          style={{
+            fontFamily: "Vazirmatn",
+          }}
+        >
+          <div className="container py-3">
 
+            <div className="row align-items-center">
 
-            <div className="d-flex align-items-center">
-              <Watch />
+              {/* لوگو */}
+              <div className="col-12 col-md-3 text-center text-md-end mb-3 mb-md-0">
+
+                <h2
+                  className="fw-bold mb-1"
+                  style={{
+                    color: "#FFC107",
+                    letterSpacing: "1px",
+                  }}
+                >
+                  <FaLightbulb className="ms-2" />
+                  ElectroEJ
+                </h2>
+
+                <small className="text-secondary">
+                  فروشگاه اینترنتی الکتروایجی
+                </small>
+
+              </div>
+
+              {/* متن وسط */}
+              <div className="col-12 col-md-6 text-center mb-3 mb-md-0">
+
+                <h5
+                  className="fw-bold mb-2"
+                  style={{ color: "#333" }}
+                >
+                  خرید آنلاین لوازم الکتریکی
+                </h5>
+
+                <small
+                  className="text-secondary"
+                  style={{ fontSize: "14px" }}
+                >
+                  خرید آسان و سریع انواع تجهیزات و قطعات برقی و روشنایی
+                </small>
+
+              </div>
+
+              {/* دکمه ها */}
+              <div className="col-12 col-md-3">
+
+                <div
+                  className="d-flex justify-content-center justify-content-md-end align-items-center gap-2"
+                >
+
+                  {/* سبد خرید */}
+
+                  <a
+                    href="/cart"
+                    className="btn btn-outline-warning position-relative"
+                  >
+                    <FaShoppingCart />
+
+                    {this.state.sum > 0 && (
+                      <span
+                        className="position-absolute badge rounded-pill bg-danger"
+                        style={{
+                          top: "-6px",
+                          right: "-6px",
+                          fontSize: "10px",
+                        }}
+                      >
+                        {this.state.sum.toLocaleString("fa-IR")}
+                      </span>
+                    )}
+
+                  </a>
+
+                  {/* ورود یا کاربر */}
+
+                  {!this.state.isLoging ? (
+
+                    <ButtonRoute
+                      title="ورود / ثبت نام"
+                      link="/login"
+                      className="btn btn-warning"
+                    />
+
+                  ) : (
+
+                    <div className="dropdown">
+
+                      <button
+                        className="btn btn-warning dropdown-toggle"
+                        data-bs-toggle="dropdown"
+                      >
+                        <FaUserCircle className="ms-2" />
+                        {this.state.user.name}
+                      </button>
+
+                      <ul className="dropdown-menu dropdown-menu-end text-end">
+
+                        <li>
+                          <a className="dropdown-item" href="/user">
+                            پروفایل
+                          </a>
+                        </li>
+
+                        <li>
+                          <a className="dropdown-item" href="/orders">
+                            سفارشات
+                          </a>
+                        </li>
+
+                        {this.state.isAdmin && (
+                          <>
+                            <li><hr className="dropdown-divider" /></li>
+
+                            <li>
+                              <a className="dropdown-item" href="/product">
+                                تعریف کالا
+                              </a>
+                            </li>
+
+                            <li>
+                              <a className="dropdown-item" href="/productList">
+                                لیست کالاها
+                              </a>
+                            </li>
+
+                            <li>
+                              <a className="dropdown-item" href="/visitList">
+                                بازدیدها
+                              </a>
+                            </li>
+
+                             <li><hr className="dropdown-divider" /></li>
+                              <li>
+                              <a className="dropdown-item" href="/commentProductList">
+                                نظرات
+                              </a>
+                            </li>
+                             <li>
+                              <a className="dropdown-item" href="/commentList">
+                                پیام ها
+                              </a>
+                            </li>
+                             <li>
+                              <a className="dropdown-item" href="/log">
+                                خطا ها
+                              </a>
+                            </li>
+                          </>
+                        )}
+
+                        <li><hr className="dropdown-divider" /></li>
+
+                        <li className="px-2">
+
+                          <ModalApp
+                            className="btn btn-danger w-100"
+                            btnTitle="خروج"
+                            headerTitle="خروج"
+                            msg="آیا خارج می‌شوید؟"
+                            yesTitle="بله"
+                            noTitle="خیر"
+                            handleOk={this.logout}
+                          />
+
+                        </li>
+
+                      </ul>
+
+                    </div>
+
+                  )}
+
+                </div>
+
+              </div>
+
             </div>
 
-            <div className="d-flex align-items-center ">
-              {/* آیکون سبد خرید */}
-              <a className="nav-link position-relative" href="/cart">
-                <FaShoppingCart className="shopIcon fs-4" />
-                {this.state.sum > 0 && (
-                  <span
-                    className="position-absolute badge rounded-pill bg-danger"
-                    style={{
-                      top: "-5px",
-                      right: "-10px",
-                      fontSize: "0.7rem",
-                    }}
-                  >
-                    {this.state.sum.toLocaleString('fa-IR')}
-                  </span>
-                )}
-              </a>
-
-              {this.state.isLoging === false ? (
-                <ButtonRoute
-                  title="ورود / ثبت نام"
-                  link="/login"
-                  className="btn btn-light btn-sm"
-                />
-              ) : (
-                <div className="d-flex align-items-center gap-2">
-
-                  {/* دکمه خروج */}
-                  <ModalApp
-                    className="btn btn-danger btn-sm"
-                    msg="آیا می‌خواهید از سیستم خارج شوید؟"
-                    headerTitle="خروج"
-                    noTitle="خیر"
-                    yesTitle="بله"
-                    btnTitle="خروج"
-                    handleOk={this.logout}
-                  />
-                </div>
-              )}
-
           </div>
-          <div className="d-flex align-items-center mr-2 fontApp">
-            {this.state.user && (
-              <span
-                className="small text-black"
-                style={{
-                  whiteSpace: "normal",
-                  wordBreak: "break-word",
-                  marginRight: "24px",
-                  marginTop: "-5px",
-                }}
-              >
-                {' کاربرگرامی : ' + this.state.user.name}
-              </span>
-            )}
-          </div>
-        </div >
-        {/* Navbar اصلی */}
 
+        </header>
         < nav
           className="navbar navbar-expand-lg navbar-dark p-2 mt-2 mb-2"
           style={{
@@ -152,8 +272,7 @@ export class Menu extends Component {
 
           {/* منو */}
           < div
-            className={`collapse navbar-collapse ${this.state.isOpen ? "show" : ""
-              }`}
+            className={`collapse navbar-collapse ${this.state.isOpen ? "show" : ""}`}
             id="navbarTogglerDemo02"
           >
             <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
@@ -162,49 +281,19 @@ export class Menu extends Component {
                   صفحه اصلی
                 </a>
               </li>
+              <li className="nav-item active">
+                <a className="nav-link custom-link" href="/contactUs">
+                  تماس با ما                </a>
+              </li>
+              <li className="nav-item active">
+                <a className="nav-link custom-link" href="/aboutUs">
+                  درباره  ما
+                </a>
+              </li>
 
-              {/* فقط برای ادمین */}
-              {this.state.isAdmin && (
-                <>
-                  <li className="nav-item">
-                    <a className="nav-link custom-link" href="/product">
-                      تعریف کالا
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a className="nav-link custom-link" href="/productList">
-                      لیست کالاها
-                    </a>
-                  </li>
-                <li className="nav-item">
-                    <a className="nav-link custom-link" href="/visitList">
-                      مشاهده بازدید ها
-                    </a>
-                  </li>
-                  
-                </>
-              )}
-
-              {/* فقط برای کاربر لاگین‌شده */}
-              {this.state.user && (
-                <>
-                  <li className="nav-item">
-                    <a className="nav-link custom-link" href="/orders">
-                      لیست سفارشات
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a className="nav-link custom-link" href="/user">
-                      ویرایش پروفایل
-                    </a>
-                  </li>
-                </>
-              )}
             </ul>
           </div >
         </nav >
-
-
         {/* خروجی صفحات */}
         < Outlet />
         <NotificationContainer />

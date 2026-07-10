@@ -61,10 +61,9 @@ export function RelatedProducts({ products }) {
                 </h6>
 
                 <div className="mt-auto">
-                  <div className="text-success fw-bold mb-2">
-                    {item.price.toLocaleString("fa-IR")} تومان
-                  </div>
-
+                  <p className="text-success fw-semibold mb-2" itemProp="priceCurrency">
+                  {item.price.toLocaleString('fa-IR')} تومان
+                </p>
                   <button
                     className="btn btn-outline-warning w-100 fw-semibold"
 

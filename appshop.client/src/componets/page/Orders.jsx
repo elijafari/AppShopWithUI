@@ -149,7 +149,8 @@ export class Orders extends React.Component {
       <div dir="rtl" className="container mt-4 fontApp">
 
         <h3 className="mb-4 text-center fw-bold">
-          {this.state.isAdmin ? "مدیریت سفارشات" : "سفارشات من" + "(" +toPersianNumber( this.state.orders.length )+ ")"}
+          {this.state.isAdmin ? "مدیریت سفارشات" : "سفارشات من"}
+             {"(" +toPersianNumber( this.state.orders.length )+ ")"}
         </h3>
 
         {this.state.isAdmin && (<div

@@ -66,8 +66,7 @@ namespace AppShop.Server.Helper
             }
             catch (Exception ex) // سایر خطاها
             {
-                var id = User?.FindFirstValue("id");
-                logService.Add(JsonConvert.SerializeObject( ex ,new JsonSerializerSettings() { ReferenceLoopHandling=ReferenceLoopHandling.Ignore}),id);
+                logService.Add(JsonConvert.SerializeObject( ex ,new JsonSerializerSettings() { ReferenceLoopHandling=ReferenceLoopHandling.Ignore}));
                 return StatusCode((int)HttpStatusCode.InternalServerError, new ApiResponse
                 {
                     Success = false,

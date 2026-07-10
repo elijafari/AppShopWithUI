@@ -7,6 +7,7 @@ import { ButtonReturn } from "../tools/ButtonReturn";
 import { toPersianDigits1 } from "../Utility";
 import { ProductSeo } from "./ProductSeo";
 import { RelatedProducts } from "./RelatedProducts";
+import { CommentProduct } from "./CommentProduct";
 
 export class ProductView extends React.Component {
   constructor(props) {
@@ -14,9 +15,9 @@ export class ProductView extends React.Component {
     this.state = {
       slug: window.location.href.split("/")[4].split("?")[0],
       file: null,
-      filePreviews: [], 
+      filePreviews: [],
       features: [],
-      relatedProducts:[],
+      relatedProducts: [],
       updateKeyImage: 1,
       updateKey: 1,
       currentIndex: 0,
@@ -71,7 +72,6 @@ export class ProductView extends React.Component {
           pathImg={this.state.pathImg}
           slug={this.state.slug} />
 
-
         <div className="card pb-4">
           <h1 className="card-header title-header">{this.state.name}</h1>
 
@@ -97,10 +97,10 @@ export class ProductView extends React.Component {
                 {this.state.features.length > 0 && (
                   <div className="row mb-3">
                     <b className="mb-2">وِپژیگی های کالا : </b>
-                    <ul style={{ marginRight: "20px"   , fontFamily: 'Vazirmatn', fontSize: '16px',}}>
+                    <ul style={{ marginRight: "20px", fontFamily: 'Vazirmatn', fontSize: '16px', }}>
                       {this.state.features.map((x, index) => (
                         <li key={index}>
-                        {toPersianDigits1(x.key)} : {toPersianDigits1(x.value)}
+                          {toPersianDigits1(x.key)} : {toPersianDigits1(x.value)}
                         </li>
                       ))}
                     </ul>
@@ -114,7 +114,7 @@ export class ProductView extends React.Component {
                       whiteSpace: 'pre-wrap', overflowWrap: 'break-word', wordWrap: 'break-word'
                     }}
 
-                  >{toPersianDigits1(this.state.description2?.replace("null",""))}</pre>
+                  >{toPersianDigits1(this.state.description2?.replace("null", ""))}</pre>
                 </div>
               </div>
               <div className="col-md-3 d-flex flex-column align-items-center p-3">
@@ -187,6 +187,8 @@ export class ProductView extends React.Component {
         </div >
 
         <RelatedProducts products={this.state.relatedProducts} />
+        <CommentProduct comments={this.state.comments} productId={this.state.id}/>
+        
 
         <div className="mt-3">
           {this.state.keywords?.split("/").map((kw, i) => (

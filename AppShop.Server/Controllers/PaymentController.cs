@@ -88,8 +88,7 @@ namespace AppShop.Server.Controllers
                 }
                 else
                 {
-                    var id = User?.FindFirstValue("id");
-                    _logService.Add($"payment : oid : {oId} Status: {Status} result: {res}",id);
+                    _logService.Add($"payment : oid : {oId} Status: {Status} result: {res}");
                     var trackingCodeOnly = _orderBuyService.GetById(oId).TrackingCode;
                     return Redirect(Path.Combine(urlFront, $"payment/failed/:{trackingCodeOnly}"));
                 }
@@ -97,8 +96,7 @@ namespace AppShop.Server.Controllers
             }
             else
             {
-                var id = User?.FindFirstValue("id");
-                _logService.Add($"payment : oid : {oId} Status: {Status}",id);
+                _logService.Add($"payment : oid : {oId} Status: {Status}");
                 var trackingCodeOnly = _orderBuyService.GetById(oId).TrackingCode;
                 return Redirect(Path.Combine(urlFront, $"payment/failed/:{trackingCodeOnly}"));
             }

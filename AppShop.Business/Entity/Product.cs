@@ -32,6 +32,8 @@ namespace AppShop.Business.Entity
         [NotMapped]
         public int IndexMain { get; set; }
         [NotMapped]
-        public List<Product> RelatedProducts { get; internal set; }
+        public List<Product> RelatedProducts { get;  set; }
+        [NotMapped]
+        public List<Contact> Comments { get;  set; }
     }
 }

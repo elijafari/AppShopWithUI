@@ -14,6 +14,7 @@ import { ForgtoPassword } from './componets/page/ForgtoPassword';
 import { Orders } from './componets/page/Orders';
 import { LogList } from './componets/page/LogList';
 import { VisitList } from './componets/page/VisitList';
+import { CommentList} from './componets/page/CommentList';
 import  OrderDetails  from './componets/page/OrderDetails';
 import AboutUs from './componets/page/AboutUs';
 import ContactUs from './componets/page/ContactUs';
@@ -31,6 +32,7 @@ export default class App extends Component {
             <Route element={<Menu />}>
               <Route path="/" element={<Home />} />
               <Route path="/home" element={<Home />} />
+              <Route path="/category/:categoryId" element={<Home />} />
               <Route path="/cart" element={<Cart />} />
               <Route path="/login" element={<Login />} />
               <Route path="/user" element={<User />} />
@@ -46,6 +48,8 @@ export default class App extends Component {
               <Route path="/forgtoPassword" element={<ForgtoPassword />}/>
               <Route path="/orders" element={<Orders />}/>
               <Route path="/OrderDetails/:id" element={<OrderDetails/>}/>
+              <Route path="/commentProductList" element={<CommentList product={true}/>}/>
+              <Route path="/commentList" element={<CommentList/>}/>
               {/* //پرداخت موفق */}
               <Route path="/payment/success/:trackingCode/:refId" element={<TrackingCode type={2}/>}/>
               {/* //پرداخت ناموفق */}

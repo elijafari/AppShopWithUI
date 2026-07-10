@@ -13,7 +13,7 @@ import { ProductTorop } from "./ProductTorop";
 export class Home extends Component {
   constructor(props) {
     super(props);
-
+    debugger
     this.state = {
       data: [],
       cat: [],
@@ -29,8 +29,7 @@ export class Home extends Component {
       fromPrice: "",
       toPrice: "",
       productName: "",
-      categoryId: 0,
-      showFilter:false,
+      showFilter: false,
     };
   }
 
@@ -42,25 +41,18 @@ export class Home extends Component {
     this.loadDate(page);
   }
 
-  loadDate(pageNumber) {
-    // ✅ تغییر آدرس مرورگر
-    // const url = new URL(window.location);
-    // url.searchParams.set("page", pageNumber);
-    // window.history.pushState({}, "", url);
-
-
+  loadDate(pageNumber, categoryId) {
     this.setState({
       loading: false,
     });
     var filter = {
-      fromPrice: this.getNumber(this.state.fromPrice),
-      toPrice: this.getNumber(this.state.toPrice),
-      productName:
-        this.state.productName == undefined ? "" : this.state.productName,
-      categoryId: this.state.categoryId,
+      fromPrice: 0,
+      toPrice: 0,
+      productName: this.state.productName,
+      categoryId: categoryId
     };
     api
-      .post("/product/GetAll", { filter: filter, pageNumber: pageNumber, sort: this.state.sortId })
+      .post("/product/GetAll", { filter: filter, pageNumber: pageNumber, sort: 0 })
       .then((response) => {
         this.setState({
           data: response.data.data.data,
@@ -102,7 +94,9 @@ export class Home extends Component {
     if (!text) return 0;
     return parseInt(text.replaceAll(",", ""));
   }
-
+  toggleMenu = () => {
+    this.setState({ isOpen: !this.state.isOpen });
+  };
   render() {
     const { currentPage, pageCount, totalCount, data } = this.state;
 
@@ -144,114 +138,134 @@ export class Home extends Component {
           {prevUrl && <link rel="prev" href={prevUrl} />}
           {nextUrl && <link rel="next" href={nextUrl} />}
         </Helmet>
-
-        {/* 🟢 فیلترها */}
-        <div className="accordion mb-3" id="filterAccordion">
-          <div className="accordion-item">
-            <h2 className="accordion-header">
-            <button
-  className="accordion-button card-header"
-  onClick={() => this.setState({ showFilter: !this.state.showFilter })}
+      <div
+  className="shadow-sm rounded-3 p-3 mb-3 bg-white"
+  style={{ fontFamily: "Vazirmatn" }}
 >
-جستجو کالا
-</button>
-   </h2>
-<div className={`accordion-collapse collapse ${this.state.showFilter ? 'show' : ''}`}>
-              <div className="accordion-body">
-                <div className="row g-3">
+  <div className="row align-items-center gy-3">
 
-                  <TextBox
-                    context={this}
-                    title="نام کالا"
-                    name="productName"
-                    className="col-md-6 col-sm-12"
-                  />
+    {/* جستجو */}
+    <div className="col-lg-5 col-md-12">
 
-                  <DropdownApp
-                    context={this}
-                    name="categoryId"
-                    title="گروه کالا"
-                    className="col-md-6 col-sm-12"
-                    data={this.state.cat}
-                  />
+      <div
+        className="input-group"
+        style={{
+          borderRadius: "30px",
+          overflow: "hidden",
+          boxShadow: "0 2px 8px rgba(0,0,0,.08)"
+        }}
+      >
 
-                  <TextBox
-                    context={this}
-                    title="از قیمت"
-                    name="fromPrice"
-                    className="col-md-6 col-sm-12"
-                    isLeft={true}
-                    separator={true}
-                    maxLength={15}
-                  />
+        <input
+          type="text"
+          className="form-control border-0"
+          placeholder="نام کالا را جستجو کنید..."
+          value={this.state.productName}
+          onChange={(e) =>
+            this.setState({
+              productName: e.target.value
+            })
+          }
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              this.setState({ categoryId: 0 }, () => {
+                this.loadDate(1, 0);
+              });
+            }
+          }}
+        />
 
-                  <TextBox
-                    context={this}
-                    title="تا قیمت"
-                    name="toPrice"
-                    className="col-md-6 col-sm-12"
-                    isLeft={true}
-                    separator={true}
-                    maxLength={15}
-                  />
+        <button
+          className="btn btn-warning px-4"
+          onClick={() => {
+            this.setState({ categoryId: 0 }, () => {
+              this.loadDate(1, 0);
+            });
+          }}
+        >
+          <FaSearch />
+        </button>
 
-                  <DropdownApp
-                    context={this}
-                    name="sortId"
-                    title="ترتیب نمایش"
-                    className="col-md-6 col-sm-12"
-                    data={this.state.sort}
-                  />
+      </div>
 
-                  {/* دکمه جستجو */}
-                  <div className="col-md-6 col-sm-12 d-flex align-items-end">
-                    <button
-                      onClick={() => this.loadDate(this.state.currentPage)}
-                      className="btn btn-success d-flex align-items-center gap-2"
-                      style={{ fontFamily: 'Vazirmatn' }}
-                    >
-                      <FaSearch />
-                      جستجو
-                    </button>
-                  </div>
+    </div>
 
-                </div>
-              </div>
+    {/* دسته بندی ها */}
+    <div className="col-lg-7 col-md-12">
+
+      <div
+        className="d-flex flex-nowrap"
+        style={{
+          overflowX: "auto",
+          scrollbarWidth: "none",
+          whiteSpace: "nowrap"
+        }}
+      >
+
+        {/* دسته بندی ها */}
+
+        {this.state.cat.map((x) => (
+
+          <button
+            key={x.value}
+            className={
+              this.state.categoryId === x.value
+                ? "btn btn-warning rounded-pill me-2 mb-2"
+                : "btn btn-outline-warning rounded-pill me-2 mb-2"
+            }
+            onClick={() => {
+              this.setState(
+                {
+                  categoryId: x.value
+                },
+                () => this.loadDate(1, x.value)
+              );
+            }}
+          >
+            {x.title}
+          </button>
+
+        ))}
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+        {!this.state.loading ? (
+          <Loading />
+        ) : (
+          <>
+            <div>
+              {data.map((x) => (
+                <ProductTorop
+                  data={x}
+                  key={x.id}
+                />
+              ))}
             </div>
-          </div>
-        </div>
-      {!this.state.loading ? (
-        <Loading />
-      ) : (
-        <>
-        <div>
-            {data.map((x) => (
-              <ProductTorop
-                data={x}
-                key={x.id}
-              />
-            ))}
-          </div>
-          <div className="row" key={this.state.updateKey}>
-            {data.map((x) => (
-              <ProductItem
-                data={x}
-                key={x.id}
-                shopItem={(e1, e2) => this.shopItem(e1, e2)}
-              />
-            ))}
-          </div>
-          <br />
-          {/* <Pageing
+            <div className="row" key={this.state.updateKey}>
+              {data.map((x) => (
+                <ProductItem
+                  data={x}
+                  key={x.id}
+                  shopItem={(e1, e2) => this.shopItem(e1, e2)}
+                />
+              ))}
+            </div>
+            <br />
+            {/* <Pageing
               updateKey={this.state.updateKey}
               currentPage={currentPage}
               pageCount={pageCount}
               totalCount={totalCount}
               onChangePage={(e) => this.loadDate(e)}
             /> */}
-        </>
-      )
-  }
+          </>
+        )
+        }
       </>
     );
   }
