@@ -54,8 +54,8 @@ root.render(
               href="https://www.zarinpal.com"
               target="_blank"
               rel="noreferrer"
-                className="tooltip-app"
-                data-tooltip="پرداخت امن با زرین‌پال"
+              className="tooltip-app"
+              data-tooltip="پرداخت امن با زرین‌پال"
             >
               <img
                 src={zarinpalLogo}
@@ -70,10 +70,16 @@ root.render(
 
             {/* اینماد */}
 
+              <a referrerpolicy='origin'
+                target='_blank'
+                href='https://trustseal.enamad.ir/?id=678704&Code=Uuq1o2XT9IMXG2cIdfMMbMr2cIA8pBEr'>
+                <img referrerpolicy='origin'
+                  src='https://trustseal.enamad.ir/logo.aspx?id=678704&Code=Uuq1o2XT9IMXG2cIdfMMbMr2cIA8pBEr'
+                  alt='********'  code='Uuq1o2XT9IMXG2cIdfMMbMr2cIA8pBEr' />
+              </a>
             <a
               referrerPolicy="origin"
               target="_blank"
-              rel="noreferrer"
               href="https://trustseal.enamad.ir/?id=678704&Code=Uuq1o2XT9IMXG2cIdfMMbMr2cIA8pBEr"
               className="tooltip-app"
               data-tooltip="نماد تجارت الکترونیکی"

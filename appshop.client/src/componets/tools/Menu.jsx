@@ -197,18 +197,18 @@ export class Menu extends Component {
                               </a>
                             </li>
 
-                             <li><hr className="dropdown-divider" /></li>
-                              <li>
+                            <li><hr className="dropdown-divider" /></li>
+                            <li>
                               <a className="dropdown-item" href="/commentProductList">
                                 نظرات
                               </a>
                             </li>
-                             <li>
+                            <li>
                               <a className="dropdown-item" href="/commentList">
                                 پیام ها
                               </a>
                             </li>
-                             <li>
+                            <li>
                               <a className="dropdown-item" href="/log">
                                 خطا ها
                               </a>
@@ -220,16 +220,11 @@ export class Menu extends Component {
 
                         <li className="px-2">
 
-                          <ModalApp
+                          <button type="button"
                             className="btn btn-danger w-100"
-                            btnTitle="خروج"
-                            headerTitle="خروج"
-                            msg="آیا خارج می‌شوید؟"
-                            yesTitle="بله"
-                            noTitle="خیر"
-                            handleOk={this.logout}
-                          />
-
+                            onClick={this.logout} style={{ fontFamily: 'Vazirmatn' }}>
+                            خروج
+                          </button>
                         </li>
 
                       </ul>

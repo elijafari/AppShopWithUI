@@ -19,15 +19,19 @@ export class User extends React.Component {
       isEdit: false,
       loading: false,
       questions: [],
+      userName:null,
+      password:null,
     };
   }
   componentDidMount() {
-    this.getUser();
+  this.getUser();
 
   }
   getUser() {
     let token = localStorage.getItem("token");
+
     let user = parseJwt(token);
+    console.log(this.state);
     if (user != null)
       if (user.id != null) {
         api.post("/User/GetById/", { id: user.id }).then((response) => {
@@ -97,7 +101,7 @@ export class User extends React.Component {
                 context={this}
                 title="نام کاربری"
                 name="userName"
-                className="col-md-4 col-sm-12"
+                 className="col-md-4 col-sm-12"
               />
               {this.state.isEdit ? "" :
                 <TextBox
@@ -119,9 +123,10 @@ export class User extends React.Component {
                 context={this}
                 title="پست الکترونیکی"
                 name="email"
+                type="text"
                 className="col-md-4 col-sm-12"
               />
-              <div class="alert alert-warning mt-3 mr-20" role="alert">
+              <div className="alert alert-warning mt-3 mr-20" role="alert">
                 برای فراموشی رمز عبور وصدور فاکتور وارد کردن پست الکترونیکی الزامی است
               </div>
             </div>

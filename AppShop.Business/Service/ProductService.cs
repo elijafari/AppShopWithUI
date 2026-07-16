@@ -5,12 +5,7 @@ using AppShop.Business.Mapping;
 using AutoMapper;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Newtonsoft.Json;
-using System.Diagnostics;
-using System.Threading.Tasks;
-using static Org.BouncyCastle.Crypto.Engines.SM2Engine;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace AppShop.Business.Service
 {
@@ -19,11 +14,13 @@ namespace AppShop.Business.Service
         AppShopDBContext db;
         private readonly IMapper mapper;
         private readonly UploadPathProvider uploadPathProvider;
-        public ProductService(AppShopDBContext _db, IMapper _mapper, UploadPathProvider _uploadPathProvider)
+        private readonly ILogService logService;
+        public ProductService(AppShopDBContext _db, IMapper _mapper, UploadPathProvider _uploadPathProvider, ILogService _logService)
         {
             db = _db;
             mapper = _mapper;
             uploadPathProvider = _uploadPathProvider;
+            logService = _logService;
         }
         public bool Add(InProduct input)
         {
@@ -245,16 +242,23 @@ namespace AppShop.Business.Service
         public Product GetBySlug(string slug, bool isAdmin)
         {
             var entity = db.Products.Where(x => x.Slug == slug).AsNoTracking().SingleOrDefault();
+            if(entity == null)
+            {
+                logService.Add($"نام کالا {slug}");
+                return new Product();
+            }
             if (!isAdmin)
                 AddVisit(entity.Name);
             entity.CategoryName = db.Categories.FirstOrDefault(x => x.Id == entity.CategoryId)?.Name;
             entity.PathImags = db.ProductImages.Where(x => x.ProductId == entity.Id).Select(x => x.PathImg).ToList();
 
             int index = entity.PathImags.FindIndex(x => x == entity.PathImg);
-            var firstImg = entity.PathImags[0];
-            entity.PathImags[0] = entity.PathImg;
-            entity.PathImags[index] = firstImg;
-
+            if (index != 0)
+            {
+                var firstImg = entity.PathImags[0];
+                entity.PathImags[0] = entity.PathImg;
+                entity.PathImags[index] = firstImg;
+            }
             entity.RelatedProducts = db.Products.Where(x => x.Id != entity.Id && x.CategoryId == entity.CategoryId).AsNoTracking().ToList();
             entity.Comments = db.Contacts.Where(x=>x.ProductId==entity.Id).OrderByDescending(c=>c.CreateDate).AsNoTracking().ToList();
 

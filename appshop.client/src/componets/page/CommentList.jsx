@@ -57,8 +57,9 @@ export class CommentList extends Component {
                       <tr key={"tr" + i}>
                         <td data-label="ردیف">{i + 1}</td>
                         <td data-label="تاریخ">{x.solarCreateDate}</td>
+                        <td data-label="نام و نام خانوادگی">{x.name}</td>
                         {this.props.product == true ? (
-                          <>   <td data-label="نام و نام خانوادگی">{x.name}</td>
+                          <>  
                             <td data-label="نام کالا">{x.productName}</td>
                             <td data-label="امتیاز">{x.rote}</td>
                           </>

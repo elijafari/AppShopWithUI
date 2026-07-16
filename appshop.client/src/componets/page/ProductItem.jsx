@@ -117,7 +117,7 @@ isActive={product.isActive} />
                 <button
                   type="button"
                   className="btn btn-warning w-100 fw-semibold"
-                  onClick={() => this.onVew(product)}
+                  onClick={() => this.onView(product)}
                      style={{fontFamily:'Vazirmatn'}}
                 >
                   اطلاعات بیشتر

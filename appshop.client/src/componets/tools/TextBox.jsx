@@ -40,7 +40,8 @@ export class TextBox extends React.Component {
           <input
             name={this.props.name}
             value={this.props.context.state[this.props.name]}
-            type={this.props.type == "password"?this.props.type :"text" }
+            type={this.props.type==null ?'text':this.props.type}
+            autoComplete={this.props.type === "password" ? "new-password" : "off"}
             required
             readOnly={this.props.readOnly}
             onChange={(e) => this.handleInputChange(e)}

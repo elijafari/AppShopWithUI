@@ -28,7 +28,7 @@ export class Orders extends React.Component {
       msg: "",
       isAdmin: false, // از توکن یا پروفایل بیار
       statuesList: [
-        { value: 101, title: "ثبت اولیه /در انتظار پرداخت/ پرداخت شده" },
+        { value: 101, title: "در انتظار پرداخت/ پرداخت شده" },
         { value: 102, title: "تایید/ ارسال / تحویل سفارش" },
         { value: 103, title: "لغو شده / مرجوعی" },
       ]

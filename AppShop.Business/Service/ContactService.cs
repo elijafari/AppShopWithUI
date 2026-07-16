@@ -1,4 +1,5 @@
 ﻿using AppShop.Business.DataModel;
+using AppShop.Business.Email;
 using AppShop.Business.Entity;
 using AppShop.Business.IService;
 using AppShop.Business.Mapping;
@@ -17,11 +18,12 @@ namespace AppShop.Business.Service
     {
         AppShopDBContext db;
         private readonly IMapper mapper;
-
-        public ContactService(AppShopDBContext _db, IMapper _mapper)
+        private readonly IEmailService emailService;
+        public ContactService(AppShopDBContext _db, IMapper _mapper, IEmailService _emailService)
         {
             db = _db;
             mapper = _mapper;
+            emailService = _emailService;
         }
         public bool Add(InContact input)
         {
@@ -30,6 +32,7 @@ namespace AppShop.Business.Service
             entity.CreateDate = DateTime.Now;
             db.Contacts.Add(entity);
             db.SaveChanges();
+            _ = SendEmailToMe("ثبت پیام" ,entity.Message);
             return true;
         }
         public bool AddComment(InComment input)
@@ -39,8 +42,19 @@ namespace AppShop.Business.Service
             entity.CreateDate = DateTime.Now;
             db.Contacts.Add(entity);
             db.SaveChanges();
+            _ = SendEmailToMe("ثبت نظر",entity .Message);
             return true;
         }
+        public async Task SendEmailToMe(string type ,string msg)
+        {
+            var listTo = new List<string>
+            {
+                "e.jafari64@gmail.com",
+          };
+            _ = emailService.SendEmailAsync(listTo, type,msg);
+        }
+
+
         public List<Contact> GetContacts()
         {
             return db.Contacts.Where(x => x.ProductId == null).ToList();
