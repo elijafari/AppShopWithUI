@@ -50,6 +50,14 @@ namespace AppShop.Business.Service
             {
                 throw new PersianException(Utility.GetMsgRequired("شماره همراه"));
             }
+            else if (entity.Phone.Length != 11)
+            {
+                throw new PersianException("شماره همراه وارد شده معتبر نیست");
+            }
+            else if (entity.Phone.StartsWith("09")==false)
+            {
+                throw new PersianException("شماره همراه وارد شده معتبر نیست");
+            }
 
             if (db.Users.Where(x => x.Id != entity.Id && x.UserName == entity.UserName).Any())
             {
