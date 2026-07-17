@@ -120,7 +120,7 @@ export class Menu extends Component {
 
                   <a
                     href="/cart"
-                    className="btn btn-outline-warning position-relative"
+                    className="btn btn-outline-success position-relative"
                   >
                     <FaShoppingCart />
 

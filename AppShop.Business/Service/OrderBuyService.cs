@@ -157,7 +157,7 @@ namespace AppShop.Business.Service
             if (shopStatues == ShopStatues.Cancel && entity.Statues == ShopStatues.Paid && !isAdmin)
                 throw new PersianException("با نوجه به وضعیت جاری سفارش امکان لغو سفارش وجود ندارد");
 
-            if (shopStatues == ShopStatues.Cancel && entity.Statues != ShopStatues.Register && !isAdmin)
+            if (shopStatues == ShopStatues.Cancel && entity.Statues != ShopStatues.Register && entity.Statues != ShopStatues.WaitPay && !isAdmin)
                 throw new PersianException("با نوجه به وضعیت جاری سفارش امکان لغو سفارش وجود ندارد");
 
             if (shopStatues == ShopStatues.Confirm && entity.Statues != ShopStatues.Register && entity.Statues != ShopStatues.Paid && entity.Statues != ShopStatues.WaitPay)

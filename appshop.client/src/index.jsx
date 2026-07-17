@@ -70,13 +70,13 @@ root.render(
 
             {/* اینماد */}
 
-              <a referrerpolicy='origin'
+              {/* <a referrerpolicy='origin'
                 target='_blank'
                 href='https://trustseal.enamad.ir/?id=678704&Code=Uuq1o2XT9IMXG2cIdfMMbMr2cIA8pBEr'>
                 <img referrerpolicy='origin'
                   src='https://trustseal.enamad.ir/logo.aspx?id=678704&Code=Uuq1o2XT9IMXG2cIdfMMbMr2cIA8pBEr'
                   alt='********'  code='Uuq1o2XT9IMXG2cIdfMMbMr2cIA8pBEr' />
-              </a>
+              </a> */}
             <a
               referrerPolicy="origin"
               target="_blank"
