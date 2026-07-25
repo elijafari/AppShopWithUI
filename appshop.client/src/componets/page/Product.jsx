@@ -67,7 +67,7 @@ export class Product extends React.Component {
                 this.setState({
                     ...result,
                     feature: JSON.parse(result.feature || "[]"),
-                    price: result.price.toLocaleString("fa-IR"),
+                    price: result.price,
                     filePreviews: filePreviews,
                     updateKey: this.state.updateKey + 1,
                     [`isMain${result.indexMain}`]: true,
@@ -198,6 +198,7 @@ export class Product extends React.Component {
                             title="کد کالا"
                             name="code"
                             type="number"
+                            isLeft={true}
                             className="col-md-3 col-sm-12"
                             updateKey={this.state.updateKey}
                         />
@@ -223,6 +224,7 @@ export class Product extends React.Component {
                             type="number"
                             updateKey={this.state.updateKey}
                             separator={true}
+                            isLeft={true}
                             maxLength={13}
                         />
                         <div className="col-md-3 col-sm-12 d-flex align-items-center">
