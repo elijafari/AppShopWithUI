@@ -51,7 +51,7 @@ export class ProductList extends Component {
     });
   }
   onEdit(e) {
-    window.location.href = "/product/" + e.id;
+    window.location.href = "/productFromList/" + e.id;
   }
   render() {
     return (

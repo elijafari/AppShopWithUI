@@ -239,8 +239,29 @@ namespace AppShop.Business.Service
             entity.IndexMain = entity.PathImags.IndexOf(entity.PathImg);
             return entity;
         }
+        private string changeSlug(string slug)
+        {
+            switch(slug)
+            {
+                case "lamp-9vat-sbz":
+                    slug= "lamp-9-vat-sbz";
+                    break;
+                case "mhafz-6-khanh-kampyvtrkd2160":
+                    slug = "mhafz-6-khanh-kampyvtr-kd-2160";
+                    break;
+                case "rysh-vatrprvf-hvldvry-10shalh-5mtr":
+                    slug = "rysh-vatrprvf-hvldvry-10shalh-5-mtr";
+                    break;
+                case "rysh-vatrprvf-hvldvry40shalh-20-mtr":
+                    slug = "rysh-vatrprvf-hvldvry-40-shalh-20-mtr";
+                    break;
+
+            }
+            return slug;
+        }
         public Product GetBySlug(string slug, bool isAdmin)
         {
+            slug=changeSlug(slug);
             var entity = db.Products.Where(x => x.Slug == slug).AsNoTracking().SingleOrDefault();
             if(entity == null)
             {

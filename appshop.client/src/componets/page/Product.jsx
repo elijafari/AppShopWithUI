@@ -111,7 +111,7 @@ export class Product extends React.Component {
 
         formData.append("code", this.state.code);
         formData.append("name", this.state.name);
-        formData.append("price", normalizePrice(toEnglishDigits(this.state.price)));
+        formData.append("price",this.state.price);
         formData.append("description", this.state.description);
         formData.append("description2", this.state.description2);
         formData.append("id", this.state.id);
@@ -127,7 +127,12 @@ export class Product extends React.Component {
                     NotificationManager.success(res.data.message, "پیام");
                     setTimeout(() => {
                         if (this.isEdit)
-                            window.location.href = "/productList";
+                            {
+                                if(this.props.back=="home")
+                                    window.location.href = "/homeAdmin";
+                                else
+                                    window.location.href = "/productList";
+                            }                    
                         else
                             this.clearInput();
                     }, 1000)

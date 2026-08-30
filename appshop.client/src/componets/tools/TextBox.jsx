@@ -51,6 +51,7 @@ export class TextBox extends React.Component {
                 ? this.props.title + " را وارد کنید "
                 : ""
             }
+            onWheel={(e) => e.target.blur()}
             maxLength={this.props.maxLength}
             style={{textAlign:this.props.isLeft? "left":"right" ,fontFamily:'Vazirmatn'}}
             onKeyUp={(e) => this.handleOnKeyUp(e)}

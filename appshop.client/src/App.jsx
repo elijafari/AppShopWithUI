@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.rtl.min.css';
 import { Menu } from './componets/tools/Menu';
 import { Home } from './componets/page/Home';
+import { HomeAdmin } from './componets/page/HomeAdmin';
 import { Product } from './componets/page/Product';
 import { Login } from './componets/page/login';
 import { User } from './componets/page/User';
@@ -32,13 +33,15 @@ export default class App extends Component {
             <Route element={<Menu />}>
               <Route path="/" element={<Home />} />
               <Route path="/home" element={<Home />} />
+              <Route path="/homeAdmin" element={<HomeAdmin />} />
               <Route path="/category/:categoryId" element={<Home />} />
               <Route path="/cart" element={<Cart />} />
               <Route path="/login" element={<Login />} />
               <Route path="/user" element={<User />} />
               <Route path="/noAccess" element={<NoAccess />} />
               <Route path="/product" element={<Product />} />
-              <Route path="/product/:id" element={<Product isEdit={true} />} />
+              <Route path="/productFromList/:id" element={<Product isEdit={true} back="list"/>} />
+              <Route path="/productFromHome/:id" element={<Product isEdit={true} back="home"/>} />
               <Route path="/productView/:id" element={<ProductView />} />
               <Route path="/productList" element={<ProductList />} />
               <Route path="/visitList" element={<VisitList />} />

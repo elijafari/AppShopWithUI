@@ -186,6 +186,11 @@ export class Menu extends Component {
                             </li>
 
                             <li>
+                              <a className="dropdown-item" href="/homeAdmin">
+                                لیست کالاها همراه عکس
+                              </a>
+                            </li>
+                            <li>
                               <a className="dropdown-item" href="/productList">
                                 لیست کالاها
                               </a>
