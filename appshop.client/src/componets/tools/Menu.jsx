@@ -201,7 +201,19 @@ export class Menu extends Component {
                                 بازدیدها
                               </a>
                             </li>
+     <li><hr className="dropdown-divider" /></li>
+                            <li>
+                              <a className="dropdown-item" href="/reportProduct">
+                              گزارش فروش بر اساس کالاها
+                              </a>
+                            </li>
+ <li>
+                              <a className="dropdown-item" href="/reportProvince">
+                              گزارش فروش بر اساس استان ها
+                              </a>
+                            </li>
 
+                            
                             <li><hr className="dropdown-divider" /></li>
                             <li>
                               <a className="dropdown-item" href="/commentProductList">

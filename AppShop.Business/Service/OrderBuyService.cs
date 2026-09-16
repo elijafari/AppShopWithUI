@@ -234,5 +234,73 @@ namespace AppShop.Business.Service
             }
             return result;
         }
+        public List<ReportProductVM> GetReportProduct(DateTime? startDate = null, DateTime? endDate = null)
+        {
+            var query = db.ItemBuies
+                .Include(x => x.ProductEntity)
+                .Include(x => x.OrderBuyEntity)
+                .Where(x => x.OrderBuyEntity.Statues == ShopStatues.Delivery)
+                .AsQueryable();
+
+            if (startDate != null)
+            {
+                query = query.Where(x => x.OrderBuyEntity.DateOrder >= startDate);
+            }
+
+            if (endDate != null)
+            {
+                query = query.Where(x => x.OrderBuyEntity.DateOrder <= endDate);
+            }
+
+            var result = query
+                .GroupBy(x => new
+                {
+                    x.ProductId,
+                    ProductName = x.ProductEntity.Name
+                })
+                .Select(g => new ReportProductVM
+                {
+                    ProductName = g.Key.ProductName,
+                    Count =g.Sum(x=>x.Count)
+                })
+                .OrderBy(x=>x.ProductName).ToList();
+
+            return result;
+        }
+
+        public List<ReportProvinceVM> GetReportProvince(DateTime? startDate = null, DateTime? endDate = null)
+        {
+            var query = db.ItemBuies
+                .Include(x => x.ProductEntity)
+                .Include(x => x.OrderBuyEntity).
+                ThenInclude(c => c.AddressEntity).ThenInclude(x => x.CitiEntity).ThenInclude(x=>x.Parent)
+                .Where(x=>x.OrderBuyEntity.Statues== ShopStatues.Delivery)
+                .AsQueryable();
+
+            if (startDate != null)
+            {
+                query = query.Where(x => x.OrderBuyEntity.DateOrder >= startDate);
+            }
+
+            if (endDate != null)
+            {
+                query = query.Where(x => x.OrderBuyEntity.DateOrder <= endDate);
+            }
+
+            var result = query
+                .GroupBy(x => new
+                {
+                    x.OrderBuyEntity.AddressEntity.CitiEntity.Id,
+                    ProvinceName = x.OrderBuyEntity.AddressEntity.CitiEntity.Parent.Name
+                })
+                .Select(g => new ReportProvinceVM
+                {
+                    ProvinceName = g.Key.ProvinceName,
+                    Count = g.Sum(x => x.Count)
+                })
+                .OrderBy(x => x.ProvinceName).ToList();
+
+            return result;
+        }
     }
 }

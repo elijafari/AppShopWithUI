@@ -20,6 +20,9 @@ import  OrderDetails  from './componets/page/OrderDetails';
 import AboutUs from './componets/page/AboutUs';
 import ContactUs from './componets/page/ContactUs';
 import { TrackingCode } from './componets/tools/TrackingCode';
+import {MarketPrices} from './componets/page/MarketPrices';
+import {ReportProduct} from './componets/page/ReportProduct';
+import {ReportProvince} from './componets/page/ReportProvince';
 
 export default class App extends Component {
   constructor(props) {
@@ -53,6 +56,7 @@ export default class App extends Component {
               <Route path="/OrderDetails/:id" element={<OrderDetails/>}/>
               <Route path="/commentProductList" element={<CommentList product={true}/>}/>
               <Route path="/commentList" element={<CommentList/>}/>
+              <Route path="/marketPrices" element={<MarketPrices/>}/>
               {/* //پرداخت موفق */}
               <Route path="/payment/success/:trackingCode/:refId" element={<TrackingCode type={2}/>}/>
               {/* //پرداخت ناموفق */}
@@ -61,6 +65,8 @@ export default class App extends Component {
               <Route path="/successOrder/:trackingCode" element={<TrackingCode type={1}/>}/>
                {/* //خرید انلاین */}
               <Route path="/successOrderOnline/:trackingCode/:key" element={<TrackingCode type={4}/>}/>
+              <Route path="/reportProduct" element={< ReportProduct/>}/>
+              <Route path="/reportProvince" element={< ReportProvince/>}/>
             </Route>
           </Routes>
 

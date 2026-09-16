@@ -53,6 +53,10 @@ namespace AppShop.Server.Controllers
         [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult ChangeShopStatues(InChangeStatues input) => Response(() => service.ChangeShopStatues(input.Id, input.shopStatues));
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public IActionResult GetReportProduct() => Response(() => service.GetReportProduct());
+        public IActionResult GetReportProvince() => Response(() => service.GetReportProvince());
         [Authorize]
         [HttpPost]
         public IActionResult CancelOrder(InId input)

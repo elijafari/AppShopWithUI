@@ -15,5 +15,10 @@ namespace AppShop.Business.IService
         long UpdatePaymentCode(Guid id, string paymentCode);
         Task SendEmailToMe(long trackingCode, Guid id);
 
+         List<ReportProductVM> GetReportProduct(DateTime? startDate = null, DateTime? endDate = null);
+         List<ReportProvinceVM> GetReportProvince(DateTime? startDate = null, DateTime? endDate = null);
+
+
+
     }
 }
