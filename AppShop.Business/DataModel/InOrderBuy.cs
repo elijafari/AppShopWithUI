@@ -46,4 +46,8 @@ namespace AppShop.Business.DataModel
     {
         public int StatuesId { get; set; }
     }
+    public class InProvince
+    {
+        public int ProvinceId { get; set; }
+    }
 }

@@ -56,7 +56,12 @@ namespace AppShop.Server.Controllers
         [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult GetReportProduct() => Response(() => service.GetReportProduct());
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
         public IActionResult GetReportProvince() => Response(() => service.GetReportProvince());
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public IActionResult GetReportProductProvince(InProvince input) => Response(() => service.GetReportProductProvince(input.ProvinceId));
         [Authorize]
         [HttpPost]
         public IActionResult CancelOrder(InId input)

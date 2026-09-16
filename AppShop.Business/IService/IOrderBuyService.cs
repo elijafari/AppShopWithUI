@@ -17,7 +17,7 @@ namespace AppShop.Business.IService
 
          List<ReportProductVM> GetReportProduct(DateTime? startDate = null, DateTime? endDate = null);
          List<ReportProvinceVM> GetReportProvince(DateTime? startDate = null, DateTime? endDate = null);
-
+        List<ReportProductVM> GetReportProductProvince(int ProviceId);
 
 
     }

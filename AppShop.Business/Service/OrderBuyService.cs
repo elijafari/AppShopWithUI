@@ -274,7 +274,7 @@ namespace AppShop.Business.Service
                 .Include(x => x.ProductEntity)
                 .Include(x => x.OrderBuyEntity).
                 ThenInclude(c => c.AddressEntity).ThenInclude(x => x.CitiEntity).ThenInclude(x=>x.Parent)
-                .Where(x=>x.OrderBuyEntity.Statues== ShopStatues.Delivery)
+                .Where(x=>x.OrderBuyEntity.Statues== ShopStatues.Delivery && x.OrderBuyEntity.AddressEntity!=null)
                 .AsQueryable();
 
             if (startDate != null)
@@ -290,17 +290,45 @@ namespace AppShop.Business.Service
             var result = query
                 .GroupBy(x => new
                 {
-                    x.OrderBuyEntity.AddressEntity.CitiEntity.Id,
+                    ProvinceId = x.OrderBuyEntity.AddressEntity.CitiEntity.Parent.Id,
                     ProvinceName = x.OrderBuyEntity.AddressEntity.CitiEntity.Parent.Name
                 })
                 .Select(g => new ReportProvinceVM
                 {
+                    ProvinceId = g.Key.ProvinceId,
                     ProvinceName = g.Key.ProvinceName,
-                    Count = g.Sum(x => x.Count)
+                    CountFactor = g.Count(),
+                    CountProduct = g.Sum(x => x.Count)
                 })
                 .OrderBy(x => x.ProvinceName).ToList();
 
             return result;
         }
+
+        public List<ReportProductVM> GetReportProductProvince(int ProviceId)
+        {
+            var query = db.ItemBuies
+                .Include(x => x.ProductEntity)
+                .Include(x => x.OrderBuyEntity)
+                .ThenInclude(c => c.AddressEntity).ThenInclude(x => x.CitiEntity)
+                .Where(x => x.OrderBuyEntity.Statues == ShopStatues.Delivery && x.OrderBuyEntity.AddressEntity.CitiEntity.ParentId== ProviceId)
+                .AsQueryable();
+
+            var result = query
+                .GroupBy(x => new
+                {
+                    x.ProductId,
+                    ProductName = x.ProductEntity.Name
+                })
+                .Select(g => new ReportProductVM
+                {
+                    ProductName = g.Key.ProductName,
+                    Count = g.Sum(x => x.Count)
+                })
+                .OrderBy(x => x.ProductName).ToList();
+
+            return result;
+        }
+
     }
 }
