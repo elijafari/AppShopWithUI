@@ -10,7 +10,6 @@ import "react-notifications/lib/notifications.css";
 import { ErrorHanding, toPersianNumber } from "../Utility";
 import { Loading } from "../tools/Loading";
 import Modal from "react-bootstrap/Modal";
-import Button from "react-bootstrap/Button";
 
 export class ReportProvince extends React.Component {
   constructor(props) {

@@ -376,6 +376,16 @@ namespace AppShop.Business.Service
             }
 
         }
+        public bool Delete(long id)
+        {
+            if (db.ItemBuies.Any(p => p.ProductId==id))
+                throw new PersianException("برای  کالا مورد نظر سفارش ثبت شده است امکان حذف وجود ندارد");
 
+            var entity = db.Products.SingleOrDefault(c => c.Id == id);
+            db.Products.Remove(entity);
+            db.SaveChanges();
+            return true;
+        }
     }
 }
+                                                           

@@ -114,6 +114,9 @@ namespace AppShop.Server.Controllers
         public IActionResult ConvertSlug() => Response(() => service.ConvertSlug());
         [HttpGet]
         public IActionResult GetJson() => Response(() => service.GetJson());
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public IActionResult Delete(int id) => Response(() => service.Delete(id));
 
     }
 }

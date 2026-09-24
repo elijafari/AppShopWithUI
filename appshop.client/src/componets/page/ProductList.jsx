@@ -5,7 +5,12 @@ import { TextBox } from "../tools/TextBox";
 import { FaSearch } from "react-icons/fa";
 import api from "../tools/axiosConfig";
 import { Loading } from "../tools/Loading";
-import { toPersianNumber} from "../Utility";
+import { toPersianNumber ,ErrorHanding} from "../Utility";
+import { Modal, Button } from "react-bootstrap";
+import {
+  NotificationContainer,
+  NotificationManager,
+} from "react-notifications";
 
 import { FiRefreshCcw } from "react-icons/fi";
 import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
@@ -53,53 +58,97 @@ export class ProductList extends Component {
   onEdit(e) {
     window.location.href = "/productFromList/" + e.id;
   }
+  onAdd() {
+    window.location.href = "/product";
+  }
+
+   onDeleteAction() {
+      this.setState({ loading: true });
+      api.get("/product/delete?id=" + this.state.idDelete)
+        .then((res) => {
+          if (res.status === 200) {
+            this.setState({ loading: false, showModalDelete: false });
+            NotificationManager.success(res.data.message, "پیام");
+            this.loadDate(1);
+  
+          } else {
+            this.setState({ loading: false, showModalDelete: false });
+            ErrorHanding(NotificationManager, res.data.message);
+          }
+        })
+        .catch((error) => {
+          this.setState({ showModalDelete: false });
+          ErrorHanding(NotificationManager, error);
+        });
+    }
+   
   render() {
     return (
       <>
-          <div className=" bg-light shadow-sm">
-             <div className="d-flex justify-content-between align-items-center px-3 py-2">
-   
-               <div style={{ width: "320px" }}>
-                 <div
-                   className="input-group"
-                   style={{
-                     borderRadius: "30px",
-                     overflow: "hidden",
-                     boxShadow: "0 2px 8px rgba(0,0,0,.08)"
-                   }}
-                 >
-                   <input
-                     type="text"
-                     className="form-control border-0"
-                     placeholder="جستجوی کالا..."
-                     value={this.state.productName}
-                     onChange={(e) =>
-                       this.setState({ productName: e.target.value })
-                     }
-                     onKeyDown={(e) => {
-                       if (e.key === "Enter") {
-                         this.loadDate(1)
-                       }
-                     }}
-                   />
-   
-                   <button
-                     type="button"
-                     className="btn"
-                     style={{
-                       background: "#FFC107",
-                       color: "#fff"
-                     }}
-                     onClick={() => this.loadDate(1)}
-                   >
-                     <FaSearch />
-                   </button>
-   
-                 </div>
-   
-               </div>
-             </div>
-           </div>     <div className="card" >
+        <div className=" bg-light shadow-sm">
+          <div className="d-flex justify-content-between align-items-center px-3 py-2">
+
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                width: "100%",
+                gap: "15px"
+              }}
+            >
+              {/* جستجو */}
+              <div
+                className="input-group"
+                style={{
+                  width: "320px",
+                  borderRadius: "30px",
+                  overflow: "hidden",
+                  boxShadow: "0 2px 8px rgba(0,0,0,.08)"
+                }}
+              >
+                <input
+                  type="text"
+                  className="form-control border-0"
+                  placeholder="جستجوی کالا..."
+                  value={this.state.productName}
+                  onChange={(e) =>
+                    this.setState({ productName: e.target.value })
+                  }
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      this.loadDate(1);
+                    }
+                  }}
+                />
+
+                <button
+                  type="button"
+                  className="btn"
+                  style={{
+                    background: "#FFC107",
+                    color: "#fff"
+                  }}
+                  onClick={() => this.loadDate(1)}
+                >
+                  <FaSearch />
+                </button>
+              </div>
+
+              {/* ثبت کالای جدید */}
+              <button
+                type="button"
+                className="btn btn-success"
+                onClick={() => this.onAdd()}
+                style={{
+                  fontFamily: "Vazirmatn"
+                }}
+              >
+                + ثبت کالای جدید
+              </button>
+            </div>
+          </div>
+        </div>     <div className="card" >
           <div className="card-header">
             <h5> لیست کالاها
               <FiRefreshCcw
@@ -121,7 +170,7 @@ export class ProductList extends Component {
                   <tbody>
                     {this.state.data.map((x, i) => (
                       <tr key={"tr" + i} style={{ fontFamily: 'Vazirmatn' }}>
-                        <td data-label="ردیف" 
+                        <td data-label="ردیف"
                         >{toPersianNumber(this.state.startRow + i)}</td>
                         <td data-label="کد">{toPersianNumber(x.code)}</td>
                         <td data-label="نام">{x.name}</td>
@@ -135,6 +184,15 @@ export class ProductList extends Component {
                             style={{ fontFamily: 'Vazirmatn' }}
                           >
                             ویرایش
+                          </button>
+
+                          <button
+                            type="button"
+                            className="btn btn-danger marginApp"
+                            onClick={() => this.setState({ idDelete: x.id, showModalDelete: true })}
+                            style={{ fontFamily: 'Vazirmatn' }}
+                          >
+                            حذف
                           </button>
                         </td>
                       </tr>
@@ -153,10 +211,41 @@ export class ProductList extends Component {
                     onChangePage={(e) => this.loadDate(e)}
                   />
                 )}
+
+
+                <Modal
+                  show={this.state.showModalDelete}
+                  onHide={() => { this.setState({ showModalDelete: false, }) }}
+                  backdrop="static"
+                  keyboard={false}
+                >
+                  <Modal.Header closeButton>
+                    <Modal.Title className="fs-6">{this.state.titleModal}</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                    <span>آیا می خواهید حذف انجام شود؟</span>
+                  </Modal.Body>
+
+                  <Modal.Footer>
+
+                    <Button variant="secondary" onClick={() => { this.setState({ showModalDelete: false, }) }}>
+                      خیر
+                    </Button>
+
+                    <Button variant="primary" onClick={() => this.onDeleteAction()}>
+                      بله
+                    </Button>
+
+                  </Modal.Footer>
+                </Modal>
+
               </>
             )}
           </div>
         </div>
+
+                <NotificationContainer />
+        
       </>
     );
   }

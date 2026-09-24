@@ -180,28 +180,30 @@ export class Menu extends Component {
                             <li><hr className="dropdown-divider" /></li>
 
                             <li>
-                              <a className="dropdown-item" href="/product">
-                                تعریف کالا
+                              <a className="dropdown-item" href="/categoryList">
+                             لیست گروه کالاها
                               </a>
                             </li>
-
+  <li>
+                              <a className="dropdown-item" href="/productList">
+                                لیست کالاها
+                              </a>
+                            </li>
                             <li>
                               <a className="dropdown-item" href="/homeAdmin">
                                 لیست کالاها همراه عکس
                               </a>
                             </li>
-                            <li>
-                              <a className="dropdown-item" href="/productList">
-                                لیست کالاها
-                              </a>
-                            </li>
+                          
 
+     <li><hr className="dropdown-divider" /></li>
                             <li>
                               <a className="dropdown-item" href="/visitList">
                                 بازدیدها
                               </a>
                             </li>
      <li><hr className="dropdown-divider" /></li>
+
                             <li>
                               <a className="dropdown-item" href="/reportProduct">
                               گزارش فروش بر اساس کالاها

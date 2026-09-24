@@ -1,4 +1,5 @@
-﻿using AppShop.Business.Entity;
+﻿using AppShop.Business.DataModel;
+using AppShop.Business.Entity;
 using AppShop.Business.IService;
 using AppShop.Server.Helper;
 using Microsoft.AspNetCore.Authorization;
@@ -16,7 +17,16 @@ namespace AppShop.Server.Controllers
         public CategoryController(ICategoryService _service, ILogService _logService) : base(_logService)
         {
             service = _service;
-        }      
+        }
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public IActionResult Add(InCategory input) => Response(() => service.Add(input));
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public IActionResult Update(InCategoryById input) => Response(() => service.Update(input));
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public IActionResult Delete(int id) => Response(() => service.Delete(id));
         [HttpGet]
         [Authorize(Roles = "Admin")]
         public IActionResult GetAll() => Response(() => service.GetAll(false));

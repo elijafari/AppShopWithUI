@@ -23,6 +23,7 @@ import { TrackingCode } from './componets/tools/TrackingCode';
 import {MarketPrices} from './componets/page/MarketPrices';
 import {ReportProduct} from './componets/page/ReportProduct';
 import {ReportProvince} from './componets/page/ReportProvince';
+import {CategoryList} from './componets/page/CategoryList';
 
 export default class App extends Component {
   constructor(props) {
@@ -67,6 +68,7 @@ export default class App extends Component {
               <Route path="/successOrderOnline/:trackingCode/:key" element={<TrackingCode type={4}/>}/>
               <Route path="/reportProduct" element={< ReportProduct/>}/>
               <Route path="/reportProvince" element={< ReportProvince/>}/>
+              <Route path="/categoryList" element={< CategoryList/>}/>
             </Route>
           </Routes>
 

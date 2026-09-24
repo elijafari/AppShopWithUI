@@ -1,6 +1,8 @@
-﻿using AppShop.Business.Entity;
+﻿using AppShop.Business.DataModel;
+using AppShop.Business.Entity;
 using AppShop.Business.IService;
 using AppShop.Business.Mapping;
+using AutoMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,9 +17,29 @@ namespace AppShop.Business.Service
         public CategoryService(AppShopDBContext _db) {
         db= _db;
         }
-        public bool Add(Category entity)
+        public bool Add(InCategory input)
         {
+            var entity = new Category();
+            entity.Name = input.Name;
             db.Categories.Add(entity);
+            db.SaveChanges();
+            return true;
+        }
+        public bool Update(InCategoryById input)
+        {
+            var entity = db.Categories.SingleOrDefault(c => c.Id == input.Id);
+            entity.Name = input.Name;
+            db.Categories.Update(entity);
+            db.SaveChanges();
+            return true;
+        }
+        public bool Delete(int id)
+        {
+            if(db.Products.Any(p => p.CategoryId == id))
+                throw new PersianException("برای گروه کالا مورد نظر کالا تعریف شده است امکان حذف وجود ندارد");
+
+            var entity = db.Categories.SingleOrDefault(c => c.Id == id);
+            db.Categories.Remove(entity);
             db.SaveChanges();
             return true;
         }
