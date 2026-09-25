@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import { Link } from "react-router-dom";
 import { Outlet } from "react-router-dom";
-import { FaShoppingCart, FaUserCircle, FaLightbulb } from "react-icons/fa";
+import { FaShoppingCart, FaUserCircle} from "react-icons/fa";
 import { ModalApp } from "./ModalApp";
 import { ButtonRoute } from "./ButtonRoute";
 import {
@@ -70,26 +70,52 @@ export class Menu extends Component {
 
             <div className="row align-items-center">
 
-              {/* لوگو */}
-              <div className="col-12 col-md-3 text-center text-md-end mb-3 mb-md-0">
+{/* لوگو و نام فروشگاه */}
+<div className="col-12 col-md-3 mb-3 mb-md-0">
+  <div    className="d-flex align-items-center justify-content-center justify-content-md-start"  >
+    {/* لوگو */}
+    <img
+      src="./icon-48.png"
+      alt="ElectroEJ"
+      style={{
+        width: "48px",
+        height: "48px",
+        objectFit: "contain"
+      }}
+    />
 
-                <h2
-                  className="fw-bold mb-1"
-                  style={{
-                    color: "#FFC107",
-                    letterSpacing: "1px",
-                  }}
-                >
-                  <FaLightbulb className="ms-2" />
-                  ElectroEJ
-                </h2>
+    {/* متن */}
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        textAlign: "right",
+        lineHeight: "1.3"
+      }}
+    >
+      <span
+        style={{
+          fontSize: "19px",
+          fontWeight: "700",
+          color: "#333"
+        }}
+      >
+        ElectroEJ
+      </span>
 
-                <small className="text-secondary">
-                  فروشگاه اینترنتی الکتروایجی
-                </small>
-
-              </div>
-
+      <span
+        style={{
+          fontSize: "11px",
+          color: "#777",
+          marginTop: "3px",
+          whiteSpace: "nowrap"
+        }}
+      >
+        فروشگاه اینترنتی الکتروایجی
+      </span>
+    </div>
+  </div>
+</div>
               {/* متن وسط */}
               <div className="col-12 col-md-6 text-center mb-3 mb-md-0">
 
@@ -181,10 +207,10 @@ export class Menu extends Component {
 
                             <li>
                               <a className="dropdown-item" href="/categoryList">
-                             لیست گروه کالاها
+                                لیست گروه کالاها
                               </a>
                             </li>
-  <li>
+                            <li>
                               <a className="dropdown-item" href="/productList">
                                 لیست کالاها
                               </a>
@@ -194,28 +220,28 @@ export class Menu extends Component {
                                 لیست کالاها همراه عکس
                               </a>
                             </li>
-                          
 
-     <li><hr className="dropdown-divider" /></li>
+
+                            <li><hr className="dropdown-divider" /></li>
                             <li>
                               <a className="dropdown-item" href="/visitList">
                                 بازدیدها
                               </a>
                             </li>
-     <li><hr className="dropdown-divider" /></li>
+                            <li><hr className="dropdown-divider" /></li>
 
                             <li>
                               <a className="dropdown-item" href="/reportProduct">
-                              گزارش فروش بر اساس کالاها
+                                گزارش فروش بر اساس کالاها
                               </a>
                             </li>
- <li>
+                            <li>
                               <a className="dropdown-item" href="/reportProvince">
-                              گزارش فروش بر اساس استان ها
+                                گزارش فروش بر اساس استان ها
                               </a>
                             </li>
 
-                            
+
                             <li><hr className="dropdown-divider" /></li>
                             <li>
                               <a className="dropdown-item" href="/commentProductList">

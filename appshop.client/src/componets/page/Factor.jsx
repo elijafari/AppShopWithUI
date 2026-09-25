@@ -80,19 +80,50 @@ export function Factor(props) {
             onHide={() => props.onHide()}
             size="lg" centered>
             <Modal.Header closeButton>
-                <Modal.Title>فاکتور فروش</Modal.Title>
+                <Modal.Title>فاکتور فروش                </Modal.Title>
             </Modal.Header>
 
             <Modal.Body id="invoice-print">
                 <div ref={printRef} className="invoice">
-                    <div className="invoice-header">
-                        <div>شماره فاکتور: {props.order?.factorNumber}</div>
-                        <br />
-                        <div>تاریخ سفارش{props.order?.solorDateOrder}    </div>
-                        <br />
-                        <div>تاریخ تحویل{props.order?.solorDateDelivery}</div>
-                    </div>
+                    <div
+                        className="invoice-header"
+                        style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "space-between",
+                        }}
+                    >
+                     
+                        {/* اطلاعات فاکتور */}
+                        <div style={{ display: "flex", alignItems: "center", gap: "25px", fontSize: "13px" }}>
+                            <div>
+                                <strong>شماره فاکتور:</strong>{" "}
+                                {props.order?.factorNumber}
+                            </div>
 
+                            <div>
+                                <strong>تاریخ سفارش:</strong>{" "}
+                                {props.order?.solorDateOrder}
+                            </div>
+
+                            <div>
+                                <strong>تاریخ تحویل:</strong>{" "}
+                                {props.order?.solorDateDelivery}
+                            </div>
+                        </div>
+
+                           {/* لوگو */}
+                        <img
+                            src="./icon-48.png"
+                            alt="ElectroEJ"
+                            style={{
+                                width: "45px",
+                                height: "45px",
+                                objectFit: "contain"
+                            }}
+                        />
+
+                    </div>
                     <hr />
 
                     <div className="customer-info">
@@ -124,7 +155,7 @@ export function Factor(props) {
                     </table>
 
                     <div className="text-left mt-4">
-                      {/* //  <p> مالیات بر ارزش افزوده:  {props.order?.gildPrice.toLocaleString()} تومان  </p> */}
+                        {/* //  <p> مالیات بر ارزش افزوده:  {props.order?.gildPrice.toLocaleString()} تومان  </p> */}
                         <p> مبلغ نهایی :    {props.order?.finalPrice.toLocaleString()} تومان   </p>
                     </div>
                 </div>

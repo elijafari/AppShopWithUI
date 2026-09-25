@@ -25,7 +25,17 @@ export default class AboutUs extends Component {
           <div className="col-md-4">
             <div className="card h-100 shadow-sm border-0">
               <div className="card-body text-center">
-                <FaLightbulb size={40} className="mb-3 text-warning" />
+                {/* <FaLightbulb size={40} className="mb-3 text-warning" /> */}
+                <img
+                  src="./icon-48.png"
+                  alt="ElectroEJ"
+                  style={{
+                    width: "48px",
+                    height: "48px",
+                    objectFit: "contain"
+                  }}
+                />
+
                 <h5 className="card-title mb-2">نوآوری و کیفیت</h5>
                 <p className="card-text text-muted">
                   در <strong>فروشگاه اینترنتی ElectroEJ</strong>
