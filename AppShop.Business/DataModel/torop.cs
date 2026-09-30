@@ -23,9 +23,9 @@ public class ToropProduct
 public class Torop
 {
     public string api_version = "torob_api_v3";
-    public int current_page = 1;
+    public int current_page { get; set; }
     public int total { get; set; }
-    public int max_pages = 1;
+    public int max_pages { get; set; }
     public List<ToropProduct> products { get; set; }
 
 }

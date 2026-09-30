@@ -75,7 +75,7 @@ export class Menu extends Component {
   <div    className="d-flex align-items-center justify-content-center justify-content-md-start"  >
     {/* لوگو */}
     <img
-      src="./icon-48.png"
+      src="/icon-48.png"
       alt="ElectroEJ"
       style={{
         width: "48px",

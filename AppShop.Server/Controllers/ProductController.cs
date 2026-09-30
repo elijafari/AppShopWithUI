@@ -81,7 +81,7 @@ namespace AppShop.Server.Controllers
         {
             return Response(() =>
             {
-                var param = new DataRequest(inputRequest.PageNumber, 100,inputRequest.Sort);
+                var param = new DataRequest(inputRequest.PageNumber, 200,inputRequest.Sort);
                 param.Filter = inputRequest.Filter;
                 var isAdmin = User.FindFirstValue(ClaimTypes.Role) == "Admin" ? true : false;
                 return service.GetAll(param,isAdmin);

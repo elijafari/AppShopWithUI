@@ -241,10 +241,10 @@ namespace AppShop.Business.Service
         }
         private string changeSlug(string slug)
         {
-            switch(slug)
+            switch (slug)
             {
                 case "lamp-9vat-sbz":
-                    slug= "lamp-9-vat-sbz";
+                    slug = "lamp-9-vat-sbz";
                     break;
                 case "mhafz-6-khanh-kampyvtrkd2160":
                     slug = "mhafz-6-khanh-kampyvtr-kd-2160";
@@ -261,9 +261,9 @@ namespace AppShop.Business.Service
         }
         public Product GetBySlug(string slug, bool isAdmin)
         {
-            slug=changeSlug(slug);
+            slug = changeSlug(slug);
             var entity = db.Products.Where(x => x.Slug == slug).AsNoTracking().SingleOrDefault();
-            if(entity == null)
+            if (entity == null)
             {
                 logService.Add($"نام کالا {slug}");
                 return new Product();
@@ -281,7 +281,7 @@ namespace AppShop.Business.Service
                 entity.PathImags[index] = firstImg;
             }
             entity.RelatedProducts = db.Products.Where(x => x.Id != entity.Id && x.CategoryId == entity.CategoryId).AsNoTracking().ToList();
-            entity.Comments = db.Contacts.Where(x=>x.ProductId==entity.Id).OrderByDescending(c=>c.CreateDate).AsNoTracking().ToList();
+            entity.Comments = db.Contacts.Where(x => x.ProductId == entity.Id).OrderByDescending(c => c.CreateDate).AsNoTracking().ToList();
 
 
 
@@ -319,27 +319,33 @@ namespace AppShop.Business.Service
         {
             try
             {
-                var products = new List<Product>();
+                IQueryable<Product> query = db.Products.Include(x => x.CategoryEntity);
+
                 if (input.page_uniques != null && input.page_uniques.Any())
                 {
                     var ids = input.page_uniques.Select(x => int.Parse(x.Split('-')[0])).ToList();
-                    products = db.Products.Include(x => x.CategoryEntity).Where(x => ids.Contains(x.Id)).ToList();
+                    query = query.Where(x => ids.Contains(x.Id));
                 }
                 if (input.page_urls != null && input.page_urls.Any())
                 {
                     var slugs = input.page_urls.Select(x => x.Split("/")[4]).ToList();
-                    products = db.Products.Include(x => x.CategoryEntity).Where(x => slugs.Contains(x.Slug)).ToList();
+                    query = query.Where(x => slugs.Contains(x.Slug));
                 }
                 if (input.page != 0)
                 {
                     if (input.sort == "date_added_desc")
-                        products = db.Products.Include(x => x.CategoryEntity).OrderByDescending(x => x.Id).ToList();
+                        query = query.OrderByDescending(x => x.Id);
                     else if (input.sort == "date_updated_desc")
-                        products = db.Products.Include(x => x.CategoryEntity).OrderByDescending(x => x.UpdatedDate).ToList();
+                        query = query.OrderByDescending(x => x.UpdatedDate);
                     else
                         return "error : value of sort in empty";
                 }
+
+                var products = query.Skip((input.page - 1) * 100).Take(100).ToList();
+
                 var torop = new Torop();
+                torop.current_page = input.page;
+                torop.max_pages = (products.Count / 100) + 1;
                 torop.total = products.Count();
                 torop.products = new List<ToropProduct>();
                 if (products.Any())
@@ -347,8 +353,8 @@ namespace AppShop.Business.Service
                     var images = db.ProductImages.ToList();
                     foreach (var product in products)
                     {
-                        var desc=product.Description;
-                        if(product.Description2 != null && product.Description2!="null")
+                        var desc = product.Description;
+                        if (product.Description2 != null && product.Description2 != "null")
                         {
                             desc += product.Description2;
                         }
@@ -378,7 +384,7 @@ namespace AppShop.Business.Service
         }
         public bool Delete(long id)
         {
-            if (db.ItemBuies.Any(p => p.ProductId==id))
+            if (db.ItemBuies.Any(p => p.ProductId == id))
                 throw new PersianException("برای  کالا مورد نظر سفارش ثبت شده است امکان حذف وجود ندارد");
 
             var entity = db.Products.SingleOrDefault(c => c.Id == id);
@@ -388,4 +394,3 @@ namespace AppShop.Business.Service
         }
     }
 }
-                                                           
