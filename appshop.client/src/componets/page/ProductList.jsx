@@ -36,13 +36,18 @@ export class ProductList extends Component {
     ];
   }
   componentDidMount() {
-    this.loadDate(1);
+    this.setState(
+      {
+        productName:localStorage.getItem("productName")
+      }
+    )
+    this.loadDate(1,localStorage.getItem("productName"));
   }
-  loadDate(pageNumber) {
+  loadDate(pageNumber,productName) {
     this.setState({
       loading: false,
     });
-    api.post("/product/GetAllAdmin", { pageNumber: pageNumber, productName: this.state.productName }).then((response) => {
+    api.post("/product/GetAllAdmin", { pageNumber: pageNumber, productName:productName }).then((response) => {
       this.setState({
         data: response.data.data.data,
         pageCount: response.data.data.pageCount,
@@ -54,6 +59,7 @@ export class ProductList extends Component {
         updateKey: this.state.updateKey + 1,
       });
     });
+        localStorage.setItem("productName", productName);
   }
   onEdit(e) {
     window.location.href = "/productFromList/" + e.id;
@@ -117,7 +123,7 @@ export class ProductList extends Component {
                   }
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
-                      this.loadDate(1);
+                      this.loadDate(1,this.state.productName);
                     }
                   }}
                 />
@@ -129,7 +135,7 @@ export class ProductList extends Component {
                     background: "#FFC107",
                     color: "#fff"
                   }}
-                  onClick={() => this.loadDate(1)}
+                  onClick={() => this.loadDate(1,this.state.productName)}
                 >
                   <FaSearch />
                 </button>

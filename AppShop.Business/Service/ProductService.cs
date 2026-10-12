@@ -340,13 +340,14 @@ namespace AppShop.Business.Service
                     else
                         return "error : value of sort in empty";
                 }
-
+                if (input.page == 0)
+                    input.page = 1;
                 var products = query.Skip((input.page - 1) * 100).Take(100).ToList();
 
                 var torop = new Torop();
                 torop.current_page = input.page;
-                torop.max_pages = (products.Count / 100) + 1;
-                torop.total = products.Count();
+                torop.max_pages = (query.Count() / 100) + 1;
+                torop.total = query.Count();
                 torop.products = new List<ToropProduct>();
                 if (products.Any())
                 {
