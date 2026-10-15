@@ -1,5 +1,5 @@
 import React from "react";
-import { FaEnvelope, FaPhone, FaMapMarkerAlt ,FaRegClock} from "react-icons/fa";
+import { FaEnvelope, FaPhone, FaMapMarkerAlt, FaRegClock } from "react-icons/fa";
 import api from "../tools/axiosConfig";
 
 import {
@@ -12,8 +12,8 @@ import { ButtonWaith } from "../tools/ButtonWaith";
 export default class ContactUs extends React.Component {
   constructor(props) {
     super(props);
-      this.state={ name: "", email: "", message: "" ,loading:false};
-  
+    this.state = { name: "", email: "", message: "", loading: false };
+
   }
 
   handleChange = (e) => {
@@ -47,28 +47,32 @@ export default class ContactUs extends React.Component {
 
   render() {
     return (
-      <>      
-      <div className="container py-5 fontApp" >
-        <h1 className="text-center mb-5">تماس با ما</h1>
+      <>
+        <div className="container py-5 fontApp" >
+          <h1 className="text-center mb-5">تماس با ما</h1>
 
-        <div className="row g-4">
-          {/* اطلاعات تماس */}
-          <div className="col-md-4">
-            <div className="card shadow-sm border-0 h-100">
-              <div className="card-body">
-                <h5 className="card-title mb-3">راه‌های ارتباطی</h5>
-                <p className="mb-2"><FaEnvelope className="me-2 text-primary" />info@electroej.ir</p>
-                <p className="mb-2"><FaPhone className="me-2 text-success" /> 09124462355 </p>
-                <p className="mb-2"><FaMapMarkerAlt className="me-2 text-danger" /> تهران، ایران</p>
-                <p className="mb-2"><FaRegClock className="me-2 text-danger" />زمان خرید حضوری هر روز 9 الی 17</p>
+          <div className="row g-4">
+            {/* اطلاعات تماس */}
+            <div className="col-md-4">
+              <div className="card shadow-sm border-0 h-100">
+                <div className="card-body">
+                  <h5 className="card-title mb-3">راه‌های ارتباطی</h5>
+                  <p className="mb-2"><FaEnvelope className="me-2 text-primary" />info@electroej.ir</p>
+                  <p className="mb-2"><FaPhone className="me-2 text-success" /> 09124462355 </p>
+                  <p className="mb-2"><FaMapMarkerAlt className="me-2 text-danger" /> تهران، ایران</p>
+                  <p className="mb-2"><FaRegClock className="me-2 text-danger" />زمان خرید حضوری </p>
+                  <ul>
+                    <li>روزهای شنبه تا چهارشنبه  9 الی 17</li>
+                    <li>روزهای پنج شنبه  9 الی 13</li>
+                  </ul>
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* فرم تماس */}
-          <div className="col-md-8">
-            <div className="card shadow-sm border-0">
-              <div className="card-body">
+            {/* فرم تماس */}
+            <div className="col-md-8">
+              <div className="card shadow-sm border-0">
+                <div className="card-body">
                   <div className="mb-3">
                     <label htmlFor="name" className="form-label">نام شما</label>
                     <input
@@ -106,18 +110,18 @@ export default class ContactUs extends React.Component {
                     ></textarea>
                   </div>
 
-                    <ButtonWaith
-                                  title="ارسال پیام"
-                                  className="btn btn-warning col-md-4 col-sm-12"
-                                  onClick={() => this.handleSubmit()}
-                                  loading={this.state.loading}
-                                />
-                 
+                  <ButtonWaith
+                    title="ارسال پیام"
+                    className="btn btn-warning col-md-4 col-sm-12"
+                    onClick={() => this.handleSubmit()}
+                    loading={this.state.loading}
+                  />
+
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
         <NotificationContainer />
       </>
     );

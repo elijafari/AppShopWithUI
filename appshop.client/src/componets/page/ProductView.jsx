@@ -96,7 +96,7 @@ export class ProductView extends React.Component {
                 </div>
                 {this.state.features.length > 0 && (
                   <div className="row mb-3">
-                    <b className="mb-2">وِپژیگی های کالا : </b>
+                    <b className="mb-2">ویژگی های کالا : </b>
                     <ul style={{ marginRight: "20px", fontFamily: 'Vazirmatn', fontSize: '16px', }}>
                       {this.state.features.map((x, index) => (
                         <li key={index}>
