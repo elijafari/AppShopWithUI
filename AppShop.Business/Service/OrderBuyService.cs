@@ -53,7 +53,12 @@ namespace AppShop.Business.Service
             entity.ItemBuys = new List<ItemBuy>();
             entity.ItemBuys.AddRange(mapper.Map<List<ItemBuy>>(input.Items));
 
-            var price = input.Items.Sum(x => x.Price * x.Count);
+            foreach (var item in entity.ItemBuys)
+            {
+                item.Price = db.Products.First(x => x.Id == item.ProductId).Price;
+            }
+
+            var price = entity.ItemBuys.Sum(x => x.Price * x.Count);
             // entity.GildPrice = price * 0.10;
             //entity.FinalPrice = price + entity.GildPrice;
             entity.FinalPrice = price;
@@ -109,6 +114,11 @@ namespace AppShop.Business.Service
                 throw new PersianException("ایتمی برای ثبت سفارش وجود ندارد");
             }
 
+            foreach (var item in input.Items)
+            {
+               if( item.Price != db.Products.First(x => x.Id == item.ProductId).Price)
+                    throw new PersianException("تغییر قیمت کالا وجود دارد لطفا مجدد سفارش خود رو بررسی و صفحه را بارگذاری کنید");
+            }
             if (input.SendType == null)
             {
                 throw new PersianException("نوع ارسال انتخاب نشده است");

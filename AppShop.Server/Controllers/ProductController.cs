@@ -118,5 +118,8 @@ namespace AppShop.Server.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult Delete(int id) => Response(() => service.Delete(id));
 
+        [HttpPost]
+        public IActionResult GetByIds(InRecords input) => Response(() => service.GetByIds(input.Ids));
+
     }
 }

@@ -36,12 +36,13 @@ export class ProductList extends Component {
     ];
   }
   componentDidMount() {
+    var productName=localStorage.getItem("productName")!=null ?localStorage.getItem("productName"):"";
     this.setState(
       {
-        productName:localStorage.getItem("productName")
+        productName
       }
     )
-    this.loadDate(1,localStorage.getItem("productName"));
+    this.loadDate(1,productName);
   }
   loadDate(pageNumber,productName) {
     this.setState({

@@ -20,5 +20,6 @@ namespace AppShop.Business.IService
         bool UpdatePath();
         string GetForTorop(InTorop input);
         bool Delete(long id);
+        List<Product> GetByIds(List<long> ids);
     }
 }

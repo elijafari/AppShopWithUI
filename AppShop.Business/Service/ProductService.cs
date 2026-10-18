@@ -393,5 +393,6 @@ namespace AppShop.Business.Service
             db.SaveChanges();
             return true;
         }
+        public List<Product> GetByIds(List<long> ids)=> db.Products.Where(x => ids.Contains(x.Id)).ToList();
     }
 }

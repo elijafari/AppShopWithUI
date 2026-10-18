@@ -22,6 +22,10 @@ namespace AppShop.Business.DataModel
     {
         public string Id { get; set; }
     }
+    public class InRecords
+    {
+        public List<long> Ids { get; set; }
+    }
     public class InUserForget
     {
         public string UserName { get; set; }

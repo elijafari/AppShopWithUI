@@ -20,7 +20,7 @@ export class Cart extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      step: 0,
+      // step: JSON.parse(localStorage.getItem("selectedItem")),
       data: [],
       updateKey: 1,
       updateKeyCity: 1,
@@ -53,6 +53,7 @@ export class Cart extends Component {
   }
   componentDidMount() {
     let data = JSON.parse(localStorage.getItem("selectedItem"));
+    this.setState({ step: data == null || data.length == 0 ? 0 : 1 });
     this.getCity();
     this.getDay();
     this.refreshTable(data);
@@ -107,17 +108,24 @@ export class Cart extends Component {
   }
   refreshTable(data) {
 
-    //  var totalPrice = data.reduce((acc, x) => acc + (x.count * x.data.price), 0);
-    //var gildPrice = totalPrice * 0.1;
-
-    this.setState({
-      data: data,
-      step: data != null && data.length > 0 ? 1 : 0,
-      updateKey: this.state.updateKey + 1,
-      //  gildPrice: gildPrice.toLocaleString("fa-IR") + " تومان",
-      //  finalPrice: (totalPrice + gildPrice).toLocaleString("fa-IR") + " تومان",
-    });
-    localStorage.setItem("selectedItem", JSON.stringify(data));
+    var ids = data.map(x => x.id);
+    if (ids.length > 0) {
+      api.post("/product/GetByIds", { ids: ids }).then((response) => {
+        var products = response.data.data;
+        for (let index = 0; index < products.length; index++) {
+          if (data.filter(x => x.id == products[index].id)[0].data.price != products[index].price) {
+            this.setState({ changePrice: true })
+            data.filter(x => x.id == products[index].id)[0].data.price = products[index].price;
+          }
+        }
+        this.setState({
+          data: data,
+          step: data != null && data.length > 0 ? 1 : 0,
+          updateKey: this.state.updateKey + 1,
+        });
+        localStorage.setItem("selectedItem", JSON.stringify(data));
+      })
+    }
   }
   onView(e) {
     window.location.href = "/productView/" + e.id;
@@ -239,6 +247,13 @@ export class Cart extends Component {
         )}
         {this.state.step == 1 && (
           <>
+            {this.state.changePrice == true && (
+              <div className="alert alert-warning py-3 px-3 d-flex align-items-start mt-2" role="alert" >
+                <div className="flex-grow-1 text-end">
+                  <strong>قیمت کالاها تغییر کرده است</strong>
+                </div>
+              </div>
+            )}
             <div className="card mb-1">
               <p className="card-header">سبد خرید</p>
               <div className="table-responsive">
