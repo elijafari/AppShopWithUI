@@ -6,6 +6,7 @@ using AppShop.Business.Mapping;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -17,11 +18,13 @@ namespace AppShop.Business.Service
         AppShopDBContext db;
         private readonly IMapper mapper;
         private readonly IEmailService emailService;
-        public OrderBuyService(AppShopDBContext _db, IMapper _mapper, IEmailService _emailService)
+        private readonly IHostEnvironment environment;
+        public OrderBuyService(AppShopDBContext _db, IMapper _mapper, IEmailService _emailService,IHostEnvironment _environment)
         {
             db = _db;
             mapper = _mapper;
             emailService = _emailService;
+            environment = _environment;
         }
         public async Task<KeyValue> Add(InOrderBuy input, Guid userId)
         {
@@ -71,11 +74,11 @@ namespace AppShop.Business.Service
             db.OrderBuys.Add(entity);
             await db.SaveChangesAsync();
 
-            //   if (entity.PayType == 1)
-
-            _ = SendEmailToMe(entity.TrackingCode, entity.Id);
-            _ = SendEmailToUser(entity);
-
+            if (environment.IsProduction())
+            {
+                _ = SendEmailToMe(entity.TrackingCode, entity.Id);
+                _ = SendEmailToUser(entity);
+            }
             return new KeyValue(entity.Id, entity.TrackingCode.ToString());
         }
 

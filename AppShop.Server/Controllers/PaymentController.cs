@@ -30,7 +30,7 @@ namespace AppShop.Server.Controllers
 
             urlFront = appSetting.Value.UrlFront;
             urlBack = appSetting.Value.UrlBack;
-            urlZarinpal =appSetting.Value.UrlZarinpal;
+            urlZarinpal = appSetting.Value.UrlZarinpal;
 
             _orderBuyService = orderBuyService;
             _logService = logService;
@@ -61,6 +61,7 @@ namespace AppShop.Server.Controllers
         [HttpGet]
         public async Task<IActionResult> VerifyPayment([FromQuery] long Amount, [FromQuery] string Authority, [FromQuery] string Status, [FromQuery] Guid oId)
         {
+            var dataOrder = _orderBuyService.GetById(oId);
             if (Status == "OK")
             {
 
@@ -83,22 +84,22 @@ namespace AppShop.Server.Controllers
                 {
                     // پرداخت موفق            
                     var trackingCode = _orderBuyService.UpdatePaymentCode(oId, result.ref_id.ToString());
-                   // _ = _orderBuyService.SendEmailToMe(trackingCode,oId);
+                    // _ = _orderBuyService.SendEmailToMe(trackingCode,oId);
                     return Redirect(Path.Combine(urlFront, $"payment/success/:{trackingCode}/:{result.ref_id}"));
                 }
+                if (result.code == 101 && dataOrder.Statues == ShopStatues.Paid)
+                    return Redirect(Path.Combine(urlFront, $"payment/repetition/:{dataOrder.TrackingCode}/:{result.ref_id}"));
+
                 else
                 {
-                    _logService.Add($"payment : oid : {oId} Status: {Status} result: {res}");
-                    var trackingCodeOnly = _orderBuyService.GetById(oId).TrackingCode;
-                    return Redirect(Path.Combine(urlFront, $"payment/failed/:{trackingCodeOnly}"));
+                    _logService.Add($"TrackingCode: {dataOrder.TrackingCode} StatuesBuy:{dataOrder.Statues} payment : oid : {oId} Status: {Status} result: {res}");
+                    return Redirect(Path.Combine(urlFront, $"payment/failed/:{dataOrder.TrackingCode}"));
                 }
-
             }
             else
             {
                 _logService.Add($"payment : oid : {oId} Status: {Status}");
-                var trackingCodeOnly = _orderBuyService.GetById(oId).TrackingCode;
-                return Redirect(Path.Combine(urlFront, $"payment/failed/:{trackingCodeOnly}"));
+                return Redirect(Path.Combine(urlFront, $"payment/failed/:{dataOrder.TrackingCode}"));
             }
         }
     }

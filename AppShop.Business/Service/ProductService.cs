@@ -6,6 +6,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using System.Text;
 
 namespace AppShop.Business.Service
 {
@@ -274,11 +275,16 @@ namespace AppShop.Business.Service
             entity.PathImags = db.ProductImages.Where(x => x.ProductId == entity.Id).Select(x => x.PathImg).ToList();
 
             int index = entity.PathImags.FindIndex(x => x == entity.PathImg);
-            if (index != 0)
+
+            if (entity.PathImags.Count > 0 && index > 0)
             {
                 var firstImg = entity.PathImags[0];
                 entity.PathImags[0] = entity.PathImg;
                 entity.PathImags[index] = firstImg;
+            }
+            else if (entity.PathImags.Count == 0 && !string.IsNullOrEmpty(entity.PathImg))
+            {
+                entity.PathImags.Add(entity.PathImg);
             }
             entity.RelatedProducts = db.Products.Where(x => x.Id != entity.Id && x.CategoryId == entity.CategoryId).AsNoTracking().ToList();
             entity.Comments = db.Contacts.Where(x => x.ProductId == entity.Id).OrderByDescending(c => c.CreateDate).AsNoTracking().ToList();
@@ -393,6 +399,7 @@ namespace AppShop.Business.Service
             db.SaveChanges();
             return true;
         }
-        public List<Product> GetByIds(List<long> ids)=> db.Products.Where(x => ids.Contains(x.Id)).ToList();
+        public List<Product> GetByIds(List<long> ids) => db.Products.Where(x => ids.Contains(x.Id)).ToList();
     }
+
 }

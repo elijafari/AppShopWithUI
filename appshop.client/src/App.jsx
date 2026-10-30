@@ -58,7 +58,9 @@ export default class App extends Component {
               <Route path="/commentProductList" element={<CommentList product={true}/>}/>
               <Route path="/commentList" element={<CommentList/>}/>
               <Route path="/marketPrices" element={<MarketPrices/>}/>
-              {/* //پرداخت موفق */}
+              {/* //پرداخت تکراری */}
+              <Route path="/payment/repetition/:trackingCode/:refId" element={<TrackingCode type={5}/>}/>
+             {/* //پرداخت موفق */}
               <Route path="/payment/success/:trackingCode/:refId" element={<TrackingCode type={2}/>}/>
               {/* //پرداخت ناموفق */}
               <Route path="/payment/failed/:trackingCode" element={<TrackingCode type={3}/>}/>
