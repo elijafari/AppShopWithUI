@@ -19,7 +19,7 @@ namespace AppShop.Business
         [Description("پرداخت شده")]
         Paid = 7,
         [Description("در انتظار پرداخت")]
-        WaitPay=8
+        WaitPay = 8
     }
 
     public enum SendType
@@ -30,5 +30,12 @@ namespace AppShop.Business
         Confirm = 2,
         [Description("پیک")]
         Send = 3,
+    }
+
+    public enum SmsType
+    {
+        Order = 1,
+        Pay = 2,
+        WaitPay = 3,
     }
 }

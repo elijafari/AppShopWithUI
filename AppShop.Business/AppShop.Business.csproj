@@ -28,10 +28,12 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+    <PackageReference Include="RestSharp" Version="114.1.0" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="ErrorHandle\" />
+    <Folder Include="Model\" />
   </ItemGroup>
 
 </Project>

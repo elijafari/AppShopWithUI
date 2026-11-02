@@ -5,7 +5,6 @@ using AppShop.Business.Service;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.IdentityModel.Tokens.Jwt;
@@ -101,6 +100,7 @@ builder.Services.AddCors(options =>
 });
 
 // 👉 DI
+builder.Services.AddHttpClient<TalaService>();
 builder.Services.AddScoped<TokenService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IUserService, UserService>();
@@ -113,10 +113,7 @@ builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IContactService, ContactService>();
 builder.Services.AddScoped<IVisitService, VisitService>();
 builder.Services.AddScoped<ITalaService,TalaService>();
-
-builder.Services.AddHttpClient<TalaService>();
-
-
+builder.Services.AddScoped<ISmsService, SmsService>();
 
 
 // مسیر wwwroot درست بعد از Build قابل دسترسی است

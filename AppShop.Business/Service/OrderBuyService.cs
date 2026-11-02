@@ -19,15 +19,18 @@ namespace AppShop.Business.Service
         private readonly IMapper mapper;
         private readonly IEmailService emailService;
         private readonly IHostEnvironment environment;
-        public OrderBuyService(AppShopDBContext _db, IMapper _mapper, IEmailService _emailService,IHostEnvironment _environment)
+        private readonly ISmsService smsService;
+        public OrderBuyService(AppShopDBContext _db, IMapper _mapper, IEmailService _emailService,IHostEnvironment _environment,ISmsService _smsService)
         {
             db = _db;
             mapper = _mapper;
             emailService = _emailService;
             environment = _environment;
+            smsService = _smsService;
         }
         public async Task<KeyValue> Add(InOrderBuy input, Guid userId)
         {
+       
             Validtion(input);
             var entity = new OrderBuy();
             entity.Id = Guid.NewGuid();
@@ -74,8 +77,10 @@ namespace AppShop.Business.Service
             db.OrderBuys.Add(entity);
             await db.SaveChangesAsync();
 
-            if (environment.IsProduction())
+      //      if (environment.IsProduction())
             {
+                _ = smsService.SendPatternAsync(userId, entity.TrackingCode, SmsType.Order);
+                _ = smsService.SendPatternMeAsync(entity.TrackingCode);
                 _ = SendEmailToMe(entity.TrackingCode, entity.Id);
                 _ = SendEmailToUser(entity);
             }
@@ -99,7 +104,7 @@ namespace AppShop.Business.Service
         {
             var listTo = new List<string>
             {
-                "ehsanjaafari12@gmail.com",
+               // "ehsanjaafari12@gmail.com",
                 "e.jafari64@gmail.com",
           };
             _ = emailService.SendEmailAsync(listTo, "ثبت سفارش", EmailMessege.OrderMessage(trackingCode, id));
@@ -180,10 +185,10 @@ namespace AppShop.Business.Service
                 throw new PersianException("با نوجه به وضعیت جاری سفارش امکان ارسال سفارش وجود ندارد");
 
             if (shopStatues == ShopStatues.Delivery && entity.Statues != ShopStatues.Send)
-                throw new PersianException("با نوجه به وضعیت جاری سفارش امکان تحویل سفارش وجود ندارد");
+                throw new PersianException("با توجه به وضعیت جاری سفارش امکان تحویل سفارش وجود ندارد");
 
             if (shopStatues == ShopStatues.Reject && entity.Statues != ShopStatues.Delivery)
-                throw new PersianException("با نوجه به وضعیت جاری سفارش امکان مرجوع سفارش وجود ندارد");
+                throw new PersianException("با توجه به وضعیت جاری سفارش امکان مرجوع سفارش وجود ندارد");
 
             var statues = new OrderBuyStatues();
             statues.Statues = shopStatues;
@@ -194,6 +199,7 @@ namespace AppShop.Business.Service
             if (shopStatues == ShopStatues.Paid)
                 entity.PaymentCode = paymentCode;
 
+
             if (shopStatues == ShopStatues.Confirm)
             {
                 var factorNumber = db.OrderBuys.Max(x => x.FactorNumber);
@@ -201,6 +207,11 @@ namespace AppShop.Business.Service
             }
             db.OrderBuys.Update(entity);
             db.SaveChanges();
+            if (shopStatues == ShopStatues.Paid)
+                //if(environment.IsProduction())
+              _ = smsService.SendPatternAsync(entity.UserId, entity.TrackingCode, SmsType.Pay);
+
+
             return entity.TrackingCode;
         }
         public List<OrderBuyVm> GetAll(Guid userId, bool isAdmin, InStatues inStatues)
