@@ -34,7 +34,7 @@ export default class App extends Component {
       <>
         <BrowserRouter>
           <Routes>
-            <Route element={<Menu />}>
+              <Route element={<Menu />}>
               <Route path="/" element={<Home />} />
               <Route path="/home" element={<Home />} />
               <Route path="/homeAdmin" element={<HomeAdmin />} />

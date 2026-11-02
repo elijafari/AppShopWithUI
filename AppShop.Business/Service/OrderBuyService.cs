@@ -77,7 +77,7 @@ namespace AppShop.Business.Service
             db.OrderBuys.Add(entity);
             await db.SaveChangesAsync();
 
-      //      if (environment.IsProduction())
+           if (environment.IsProduction())
             {
                 _ = smsService.SendPatternAsync(userId, entity.TrackingCode, SmsType.Order);
                 _ = smsService.SendPatternMeAsync(entity.TrackingCode);
@@ -208,7 +208,7 @@ namespace AppShop.Business.Service
             db.OrderBuys.Update(entity);
             db.SaveChanges();
             if (shopStatues == ShopStatues.Paid)
-                //if(environment.IsProduction())
+               if(environment.IsProduction())
               _ = smsService.SendPatternAsync(entity.UserId, entity.TrackingCode, SmsType.Pay);
 
 

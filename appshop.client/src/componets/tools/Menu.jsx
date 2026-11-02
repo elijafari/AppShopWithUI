@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import { Link } from "react-router-dom";
 import { Outlet } from "react-router-dom";
-import { FaShoppingCart, FaUserCircle} from "react-icons/fa";
+import { FaShoppingCart, FaUserCircle } from "react-icons/fa";
 import { ModalApp } from "./ModalApp";
 import { ButtonRoute } from "./ButtonRoute";
 import {
@@ -61,61 +61,62 @@ export class Menu extends Component {
     return (
       <>
         <header
-          className="shadow-sm rounded-3 border bg-yellow"
+          className="sticky-top shadow-sm rounded-3 border bg-yellow"
           style={{
             fontFamily: "Vazirmatn",
+            zIndex: 1030
           }}
         >
-          <div className="container py-3">
+          <div className="container py-3"  style={{ backgroundColor:"#f5f5f3"}}>
 
             <div className="row align-items-center">
 
-{/* لوگو و نام فروشگاه */}
-<div className="col-12 col-md-3 mb-3 mb-md-0">
-  <div    className="d-flex align-items-center justify-content-center justify-content-md-start"  >
-    {/* لوگو */}
-    <img
-      src="/icon-48.png"
-      alt="ElectroEJ"
-      style={{
-        width: "48px",
-        height: "48px",
-        objectFit: "contain"
-      }}
-    />
+              {/* لوگو و نام فروشگاه */}
+              <div className="col-12 col-md-3 mb-3 mb-md-0">
+                <div className="d-flex align-items-center justify-content-center justify-content-md-start"  >
+                  {/* لوگو */}
+                  <img
+                    src="/icon-48.png"
+                    alt="ElectroEJ"
+                    style={{
+                      width: "48px",
+                      height: "48px",
+                      objectFit: "contain"
+                    }}
+                  />
 
-    {/* متن */}
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        textAlign: "right",
-        lineHeight: "1.3"
-      }}
-    >
-      <span
-        style={{
-          fontSize: "19px",
-          fontWeight: "700",
-          color: "#333"
-        }}
-      >
-        ElectroEJ
-      </span>
+                  {/* متن */}
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      textAlign: "right",
+                      lineHeight: "1.3"
+                    }}
+                  >
+                    <span
+                      style={{
+                        fontSize: "19px",
+                        fontWeight: "700",
+                        color: "#333"
+                      }}
+                    >
+                      ElectroEJ
+                    </span>
 
-      <span
-        style={{
-          fontSize: "11px",
-          color: "#777",
-          marginTop: "3px",
-          whiteSpace: "nowrap"
-        }}
-      >
-        فروشگاه اینترنتی الکتروایجی
-      </span>
-    </div>
-  </div>
-</div>
+                    <span
+                      style={{
+                        fontSize: "11px",
+                        color: "#777",
+                        marginTop: "3px",
+                        whiteSpace: "nowrap"
+                      }}
+                    >
+                      فروشگاه اینترنتی الکتروایجی
+                    </span>
+                  </div>
+                </div>
+              </div>
               {/* متن وسط */}
               <div className="col-12 col-md-6 text-center mb-3 mb-md-0">
 
