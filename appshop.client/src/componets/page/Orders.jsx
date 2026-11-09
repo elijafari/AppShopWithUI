@@ -8,7 +8,7 @@ import {
 } from "react-notifications";
 import "react-notifications/lib/notifications.css";
 
-import { ErrorHanding, parseJwt ,toPersianDigits1,toPersianNumber} from "../Utility";
+import { ErrorHanding, parseJwt, toPersianDigits1, toPersianNumber } from "../Utility";
 import { Loading } from "../tools/Loading";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
@@ -22,15 +22,20 @@ export class Orders extends React.Component {
     super(props);
     this.state = {
       show: false,
-      statuesId: 101,
+      statuesId: 7,
       orders: [],
       loading: true,
       msg: "",
       isAdmin: false, // از توکن یا پروفایل بیار
       statuesList: [
-        { value: 101, title: "در انتظار پرداخت/ پرداخت شده" },
-        { value: 102, title: "تایید/ ارسال / تحویل سفارش" },
-        { value: 103, title: "لغو شده / مرجوعی" },
+        { value: 7, title: "پرداخت شده" },
+        { value: 8, title: "در انتظار پرداخت" },
+        { value: 2, title: "تایید شده" },
+        { value: 3, title: "ارسال شده" },
+        { value: 4, title: "تحویل داده شده" },
+        { value: 5, title: "مرجوع شده" },
+        { value: 6, title: "لغو شده" },
+        { value: 100, title: "سفارش روزانه" },
       ]
     }
     this.statues = ["ثبت اولیه", "تایید سفارش", "ارسال سفارش", "تحویل سفارش", "مرجوع سفارش",];
@@ -41,11 +46,17 @@ export class Orders extends React.Component {
     this.getOrders();
   }
 
-  getOrders() {
+  getOrders(e) {
     let token = localStorage.getItem("token");
     let user = parseJwt(token);
+    let statuesId=7;
+if(e!=null)
+  if(e.value!=null)
+    statuesId=parseInt(e.value);
 
-    api.post("/orderBuy/GetAll", { statuesId: this.state.statuesId })
+let isDaily=statuesId==100;
+
+    api.post("/orderBuy/GetAll", { statuesId ,isDaily})
       .then(res => {
         this.setState({ loading: false });
         if (res.status === 200) {
@@ -135,9 +146,8 @@ export class Orders extends React.Component {
   closeModal() {
     this.setState({ show: false });
   }
-  paymant(e)
-  {
-     SentDataToZarinpal(e.id);
+  paymant(e) {
+    SentDataToZarinpal(e.id);
   }
   render() {
     if (this.state.loading) {
@@ -150,26 +160,20 @@ export class Orders extends React.Component {
 
         <h3 className="mb-4 text-center fw-bold">
           {this.state.isAdmin ? "مدیریت سفارشات" : "سفارشات من"}
-             {"(" +toPersianNumber( this.state.orders.length )+ ")"}
+          {"(" + toPersianNumber(this.state.orders.length) + ")"}
         </h3>
 
         {this.state.isAdmin && (<div
-          className="col-md-6 col-sm-12 d-flex align-items-end gap-2 mb-3"
+          className="col-md-12 col-sm-12 d-flex align-items-end gap-2 mb-3"
         >
           <DropdownApp
             context={this}
             name="statuesId"
             title="وضعیت سفارش"
             data={this.state.statuesList}
-          />
-
-          <button
-            onClick={() => this.getOrders()}
-            className="btn btn-success"
-            style={{ fontFamily: "Vazirmatn" }}
-          >
-            نمایش
-          </button>
+            onChange={(e)=>this.getOrders(e)}
+            className="col-md-4 col-sm-12"
+          />       
         </div>)}
         {this.state.orders.length === 0 ? (
           <div className="alert alert-warning text-center">
@@ -226,21 +230,21 @@ export class Orders extends React.Component {
                             عملیات
                           </button>
 
-                <ul className="dropdown-menu text-end"
-                                style={{ fontFamily: 'Vazirmatn' }}>
+                          <ul className="dropdown-menu text-end"
+                            style={{ fontFamily: 'Vazirmatn' }}>
                             <li>
                               <button
                                 className="dropdown-item"
                                 onClick={() => window.location.href = `/OrderDetails/${order.id}`}> مشاهده جزئیات </button>
                             </li>
-                            {!this.state.isAdmin && order.statues == 8 &&(
+                            {!this.state.isAdmin && order.statues == 8 && (
                               <li>
                                 <button
                                   className="dropdown-item text-primary"
                                   onClick={() => this.paymant(order)}>پرداخت</button>
                               </li>
                             )}
-                           
+
                             {this.state.isAdmin ? (
                               <>
                                 <li>
@@ -258,7 +262,7 @@ export class Orders extends React.Component {
                                     onClick={() => this.setState({ selectedOrder: order, showBjk: true })} >              چاپ بیجک
                                   </button>    </li>
                               </>
-                            ) : null} 
+                            ) : null}
                             <li><hr className="dropdown-divider" /></li>
                             <li>
                               <button

@@ -44,7 +44,8 @@ namespace AppShop.Business.DataModel
 
     public class InStatues
     {
-        public int StatuesId { get; set; }
+    public ShopStatues StatuesId { get; set; }
+     public bool IsDaily { get; set; }
     }
     public class InProvince
     {

@@ -20,7 +20,7 @@ namespace AppShop.Business.Service
         private readonly IEmailService emailService;
         private readonly IHostEnvironment environment;
         private readonly ISmsService smsService;
-        public OrderBuyService(AppShopDBContext _db, IMapper _mapper, IEmailService _emailService,IHostEnvironment _environment,ISmsService _smsService)
+        public OrderBuyService(AppShopDBContext _db, IMapper _mapper, IEmailService _emailService, IHostEnvironment _environment, ISmsService _smsService)
         {
             db = _db;
             mapper = _mapper;
@@ -30,7 +30,7 @@ namespace AppShop.Business.Service
         }
         public async Task<KeyValue> Add(InOrderBuy input, Guid userId)
         {
-       
+
             Validtion(input);
             var entity = new OrderBuy();
             entity.Id = Guid.NewGuid();
@@ -77,11 +77,10 @@ namespace AppShop.Business.Service
             db.OrderBuys.Add(entity);
             await db.SaveChangesAsync();
 
-           if (environment.IsProduction())
+            if (environment.IsProduction())
             {
                 _ = smsService.SendPatternAsync(userId, entity.TrackingCode, SmsType.Order);
                 _ = smsService.SendPatternMeAsync(entity.TrackingCode);
-                _ = SendEmailToMe(entity.TrackingCode, entity.Id);
                 _ = SendEmailToUser(entity);
             }
             return new KeyValue(entity.Id, entity.TrackingCode.ToString());
@@ -124,7 +123,7 @@ namespace AppShop.Business.Service
 
             foreach (var item in input.Items)
             {
-               if( item.Price != db.Products.First(x => x.Id == item.ProductId).Price)
+                if (item.Price != db.Products.First(x => x.Id == item.ProductId).Price)
                     throw new PersianException("تغییر قیمت کالا وجود دارد لطفا مجدد سفارش خود رو بررسی و صفحه را بارگذاری کنید");
             }
             if (input.SendType == null)
@@ -208,8 +207,11 @@ namespace AppShop.Business.Service
             db.OrderBuys.Update(entity);
             db.SaveChanges();
             if (shopStatues == ShopStatues.Paid)
-               if(environment.IsProduction())
-              _ = smsService.SendPatternAsync(entity.UserId, entity.TrackingCode, SmsType.Pay);
+                if (environment.IsProduction())
+                {
+                    _ = smsService.SendPatternAsync(entity.UserId, entity.TrackingCode, SmsType.Pay);
+                    _ = SendEmailToMe(entity.TrackingCode, entity.Id);
+                }
 
 
             return entity.TrackingCode;
@@ -219,12 +221,16 @@ namespace AppShop.Business.Service
             var query = db.OrderBuys.Select(x => x);
             if (isAdmin)
             {
-                if (inStatues.StatuesId == 101)
-                    query = query.Where(x => x.Statues == ShopStatues.Register || x.Statues == ShopStatues.Paid || x.Statues == ShopStatues.WaitPay);
-                else if (inStatues.StatuesId == 102)
-                    query = query.Where(x => x.Statues == ShopStatues.Confirm || x.Statues == ShopStatues.Send || x.Statues == ShopStatues.Delivery);
-                else if (inStatues.StatuesId == 103)
-                    query = query.Where(x => x.Statues == ShopStatues.Cancel || x.Statues == ShopStatues.Reject);
+                //if (inStatues.StatuesId == 101)
+                //    query = query.Where(x => x.Statues == ShopStatues.Register || x.Statues == ShopStatues.Paid || x.Statues == ShopStatues.WaitPay);
+                //else if (inStatues.StatuesId == 102)
+                //    query = query.Where(x => x.Statues == ShopStatues.Confirm || x.Statues == ShopStatues.Send || x.Statues == ShopStatues.Delivery);
+                //else if (inStatues.StatuesId == 103)
+                //    query = query.Where(x => x.Statues == ShopStatues.Cancel || x.Statues == ShopStatues.Reject);
+                if (inStatues.IsDaily)
+                    query = query.Where(x => x.DateOrder >= DateTime.Now.Date && x.DateOrder < DateTime.Now.Date.AddDays(1));
+                else
+                    query = query.Where(x => x.Statues == inStatues.StatuesId);
             }
             else
                 query = query.Where(x => x.UserId == userId);
@@ -285,9 +291,9 @@ namespace AppShop.Business.Service
                 .Select(g => new ReportProductVM
                 {
                     ProductName = g.Key.ProductName,
-                    Count =g.Sum(x=>x.Count)
+                    Count = g.Sum(x => x.Count)
                 })
-                .OrderBy(x=>x.ProductName).ToList();
+                .OrderBy(x => x.ProductName).ToList();
 
             return result;
         }
@@ -297,8 +303,8 @@ namespace AppShop.Business.Service
             var query = db.ItemBuies
                 .Include(x => x.ProductEntity)
                 .Include(x => x.OrderBuyEntity).
-                ThenInclude(c => c.AddressEntity).ThenInclude(x => x.CitiEntity).ThenInclude(x=>x.Parent)
-                .Where(x=>x.OrderBuyEntity.Statues== ShopStatues.Delivery && x.OrderBuyEntity.AddressEntity!=null)
+                ThenInclude(c => c.AddressEntity).ThenInclude(x => x.CitiEntity).ThenInclude(x => x.Parent)
+                .Where(x => x.OrderBuyEntity.Statues == ShopStatues.Delivery && x.OrderBuyEntity.AddressEntity != null)
                 .AsQueryable();
 
             if (startDate != null)
@@ -335,7 +341,7 @@ namespace AppShop.Business.Service
                 .Include(x => x.ProductEntity)
                 .Include(x => x.OrderBuyEntity)
                 .ThenInclude(c => c.AddressEntity).ThenInclude(x => x.CitiEntity)
-                .Where(x => x.OrderBuyEntity.Statues == ShopStatues.Delivery && x.OrderBuyEntity.AddressEntity.CitiEntity.ParentId== ProviceId)
+                .Where(x => x.OrderBuyEntity.Statues == ShopStatues.Delivery && x.OrderBuyEntity.AddressEntity.CitiEntity.ParentId == ProviceId)
                 .AsQueryable();
 
             var result = query
